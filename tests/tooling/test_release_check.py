@@ -41,4 +41,21 @@ class ReleaseTests(unittest.TestCase):
             self.assertTrue(any(name.endswith('ConnectClient.swift') for name in names))
             self.assertFalse(any('/.build/' in name or '/.work/' in name for name in names))
 
+    def test_source_archive_contains_generic_resource_consumer(self):
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / 'sources.tgz'
+            release_check.archive(output, release_check.SOURCE_GROUPS)
+            import tarfile
+            with tarfile.open(output) as bundle:
+                names = set(bundle.getnames())
+            required = {
+                'integrations/grant-probe/desk/app/grant-probe.hoon',
+                'integrations/grant-probe/desk/desk.bill',
+                'integrations/grant-probe/desk/sys.kelvin',
+                'integrations/grant-probe/desk/sur/connect.hoon',
+                'integrations/grant-probe/desk/mar/connect-exchange.hoon',
+                'integrations/grant-probe/desk/mar/connect-revoke.hoon',
+            }
+            self.assertTrue(required.issubset(names), sorted(required - names))
+
 if __name__ == '__main__': unittest.main()

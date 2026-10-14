@@ -11,7 +11,7 @@ import tarfile
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = json.loads((ROOT / 'release/version.json').read_text())['version']
 EXCLUDED = {'.work', '.git', '.build', 'node_modules', 'dist', 'DerivedData', 'xcuserdata', '__pycache__', '.DS_Store', 'test-results', 'playwright-report'}
-SOURCE_GROUPS = ['desk', 'web', 'sdk/swift', 'Package.swift', 'examples/ios-todo', 'protocol', 'tests', 'scripts', 'docs', 'toolchain.json', 'release/version.json', 'release/ownership.json', 'release/manifest.schema.json', 'release/README.md', 'README.md', 'LICENSE', '.gitignore', 'third_party']
+SOURCE_GROUPS = ['desk', 'web', 'sdk/swift', 'Package.swift', 'examples/ios-todo', 'protocol', 'tests', 'scripts', 'docs', 'toolchain.json', 'release/version.json', 'release/ownership.json', 'release/manifest.schema.json', 'release/README.md', 'README.md', 'LICENSE', '.gitignore', 'third_party', 'integrations/grant-probe']
 
 
 def digest(path):

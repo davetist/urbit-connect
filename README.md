@@ -68,4 +68,4 @@ The pairing identity is the HTTPS issuer plus persistent instance ID. The displa
 
 ## Local resource authorization
 
-The opt-in [resource integration contract](docs/resource-integrations.md) lets a local Gall agent use Connect owner consent, PKCE codes and live revocation while managing its own data and wire protocol. Ordinary document clients are unchanged. The separate [native Bitwarden SSO preview](integrations/bitwarden/README.md) uses this contract; its current synthetic-data evidence does not close the alpha release gates above.
+The opt-in [resource integration contract](docs/resource-integrations.md) lets a local Gall agent use Connect owner consent, PKCE codes and live revocation while managing its own data and wire protocol. Ordinary document clients are unchanged. The included [grant-probe](integrations/grant-probe/desk/app/grant-probe.hoon) test consumer demonstrates the reusable authorization contract.
