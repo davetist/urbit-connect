@@ -5,7 +5,7 @@
 ++  loopback
   |=  value=@t
   ^-  ?
-  =/  chars  (trip value)
+  =/  chars=tape  (trip value)
   ?.  (levy chars |=(ch=@tD &((gte ch 33) (lte ch 126) !=(ch '#') !=(ch '?') !=(ch '@') !=(ch 92))))  |
   =/  rest=(unit tape)
     ?:  =('http://localhost:' (crip (scag 17 chars)))  `(slag 17 chars)
@@ -18,6 +18,19 @@
   =/  parsed  (rush (crip digits) dem)
   ?~  parsed  |
   &((gte u.parsed 1.024) (lte u.parsed 65.535) =((ud:cc u.parsed) (crip digits)))
+++  private-callback
+  |=  value=@t
+  ^-  ?
+  =/  chars=tape  (trip value)
+  ?.  (levy chars |=(ch=@tD &((gte ch 33) (lte ch 126) !=(ch '#') !=(ch '?') !=(ch '@') !=(ch 92))))  |
+  =/  split  (find "://" chars)
+  ?~  split  |
+  =/  scheme=tape  (scag u.split chars)
+  ?.  (levy scheme |=(ch=@tD |(&((gte ch 'a') (lte ch 'z')) &((gte ch '0') (lte ch '9')) =(ch '+') =(ch '-') =(ch '.'))))  |
+  ?~  scheme  |
+  ?.  &((gth (lent scheme) 0) (lte (lent scheme) 64) (gth (lent chars) (add u.split 3)))  |
+  ?.  &((gte i.scheme 'a') (lte i.scheme 'z'))  |
+  !(~(has in (silt ~['http' 'https' 'file' 'data' 'javascript' 'ws' 'wss' 'ftp'])) (crip scheme))
 ++  scope-name
   |=  value=@t
   ^-  ?
@@ -39,7 +52,7 @@
   =/  redirects  (turn p.redirects-json text:cc)
   ?>  &((gth (lent allowed) 0) (lte (lent allowed) 8) (gth (lent redirects) 0) (lte (lent redirects) 8))
   ?>  (levy allowed scope-name)
-  ?>  (levy redirects |=(r=@t &((lte (met 3 r) 256) |((valid-redirect:ca r) (loopback r)))))
+  ?>  (levy redirects |=(r=@t &((lte (met 3 r) 256) |((valid-redirect:ca r) (loopback r) (private-callback r)))))
   [`@tas`agent (silt allowed) (silt redirects)]
 ++  scopes
   |=  [raw=@t allowed=(set @t)]
