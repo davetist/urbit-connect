@@ -1,0 +1,31 @@
+# Tested connect-dev private ingress, Caddy 2.11.7. Tailscale Serve terminates
+# trusted HTTPS on 8443 and forwards to 127.0.0.1:36580. Eyre binds 127.0.0.1:8080.
+# Keep the admin interface private; no access log or payload logging is enabled.
+{
+    admin 127.0.0.1:36581
+    auto_https off
+    persist_config off
+    servers {
+        timeouts {
+            read_header 10s
+            read_body 15s
+            write 45s
+            idle 60s
+        }
+    }
+}
+http://:36580 {
+    bind 127.0.0.1
+    request_body {
+        max_size 256KiB
+    }
+    reverse_proxy 127.0.0.1:8080 {
+        header_up X-Forwarded-Proto https
+        transport http {
+            dial_timeout 5s
+            response_header_timeout 35s
+        }
+    }
+}
+# The listener matches the original HTTPS Host forwarded by Serve. Using
+# http://127.0.0.1:36580 as the site address would filter out that Host.

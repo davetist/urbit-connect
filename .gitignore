@@ -1,0 +1,20 @@
+.work/
+artifacts/
+node_modules/
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+web/dist/
+dist/
+.DS_Store
+
+# Local task state, Python caches and private environment files
+.superpowers/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+!.env.sample

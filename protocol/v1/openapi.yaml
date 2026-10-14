@@ -1,0 +1,4703 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Urbit Connect",
+    "version": "1.0.0",
+    "description": "Normative route/shape contract; docs/protocol.md defines wire semantics and limits. Owner cookies are never app credentials. No CORS. No cross-origin redirects."
+  },
+  "paths": {
+    "/connect/v1/info": {
+      "get": {
+        "summary": "Protocol version, canonical issuer and persistent instance",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_v1_info",
+        "parameters": []
+      }
+    },
+    "/connect/oauth/authorize": {
+      "get": {
+        "summary": "Validate registered client, redirect and S256 PKCE; create consent intent; redirect only to local owner UI",
+        "security": [],
+        "responses": {
+          "302": {
+            "description": "Local consent page, never an unvalidated client redirect",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid client/redirect/request/scopes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Authorization capacity or rate bound"
+          },
+          "503": {
+            "description": "Issuer is not configured"
+          }
+        },
+        "operationId": "get_connect_oauth_authorize",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "const": "code"
+            }
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge_method",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "const": "S256"
+            }
+          },
+          {
+            "name": "device_label",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/connect/oauth/token": {
+      "post": {
+        "summary": "Form encoded public-client code exchange or rotating refresh. OAuth errors, no ID token",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "post_connect_oauth_token",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "grant_type": {
+                        "const": "authorization_code"
+                      },
+                      "client_id": {
+                        "type": "string"
+                      },
+                      "redirect_uri": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "code_verifier": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "grant_type",
+                      "client_id",
+                      "redirect_uri",
+                      "code",
+                      "code_verifier"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "grant_type": {
+                        "const": "refresh_token"
+                      },
+                      "client_id": {
+                        "type": "string"
+                      },
+                      "refresh_token": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "grant_type",
+                      "client_id",
+                      "refresh_token"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/oauth/revoke": {
+      "post": {
+        "summary": "Revoke only the current bearer session",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "post_connect_oauth_revoke",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/v1/identity": {
+      "get": {
+        "summary": "Account and current grant; any active scope",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Identity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_v1_identity",
+        "parameters": []
+      }
+    },
+    "/connect/v1/collections/{collection}/documents": {
+      "get": {
+        "summary": "Read scope; document-ID-ordered list, limit 1\u2013100, epoch-bound page token",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_v1_collections_collection_documents",
+        "parameters": [
+          {
+            "name": "collection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Collection"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ]
+      }
+    },
+    "/connect/v1/collections/{collection}/documents/{id}": {
+      "get": {
+        "summary": "Read scope; one document or 404",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_v1_collections_collection_documents_id",
+        "parameters": [
+          {
+            "name": "collection",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Collection"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ]
+      }
+    },
+    "/connect/v1/mutations": {
+      "post": {
+        "summary": "Atomic CAS batch; per-operation scope checked before receipt; grant chooses namespace",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Commit"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Mutation"
+              }
+            }
+          }
+        },
+        "operationId": "post_connect_v1_mutations",
+        "parameters": []
+      }
+    },
+    "/connect/v1/changes": {
+      "get": {
+        "summary": "Read scope; after cursor, limit 1\u2013100 batches, wait 0\u201325 seconds; recheck at delivery",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_v1_changes",
+        "parameters": [
+          {
+            "name": "after",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 25,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ]
+      }
+    },
+    "/connect/v1/snapshots": {
+      "post": {
+        "summary": "Read scope; immutable session-bound namespace snapshot. At most four globally and two per app; a new snapshot replaces that session\u2019s prior snapshot.",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "post_connect_v1_snapshots",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/v1/snapshots/{id}": {
+      "get": {
+        "summary": "Read scope; session-bound snapshot, page offset and limit 1\u2013100",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_v1_snapshots_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ]
+      }
+    },
+    "/connect/owner/v1/bootstrap": {
+      "get": {
+        "summary": "Owner context, csrf and account",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_owner_v1_bootstrap",
+        "parameters": []
+      }
+    },
+    "/connect/owner/v1/configure": {
+      "post": {
+        "summary": "Set exact HTTPS issuer after owner approval",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_configure",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Configure"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/clients": {
+      "get": {
+        "summary": "Owner registrations; server chooses namespaces",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_owner_v1_clients",
+        "parameters": []
+      },
+      "post": {
+        "summary": "Owner registrations; server chooses namespaces",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_clients",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientRegistration"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/clients/{id}": {
+      "post": {
+        "summary": "Update supplied name or enabled fields; omitted fields retain current state. Exact redirect is immutable.",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_clients_id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientUpdate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/consents/{id}": {
+      "get": {
+        "summary": "View, approve or deny a bounded pending request",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_owner_v1_consents_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "View, approve or deny a bounded pending request",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_consents_id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsentDecision"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/sessions": {
+      "get": {
+        "summary": "List active sessions without credentials",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_owner_v1_sessions",
+        "parameters": []
+      }
+    },
+    "/connect/owner/v1/revoke": {
+      "post": {
+        "summary": "Revoke one session or all sessions for one client",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_revoke",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Revoke"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/namespaces/{namespace}/documents": {
+      "get": {
+        "summary": "Browse namespace documents",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_owner_v1_namespaces_namespace_documents",
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ]
+      }
+    },
+    "/connect/owner/v1/namespaces/{namespace}/mutations": {
+      "post": {
+        "summary": "Owner CAS mutation through same engine",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Mutation"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_namespaces_namespace_mutations"
+      }
+    },
+    "/connect/owner/v1/namespaces/{namespace}/snapshots": {
+      "post": {
+        "summary": "Owner immutable snapshot for export",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_namespaces_namespace_snapshots",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/namespaces/{namespace}/erase": {
+      "post": {
+        "summary": "Confirm exact namespace; erase live data, rotate its epoch and revoke sessions",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_namespaces_namespace_erase",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Erase"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/restore-epoch": {
+      "post": {
+        "summary": "Explicit backup-restore recovery; rotate global epoch and revoke every session",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_restore_epoch",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Restore"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/imports/validate": {
+      "post": {
+        "summary": "Validate bounded export envelope and report create/CAS preview",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportPreview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_imports_validate",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportPreviewRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/imports/apply": {
+      "post": {
+        "summary": "Apply a bounded reviewed CAS import batch",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Commit"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_imports_apply",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportApplyRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/snapshots/{id}": {
+      "get": {
+        "summary": "Read one owner-browser-bound immutable snapshot page",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Owner snapshot page",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Owner authentication required",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "404": {
+            "description": "Not bound to this owner context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Snapshot expired",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "operationId": "get_connect_owner_v1_snapshots_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ]
+      }
+    },
+    "/connect/owner/v1/clients/{id}/remove": {
+      "post": {
+        "summary": "Remove a registration and its namespace; invalidate pending consent, codes and sessions. Re-registering creates a new namespace.",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "404": {
+            "description": "Registration not found, including a repeated removal after success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "413": {
+            "description": "Encoded request/document exceeds byte bound",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_clients_id_remove",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientRemove"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "ownerCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "urbauth-<ship>",
+        "description": "Eyre-authenticated local owner, never an EAuth visitor; mutations also require bound CSRF and exact Origin."
+      }
+    },
+    "schemas": {
+      "Revision": {
+        "type": "string",
+        "pattern": "^(0|[1-9][0-9]{0,127})$"
+      },
+      "UUID": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+      },
+      "Collection": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]{0,47}$"
+      },
+      "JSONObject": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "Strict portable JSON: depth <=16 across request, duplicate decoded UTF-8 keys forbidden, no U+0000, finite numbers with absolute value <=9007199254740991, exponent and fractional digit count <=1024. Numeric lexemes preserved."
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+          },
+          "collection": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$"
+          },
+          "data": {
+            "$ref": "#/components/schemas/JSONObject"
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,127})$"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "collection",
+          "data",
+          "revision",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "Put": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "const": "put"
+          },
+          "collection": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+          },
+          "data": {
+            "$ref": "#/components/schemas/JSONObject"
+          },
+          "expectedRevision": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,127})$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "collection",
+          "id",
+          "data",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "Delete": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "const": "delete"
+          },
+          "collection": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+          },
+          "expectedRevision": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,127})$"
+          }
+        },
+        "required": [
+          "type",
+          "collection",
+          "id",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "Mutation": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+          },
+          "operations": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Put"
+                },
+                {
+                  "$ref": "#/components/schemas/Delete"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "requestId",
+          "operations"
+        ],
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message",
+              "requestId"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "requestId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "retryAfterSeconds": {
+                "type": "integer"
+              },
+              "current": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Document"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "currentRevision": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,127})$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "deleted": {
+                "type": "boolean"
+              },
+              "collection": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,47}$"
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+              }
+            }
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "uri"
+          },
+          "instanceId": {
+            "type": "string"
+          },
+          "ship": {
+            "type": "string"
+          },
+          "syncEpoch": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,127})$"
+          }
+        },
+        "required": [
+          "issuer",
+          "instanceId",
+          "ship",
+          "syncEpoch"
+        ],
+        "additionalProperties": false
+      },
+      "Grant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "namespaceEpoch": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]{0,127})$"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "documents:read",
+                "documents:write",
+                "documents:delete"
+              ]
+            }
+          },
+          "sessionId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "clientId",
+          "namespace",
+          "namespaceEpoch",
+          "scopes",
+          "sessionId"
+        ],
+        "additionalProperties": false
+      },
+      "Info": {
+        "type": "object",
+        "properties": {
+          "protocolVersion": {
+            "const": 1
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "instanceId": {
+            "type": "string"
+          },
+          "ship": {
+            "type": "string"
+          },
+          "syncEpoch": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "development": {
+            "type": "boolean"
+          },
+          "configured": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "protocolVersion",
+          "issuer",
+          "instanceId",
+          "ship",
+          "syncEpoch",
+          "development",
+          "configured"
+        ],
+        "additionalProperties": false
+      },
+      "Identity": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "grant": {
+            "$ref": "#/components/schemas/Grant"
+          }
+        },
+        "required": [
+          "account",
+          "grant"
+        ],
+        "additionalProperties": false
+      },
+      "CommitResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UUID"
+          },
+          "collection": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "deleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "collection",
+          "revision",
+          "deleted"
+        ],
+        "additionalProperties": false
+      },
+      "Commit": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "results": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "$ref": "#/components/schemas/CommitResult"
+            }
+          }
+        },
+        "required": [
+          "revision",
+          "results"
+        ],
+        "additionalProperties": false
+      },
+      "SnapshotPage": {
+        "type": "object",
+        "properties": {
+          "snapshotId": {
+            "type": "string"
+          },
+          "atCursor": {
+            "type": "string"
+          },
+          "documents": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            }
+          },
+          "nextPage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "snapshotId",
+          "atCursor",
+          "documents",
+          "nextPage"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionPage": {
+        "type": "object",
+        "properties": {
+          "documents": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            }
+          },
+          "nextPage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "documents",
+          "nextPage"
+        ],
+        "additionalProperties": false
+      },
+      "ChangeBatch": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "changes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "document": {
+                      "$ref": "#/components/schemas/Document"
+                    },
+                    "deleted": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "document",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/UUID"
+                    },
+                    "collection": {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    "revision": {
+                      "$ref": "#/components/schemas/Revision"
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "collection",
+                    "revision",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "revision",
+          "changes"
+        ],
+        "additionalProperties": false
+      },
+      "ChangePage": {
+        "type": "object",
+        "properties": {
+          "batches": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ChangeBatch"
+            }
+          },
+          "nextCursor": {
+            "type": "string"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "batches",
+          "nextCursor",
+          "hasMore"
+        ],
+        "additionalProperties": false
+      },
+      "OAuthError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "error_description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "const": "Bearer"
+          },
+          "expires_in": {
+            "const": 600
+          },
+          "scope": {
+            "type": "string"
+          },
+          "grant": {
+            "$ref": "#/components/schemas/Grant"
+          }
+        },
+        "required": [
+          "access_token",
+          "refresh_token",
+          "token_type",
+          "expires_in",
+          "scope",
+          "grant"
+        ],
+        "additionalProperties": false
+      },
+      "ClientRegistration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "redirectURI": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 256
+          },
+          "integration": {
+            "$ref": "#/components/schemas/IntegrationPolicy"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "redirectURI"
+        ],
+        "additionalProperties": false
+      },
+      "ClientUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "Configure": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "pattern": "^https://[^/?#]+/connect$"
+          }
+        },
+        "required": [
+          "issuer"
+        ],
+        "additionalProperties": false
+      },
+      "ConsentDecision": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "enum": [
+              "approve",
+              "deny"
+            ]
+          }
+        },
+        "required": [
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "Revoke": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "sessionId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "sessionId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "clientId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "clientId"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Erase": {
+        "type": "object",
+        "properties": {
+          "confirmNamespace": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "confirmNamespace"
+        ],
+        "additionalProperties": false
+      },
+      "Restore": {
+        "type": "object",
+        "properties": {
+          "confirmInstanceId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "confirmInstanceId"
+        ],
+        "additionalProperties": false
+      },
+      "Empty": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "Export": {
+        "type": "object",
+        "properties": {
+          "formatVersion": {
+            "const": 1
+          },
+          "source": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "collections": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Document"
+              }
+            }
+          }
+        },
+        "required": [
+          "formatVersion",
+          "source",
+          "namespace",
+          "collections"
+        ],
+        "additionalProperties": false
+      },
+      "ImportPreviewRequest": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "create",
+              "compare-and-swap"
+            ]
+          },
+          "export": {
+            "$ref": "#/components/schemas/Export"
+          }
+        },
+        "required": [
+          "namespace",
+          "mode",
+          "export"
+        ],
+        "additionalProperties": false
+      },
+      "ImportApplyRequest": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string"
+          },
+          "mutation": {
+            "$ref": "#/components/schemas/Mutation"
+          }
+        },
+        "required": [
+          "namespace",
+          "mutation"
+        ],
+        "additionalProperties": false
+      },
+      "ImportPreview": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "operations": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 32,
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Put"
+                },
+                {
+                  "$ref": "#/components/schemas/Delete"
+                }
+              ]
+            }
+          },
+          "conflicts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            }
+          }
+        },
+        "required": [
+          "count",
+          "operations",
+          "conflicts"
+        ],
+        "additionalProperties": false
+      },
+      "ClientRemove": {
+        "type": "object",
+        "properties": {
+          "confirmClientId": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "confirmNamespace": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "confirmClientId",
+          "confirmNamespace"
+        ],
+        "additionalProperties": false
+      },
+      "IntegrationPolicy": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "agent",
+          "scopes",
+          "redirectURIs"
+        ],
+        "properties": {
+          "agent": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$",
+            "not": {
+              "const": "connect"
+            }
+          },
+          "scopes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^(?!documents:)[a-z0-9_:.-]+$"
+            }
+          },
+          "redirectURIs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "type": "string",
+              "maxLength": 256
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "insufficient_scope",
+    "message": "Read permission required",
+    "requestId": null
+  }
+}

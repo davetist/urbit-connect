@@ -1,0 +1,18 @@
+{
+  "source": "Urbit base desk exported from pinned official Vere 4.6 bootstrap pill",
+  "pillSHA256": "f8b08c53dd6d0aa9c4f7654f0a7bcd11e94089222888a3c99c0a10eedcbb377b",
+  "files": {
+    "mar/noun.hoon": "7581328f74894baa376d3a80e370808dca3ad3af96bc0ef6e4ac299984744b89",
+    "mar/hoon.hoon": "a77a0a8e0cd772ae9e7aa8c50d17b783d1969c64f031b6dc1d71f9e63a1cd73e",
+    "mar/txt.hoon": "cb76a42e114f3b8f3ac37d09bfe7b1b41bc5c54e6406c0c01fb249af6910bc5d",
+    "mar/kelvin.hoon": "f23c0150f240d040dd24d99bb54e02c4df736e0f4d2bd5654bbc304082c8125c",
+    "mar/bill.hoon": "a0196da4970b8dfdee321a638040a564f95e8000f3b49eccc274ee8de2fae0ff",
+    "mar/mime.hoon": "f1b94f43735fd3a6b86f5cd4619851bc1af9145281f68a07724c4bea870de535",
+    "mar/json.hoon": "1a9b61feb7d40dc94e682ba665c9f8d5d37c458868942d3b9e7b87562e538fc6",
+    "mar/html.hoon": "45ef2b89d73b7ff3b9185fae77d50fb0e63a8f03be2fc37c30432ac520075746",
+    "lib/default-agent.hoon": "70a8af06601e8d1b75b261b2ac8b2cb06d5622baa1d1b1f8fec9236ce167d113",
+    "lib/skeleton.hoon": "c7c654a91c5dc1a535d4a76b019ec175955e52961b1ddff70ad49121208d20f5",
+    "lib/server.hoon": "d0a566085300a6deae334b98c4844dc11e90f0315015a91e97c2fbb61db31d68",
+    "lib/test.hoon": "55d5196a3a8dbd5323943c06f138c9b9aa8fd955506c4f4b14e5d56ff05abcc6"
+  }
+}

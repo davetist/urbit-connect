@@ -1,0 +1,7 @@
+{
+  "protocolVersion": 2,
+  "issuer": "https://example.invalid/connect",
+  "instanceId": "example",
+  "ship": "~zod",
+  "syncEpoch": "1"
+}

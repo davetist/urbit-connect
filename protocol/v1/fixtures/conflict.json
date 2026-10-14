@@ -1,0 +1,12 @@
+{
+  "error": {
+    "code": "conflict",
+    "message": "The document changed",
+    "requestId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "collection": "lists",
+    "id": "11111111-1111-4111-8111-111111111111",
+    "current": null,
+    "currentRevision": "3",
+    "deleted": true
+  }
+}

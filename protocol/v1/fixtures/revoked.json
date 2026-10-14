@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "invalid_token",
+    "message": "Authorization required",
+    "requestId": null
+  }
+}

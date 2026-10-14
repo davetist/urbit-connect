@@ -1,0 +1,17 @@
+{
+  "name": "urbit-connect-owner",
+  "private": true,
+  "version": "0.2.0-alpha.1",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "test:e2e": "playwright test",
+    "test": "node --experimental-strip-types --test tests/codec.test.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.4"
+  }
+}

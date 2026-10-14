@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "cursor_expired",
+    "message": "Snapshot required after journal gap",
+    "requestId": null
+  }
+}

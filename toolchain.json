@@ -1,0 +1,29 @@
+{
+  "vere": {
+    "version": "4.6",
+    "archiveURL": "https://github.com/urbit/vere/releases/download/vere-v4.6/macos-aarch64.tgz",
+    "archiveSHA256": "dbe59fc917699ae0e03749fbe50ff2ab1cbc2d5b862c13585a4c64e7e9be4a37",
+    "localPath": ".work/toolchains/vere-4.6/vere-v4.6-macos-aarch64",
+    "sha256": "1794e75c15162298d43c1e5e2e4f643e989caf04360562af170050a0d919f1ce"
+  },
+  "pill": {
+    "url": "https://bootstrap.urbit.org/urbit-v4.6.pill",
+    "localPath": ".work/toolchains/urbit-v4.6.pill",
+    "sha256": "f8b08c53dd6d0aa9c4f7654f0a7bcd11e94089222888a3c99c0a10eedcbb377b"
+  },
+  "kernel": 408,
+  "xcode": "26.6 (17F113)",
+  "simulator": {
+    "version": "26.5",
+    "build": "23F77",
+    "architecture": "arm64"
+  },
+  "caddy": {
+    "version": "2.11.7",
+    "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_mac_arm64.tar.gz",
+    "archiveSHA256": "cda3030e5d5b13eb9f0b6fb541037f633bddd958c070c5f561d7a5cccb581665",
+    "localPath": ".work/toolchains/caddy/caddy"
+  },
+  "xcodegen": "2.46.0",
+  "nss": "3.131"
+}

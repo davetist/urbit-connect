@@ -1,0 +1,14 @@
+[Unit]
+Description=Finite connect-dev reliability alpha soak
+After=network-online.target connect-dev-ingress.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/operator/.local/share/urbit-connect-alpha
+ExecStart=/usr/bin/python3 /home/operator/.local/share/urbit-connect-alpha/real_soak.py
+Restart=no
+UMask=0077
+TimeoutStopSec=10
+RuntimeMaxSec=25200
+StandardOutput=append:/home/operator/.local/share/urbit-connect-alpha/soak-private.log
+StandardError=append:/home/operator/.local/share/urbit-connect-alpha/soak-private.log

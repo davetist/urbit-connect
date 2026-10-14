@@ -1,0 +1,10 @@
+:~
+  title+'Connect'
+  info+'Connect apps to your ship. Approve access and manage your data.'
+  color+0x22.2222
+  site+/apps/connect
+  base+'connect'
+  version+[0 2 0]
+  website+'/apps/connect/'
+  license+'MIT'
+==

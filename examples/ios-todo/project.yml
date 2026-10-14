@@ -1,0 +1,68 @@
+name: ConnectTodo
+options:
+  bundleIdPrefix: org.example.urbitconnect
+  createIntermediateGroups: true
+packages:
+  UrbitConnect:
+    path: ../../sdk/swift
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    CODE_SIGN_IDENTITY: "-"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  ConnectTodo:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources: [ConnectTodo]
+    dependencies:
+      - package: UrbitConnect
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.example.urbitconnect.todo
+        TARGETED_DEVICE_FAMILY: "1"
+    info:
+      path: ConnectTodo/Info.plist
+      properties:
+        CFBundleDisplayName: Connect Todo
+        CFBundleShortVersionString: "0.2.0"
+        CFBundleVersion: "2"
+        CFBundleURLTypes:
+          - CFBundleURLName: Connect authorization
+            CFBundleURLSchemes: [org.example.urbitconnect.todo]
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+  ConnectTodoTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources: [ConnectTodoTests]
+    dependencies:
+      - target: ConnectTodo
+      - package: UrbitConnect
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+  ConnectTodoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources: [ConnectTodoUITests]
+    dependencies:
+      - target: ConnectTodo
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  ConnectTodo:
+    build:
+      targets:
+        ConnectTodo: all
+    test:
+      gatherCoverageData: false
+      targets:
+        - ConnectTodoTests
+        - ConnectTodoUITests
