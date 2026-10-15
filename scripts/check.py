@@ -102,7 +102,7 @@ def main():
             elif name=='integration':
                 prepare_integration();run('integration',[sys.executable,'scripts/test_integration.py'],r'Ran (\d+) tests?')
             elif name=='web':
-                seed_browser();prepare_expired_consent();run('browser-owner',[sys.executable,'scripts/browser_test.py','--spec','consent.spec.ts,management.spec.ts,races.spec.ts,editor-boundary.spec.ts,alpha-manager.spec.ts'],r'\"expected\": (\d+)')
+                seed_browser();prepare_expired_consent();run('browser-owner',[sys.executable,'scripts/browser_test.py','--spec','consent.spec.ts,management.spec.ts,races.spec.ts,editor-boundary.spec.ts,alpha-manager.spec.ts,resource-management.spec.ts'],r'\"expected\": (\d+)')
                 try:
                     run('foreign-peer',[sys.executable,'scripts/foreign_peer.py','start'])
                     run('browser-eauth',[sys.executable,'scripts/browser_test.py','--spec','eauth.spec.ts'],r'\"expected\": (\d+)')

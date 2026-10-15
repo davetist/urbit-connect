@@ -152,7 +152,10 @@ import XCTest
         let harness = try NativeHarness(); _ = try await harness.call("reset")
         let baseline = try await harness.call("fresh-baseline-app")
         XCTAssertEqual(baseline["baselineLaunched"] as? Bool, true)
-        let app = XCUIApplication(); app.activate()
+        let app = XCUIApplication()
+        // The control harness launched the prior app with its matching SDK runtime.
+        // Wait for that process instead of relaunching it without the runtime.
+        try require(app.wait(for: .runningForeground, timeout: 15))
         try begin(app); try login(app); try consent("Approve connection", app: app)
         try require(app.navigationBars["My lists"].waitForExistence(timeout: 15))
         try newList("Preserved install", app: app); try saved(app)

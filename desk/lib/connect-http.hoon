@@ -214,6 +214,10 @@
       (scopes:ci (~(got by args) 'scope') scopes.u.policy)
     ?~  scopes  (oauth-error 400 'invalid_scope')
     ?.  ?=(^ u.scopes)  (oauth-error 400 'invalid_scope')
+    =/  label  (fall (~(get by args) 'device_label') 'Native app')
+    ?>  (lte (met 3 label) 64)
+    ?.  &(owner !=((header 'cookie' fields) ''))
+      [world `[[302 [['location' (cat 3 '/~/login?redirect=' (escape url.request.request.ctx))] headers]] ~]]
     =.  auth.state.world  (clean:ca auth.state.world now.ctx)
     =/  minute  (div now.ctx ~m1)
     =/  prior  (~(get by starts.auth.state.world) client-id)
@@ -227,8 +231,6 @@
     =/  id  (secret 'pending')
     =/  namespace  namespace.u.registered
     =/  space  (~(got by spaces.state.world) namespace)
-    =/  label  (fall (~(get by args) 'device_label') 'Native app')
-    ?>  (lte (met 3 label) 64)
     =/  entry=authorization:c  [id client-id redirect namespace epoch.space u.scopes challenge state label (add now.ctx ~m5)]
     =.  pending.auth.state.world  (~(put by pending.auth.state.world) id entry)
     =.  starts.auth.state.world  (~(put by starts.auth.state.world) client-id [minute +(count)])
@@ -441,6 +443,9 @@
         ?>  (keys:cc value *(set @t))
         (make-snapshot db namespace (cat 3 'owner-' (ud:cc (shax (header 'cookie' fields)))))
       ?:  =('erase' (snag 2 segments))
+        =/  policies  integrations.state.world
+        ?:  (lien ~(val by clients.auth.state.world) |=(app=client:c &(=(namespace namespace.app) (~(has by policies) id.app))))
+          (fail 409 'resource_data_external' 'Resource-owned data must be erased in its desk')
         ?>  (keys:cc value (silt ~['confirmNamespace']))
         ?>  =(namespace (text:cc (field:cc 'confirmNamespace' value)))
         =/  apps  (skim ~(val by clients.auth.state.world) |=(app=client:c =(namespace namespace.app)))
@@ -571,70 +576,78 @@
     =/  count  ?:(=(minute minute.session) requests.session 0)
     ?:  (gte count 120)  (fail 429 'rate_limited' 'Wait before making more document requests')
     =.  sessions.auth.state.world  (~(put by sessions.auth.state.world) id.session session(minute minute, requests +(count)))
-    ?:  =(path ~['connect' 'v1' 'mutations'])
-      ?.  =(method %'POST')  (fail 405 'method_not_allowed' 'Use POST')
-      =/  request  (decode-mutation:cc (body request.ctx))
-      =/  other
-        %+  roll  ~(tap by spaces.state.world)
-        |=  [entry=[p=@t q=space:c] total=@ud]
-        ?:(=(p.entry namespace.session) total (add total bytes.q.entry))
-      =/  result  (mutate:cs db auth now.ctx request (sub 16.777.216 other))
-      =.  spaces.state.world  (~(put by spaces.state.world) namespace.session next.result)
-      (reply status.outcome.result body.outcome.result)
-    ?.  read.auth  (fail 403 'insufficient_scope' 'Read permission required')
-    ?:  &(=(5 (lent path)) =(~['connect' 'v1' 'collections'] (scag 3 path)) =('documents' (snag 4 path)))
-      ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
-      =/  collection  (snag 3 path)
-      ?>  (name:cc collection)
-      =/  rows  (sort (skim ~(val by records.db) |=(row=record:c =(collection collection.key.row))) |=([a=record:c b=record:c] (aor id.key.a id.key.b)))
-      =/  limit  (parameter 'limit' 100 1 100)
-      =/  page  (~(get by args) 'page')
-      =/  offset=@ud
-        ?~  page  0
-        =/  parsed  (rush u.page ;~(plug (bass 10 (plus dit)) ;~(pfix col (bass 10 (plus dit))) ;~(pfix col (bass 10 (plus dit))) ;~(pfix col (bass 10 (plus dit)))))
-        ?>  ?=(^ parsed)
-        =/  [global=@ud epoch=@ud revision=@ud offset=@ud]  u.parsed
-        ?>  &(=(global epoch.state.world) =(epoch epoch.db) =(revision revision.db))
-        offset
-      =/  selected  (scag limit (slag offset rows))
-      =/  next  (add offset (lent selected))
-      =/  page-json=json
-        ?:  (gte next (lent rows))  ~
-        [%s (crip "{(trip (cursor:cs epoch.state.world epoch.db revision.db))}:{(trip (ud:cc next))}")]
-      (reply 200 (object:cc ~[['documents' [%a (turn selected document:cc)]] ['nextPage' page-json]]))
-    ?:  &(=(6 (lent path)) =(~['connect' 'v1' 'collections'] (scag 3 path)) =('documents' (snag 4 path)))
-      ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
-      =/  key=key:c  [(snag 3 path) (snag 5 path)]
-      ?>  &((name:cc collection.key) (uuid:cc id.key))
-      =/  row  (~(get by records.db) key)
-      ?~  row  (fail 404 'not_found' 'Document does not exist')
-      (reply 200 (document:cc u.row))
-    ?:  =(path ~['connect' 'v1' 'snapshots'])
-      ?.  =(method %'POST')  (fail 405 'method_not_allowed' 'Use POST')
-      ?>  (keys:cc (json-body request.ctx) *(set @t))
-      (make-snapshot db namespace.session id.session)
-    ?:  &(=(4 (lent path)) =(~['connect' 'v1' 'snapshots'] (scag 3 path)))
-      ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
-      =/  found  (~(get by snapshots.world) (snag 3 path))
-      ?~  found  (fail 410 'snapshot_expired' 'Start a new snapshot')
-      ?.  &(=(session.u.found id.session) =(namespace.u.found namespace.session))
-        (fail 404 'not_found' 'Snapshot does not exist')
-      (snapshot-page u.found)
-    ?:  =(path ~['connect' 'v1' 'changes'])
-      ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
-      =/  after  (~(got by args) 'after')
-      =/  limit  (parameter 'limit' 100 1 100)
-      =/  wait  (parameter 'wait' 0 0 25)
-      =/  result  (changes-page:cs db epoch.state.world after limit)
-      ?.  =(200 status.result)  (reply status.result body.result)
-      =/  batches  (field:cc 'batches' body.result)
-      ?.  &(=(batches [%a ~]) (gth wait 0))  (reply 200 body.result)
-      ?:  (lien ~(val by polls.world) |=(p=poll:c =(session.p id.session)))
-        (fail 429 'poll_capacity' 'One outstanding poll is allowed per session')
-      =/  deadline  (min access-expires.session (add now.ctx (mul wait ~s1)))
-      =.  polls.world  (~(put by polls.world) rid.ctx [rid.ctx id.session namespace.session after limit access.session source.ctx deadline])
-      [world ~]
-    (fail 404 'not_found' 'Unknown document route')
+    |^
+      =/  attempt  (mule |.(!>(document-route)))
+      ?:  ?=(%| -.attempt)
+        (fail 400 'invalid_request' 'Malformed or unsupported request')
+      !<(http-result:c p.attempt)
+    ++  document-route
+      ^-  http-result:c
+      ?:  =(path ~['connect' 'v1' 'mutations'])
+        ?.  =(method %'POST')  (fail 405 'method_not_allowed' 'Use POST')
+        =/  request  (decode-mutation:cc (body request.ctx))
+        =/  other
+          %+  roll  ~(tap by spaces.state.world)
+          |=  [entry=[p=@t q=space:c] total=@ud]
+          ?:(=(p.entry namespace.session) total (add total bytes.q.entry))
+        =/  result  (mutate:cs db auth now.ctx request (sub 16.777.216 other))
+        =.  spaces.state.world  (~(put by spaces.state.world) namespace.session next.result)
+        (reply status.outcome.result body.outcome.result)
+      ?.  read.auth  (fail 403 'insufficient_scope' 'Read permission required')
+      ?:  &(=(5 (lent path)) =(~['connect' 'v1' 'collections'] (scag 3 path)) =('documents' (snag 4 path)))
+        ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
+        =/  collection  (snag 3 path)
+        ?>  (name:cc collection)
+        =/  rows  (sort (skim ~(val by records.db) |=(row=record:c =(collection collection.key.row))) |=([a=record:c b=record:c] (aor id.key.a id.key.b)))
+        =/  limit  (parameter 'limit' 100 1 100)
+        =/  page  (~(get by args) 'page')
+        =/  offset=@ud
+          ?~  page  0
+          =/  parsed  (rush u.page ;~(plug (bass 10 (plus dit)) ;~(pfix col (bass 10 (plus dit))) ;~(pfix col (bass 10 (plus dit))) ;~(pfix col (bass 10 (plus dit)))))
+          ?>  ?=(^ parsed)
+          =/  [global=@ud epoch=@ud revision=@ud offset=@ud]  u.parsed
+          ?>  &(=(global epoch.state.world) =(epoch epoch.db) =(revision revision.db))
+          offset
+        =/  selected  (scag limit (slag offset rows))
+        =/  next  (add offset (lent selected))
+        =/  page-json=json
+          ?:  (gte next (lent rows))  ~
+          [%s (crip "{(trip (cursor:cs epoch.state.world epoch.db revision.db))}:{(trip (ud:cc next))}")]
+        (reply 200 (object:cc ~[['documents' [%a (turn selected document:cc)]] ['nextPage' page-json]]))
+      ?:  &(=(6 (lent path)) =(~['connect' 'v1' 'collections'] (scag 3 path)) =('documents' (snag 4 path)))
+        ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
+        =/  key=key:c  [(snag 3 path) (snag 5 path)]
+        ?>  &((name:cc collection.key) (uuid:cc id.key))
+        =/  row  (~(get by records.db) key)
+        ?~  row  (fail 404 'not_found' 'Document does not exist')
+        (reply 200 (document:cc u.row))
+      ?:  =(path ~['connect' 'v1' 'snapshots'])
+        ?.  =(method %'POST')  (fail 405 'method_not_allowed' 'Use POST')
+        ?>  (keys:cc (json-body request.ctx) *(set @t))
+        (make-snapshot db namespace.session id.session)
+      ?:  &(=(4 (lent path)) =(~['connect' 'v1' 'snapshots'] (scag 3 path)))
+        ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
+        =/  found  (~(get by snapshots.world) (snag 3 path))
+        ?~  found  (fail 410 'snapshot_expired' 'Start a new snapshot')
+        ?.  &(=(session.u.found id.session) =(namespace.u.found namespace.session))
+          (fail 404 'not_found' 'Snapshot does not exist')
+        (snapshot-page u.found)
+      ?:  =(path ~['connect' 'v1' 'changes'])
+        ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
+        =/  after  (~(got by args) 'after')
+        =/  limit  (parameter 'limit' 100 1 100)
+        =/  wait  (parameter 'wait' 0 0 25)
+        =/  result  (changes-page:cs db epoch.state.world after limit)
+        ?.  =(200 status.result)  (reply status.result body.result)
+        =/  batches  (field:cc 'batches' body.result)
+        ?.  &(=(batches [%a ~]) (gth wait 0))  (reply 200 body.result)
+        ?:  (lien ~(val by polls.world) |=(p=poll:c =(session.p id.session)))
+          (fail 429 'poll_capacity' 'One outstanding poll is allowed per session')
+        =/  deadline  (min access-expires.session (add now.ctx (mul wait ~s1)))
+        =.  polls.world  (~(put by polls.world) rid.ctx [rid.ctx id.session namespace.session after limit access.session source.ctx deadline])
+        [world ~]
+      (fail 404 'not_found' 'Unknown document route')
+    --
   ++  parameter
     |=  [name=@t default=@ud minimum=@ud maximum=@ud]
     ^-  @ud

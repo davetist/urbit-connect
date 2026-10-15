@@ -73,7 +73,7 @@ class API:
         challenge=base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b'=').decode()
         params={'response_type':'code','client_id':client,'redirect_uri':redirect,'scope':scope,'state':secrets.token_urlsafe(32),'code_challenge_method':'S256','code_challenge':challenge}
         params.update(overrides)
-        result=self.request('/connect/oauth/authorize?'+urllib.parse.urlencode(params))
+        result=self.request('/connect/oauth/authorize?'+urllib.parse.urlencode(params),owner=True)
         return result,params,verifier
     def approve(self,result,decision='approve'):
         status,_,headers=result

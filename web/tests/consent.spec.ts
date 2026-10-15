@@ -21,6 +21,36 @@ test('owner assets carry restrictive browser headers', async ({ page }) => {
   expect(response?.headers()['x-frame-options']).toBe('DENY');
   expect(response?.headers()['access-control-allow-origin']).toBeUndefined();
 });
+test('cookie-free authorization returns to consent after ship login', async ({ page, shipContext }) => {
+  await shipContext.clearCookies();
+  const crypto = await import('node:crypto');
+  const query = new URLSearchParams({ response_type: 'code', client_id: 'connect-todo-prototype', redirect_uri: 'org.example.urbitconnect.todo:/oauth/callback', scope: 'documents:read', state: crypto.randomBytes(24).toString('base64url'), code_challenge_method: 'S256', code_challenge: crypto.randomBytes(32).toString('base64url') });
+  await page.goto(origin + '/connect/oauth/authorize?' + query);
+  const input = page.locator('input[type=password]');
+  await expect(input).toBeVisible();
+  await input.fill(credentials().code);
+  await input.press('Enter');
+  await expect(page.getByRole('button', { name: 'Approve connection', exact: true })).toBeVisible();
+});
+test('the shipped owner UI shows resource access without document controls', async ({ page }) => {
+  const { owner } = await import('./owner-api.ts');
+  const id = 'connect-bundled-resource-test';
+  const redirectURI = 'org.example.resource.bundle:/callback';
+  const app = await owner('clients', { id, name: 'Bundled resource', redirectURI,
+    integration: { agent: 'grant-probe', scopes: ['vault:read'], redirectURIs: [redirectURI] } });
+  try {
+    const { login } = await import('./browser.ts');
+    await login(page);
+    await page.locator(`[data-app-id="${id}"]`).click();
+    await expect(page.getByRole('heading', { name: 'Resource access', exact: true })).toBeVisible();
+    await expect(page.getByText('Resource agent: %grant-probe', { exact: true })).toBeVisible();
+    for (const label of ['Import', 'Export JSON', 'Erase app data…'])
+      await expect(page.getByRole('button', { name: label, exact: true })).toHaveCount(0);
+    await page.screenshot({ path: screenshotPath('owner-resource-access'), fullPage: true });
+  } finally {
+    await owner(`clients/${id}/remove`, { confirmClientId: id, confirmNamespace: app.namespace });
+  }
+});
 
 test('real approval binds the callback state and client', async ({ page }) => {
   const { login } = await import('./browser.ts'); await login(page);

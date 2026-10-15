@@ -7,15 +7,27 @@ This script contains no owner credentials and refuses an unowned experiment.
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
 import tarfile
+import tempfile
 import time
 import urllib.request
 
 ROOT = Path.home() / '.local/share/urbit-connect-alpha'
 HARBOR = 'http://127.0.0.1:18789'
+
+
+def private_write(path, value):
+    descriptor, temporary = tempfile.mkstemp(prefix='.private-', dir=path.parent)
+    try:
+        with os.fdopen(descriptor, 'w') as stream:
+            stream.write(value)
+        os.replace(temporary, path)
+    finally:
+        Path(temporary).unlink(missing_ok=True)
 
 
 def inspect_bundle(archive, kernel):
@@ -84,7 +96,7 @@ def command(target, text, name):
         if value != last: last = value; changed = time.monotonic()
         clean = re.sub(r'\x1b\[[0-9;?]*[A-Za-z]|\x1b[su]', '', value).replace('\r', '')
         if re.search(r'~[a-z_-]+:dojo>\s*$', clean) and time.monotonic() - changed > 2:
-            output = ROOT / ('dojo-' + name + '.txt'); output.write_text(clean); output.chmod(0o600)
+            output = ROOT / ('dojo-' + name + '.txt'); private_write(output, clean)
             if any(marker in clean for marker in ['event failed', 'nest-fail', 'syntax error', 'find-fork', '-find.', 'ford: build failed']):
                 raise RuntimeError('Desk command failed; private diagnostic retained')
             return clean
