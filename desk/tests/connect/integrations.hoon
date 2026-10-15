@@ -1,6 +1,14 @@
 /-  c=connect
 /+  *test, ca=connect-auth, ci=connect-integrations, ch=connect-http, cs=connect-store
 |%
+++  test-public-session-id-does-not-disclose-token-seed
+  =/  seed=@  33
+  =/  public  (slav %uv (session-id:ci seed))
+  ;:  weld
+    (expect-eq !>(%.n) !>(=(seed public)))
+    (expect-eq !>(%.n) !>(=((shas %access seed) (shas %access public))))
+    (expect-eq !>(%.n) !>(=((shas %refresh seed) (shas %refresh public))))
+  ==
 ++  test-explicit-loopback-policy
   ;:  weld
     (expect-eq !>(%.y) !>((loopback:ci 'http://localhost:8065')))
@@ -17,7 +25,7 @@
     (expect-eq !>(`(silt ~['notes:read'])) !>((scopes:ci 'notes:read' (silt ~['notes:read']))))
   ==
 ++  legacy-request
-  |=  [resource=? method=@tas url=@t]
+  |=  [resource=? method=?(%'GET' %'POST') url=@t]
   ^-  http-result:c
   =/  now  ~2026.10.14
   =/  seed=@  33
@@ -36,7 +44,7 @@
     [~zod ~nec now 0v1 'test' | & [| & [%ipv4 .127.0.0.1] [method url ~[['authorization' (cat 3 'Bearer ' access)]] ~]]]
   (handle:ch world ctx)
 ++  test-resource-bearer-rejected-by-all-http-routes
-  =/  requests=(list [@tas @t])
+  =/  requests=(list [?(%'GET' %'POST') @t])
     :~  [%'GET' '/connect/v1/identity']
         [%'POST' '/connect/oauth/revoke']
         [%'GET' '/connect/v1/collections/notes/documents']
@@ -46,7 +54,7 @@
     ==
   %-  zing
   %+  turn  requests
-  |=  [method=@tas url=@t]
+  |=  [method=?(%'GET' %'POST') url=@t]
   =/  result  (legacy-request & method url)
   ?>  ?=(^ payload.result)
   ;:  weld

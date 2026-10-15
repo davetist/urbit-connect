@@ -549,6 +549,8 @@
     =/  found  (access:ca auth.state.world token now.ctx)
     ?~  found  (fail 401 'invalid_token' 'Authorization required')
     =/  session  u.found
+    ?:  (~(has by integrations.state.world) client.session)
+      (fail 401 'invalid_token' 'Authorization required')
     =/  app  (~(get by clients.auth.state.world) client.session)
     ?~  app  (fail 401 'invalid_token' 'Authorization required')
     ?.  enabled.u.app  (fail 401 'invalid_token' 'Authorization required')

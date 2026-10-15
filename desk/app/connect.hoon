@@ -53,7 +53,7 @@
       =.  nonce.state.world  +(nonce.state.world)
       =/  seed  (shax (jam [eny.bowl now.bowl nonce.state.world req]))
       =/  result
-        (exchange:ca auth.state.world code.req client.req redirect.req verifier.req now.bowl (scot %uv seed) (scot %uv (shas %access seed)) (scot %uv (shas %refresh seed)))
+        (exchange:ca auth.state.world code.req client.req redirect.req verifier.req now.bowl (session-id:ci seed) (scot %uv (shas %access seed)) (scot %uv (shas %refresh seed)))
       =.  auth.state.world  next.result
       =/  response=json
         ?:  !=(200 status.outcome.result)  body.outcome.result

@@ -2,6 +2,10 @@
 /-  c=connect
 /+  cc=connect-codec, ca=connect-auth
 |%
+++  session-id
+  |=  seed=@
+  ^-  @t
+  (scot %uv (shas %session-id seed))
 ++  loopback
   |=  value=@t
   ^-  ?
