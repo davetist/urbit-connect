@@ -250,7 +250,7 @@
       }
     },
     "docs": {
-      "sha256": "9baf12e2cce8fa996b0e6e2199bc059b4b2d4b9d5abdff5250cd3ccec3682538",
+      "sha256": "4508c4126ce06cc7524b750cb49b2f69c58df8803abd5ee0c9228be601fa95b3",
       "files": {
         "docs/alpha-handoff.md": "85422290c48ef949f0d4131dc626eb6045b572f4557db0889a69842fd78beaf1",
         "docs/app-registration.md": "0149230f0ac7bd656f903c3d4cf1bd4c57af0b1216acf8d857dd389d1e650127",
@@ -260,7 +260,7 @@
         "docs/compatibility.md": "899ffad6bc3be73432fd92d31a73727016a10386aa129553e4d01667c22f865f",
         "docs/consent-layout.md": "db644543d2cbb53cf2c07e5c5f78c9c43b6e28b8b8d9e3c1bac2bd61af860dd0",
         "docs/contributing.md": "a7c21c02569ec7148c9bcb1674b958f026d5f66ee2f724c3a4d93d680ad1dd66",
-        "docs/current-readiness.md": "d683d297b46b93c736dbab3df1a5e59c38ee53a5fbf2dffa92a958f2845e1374",
+        "docs/current-readiness.md": "cf7e701dfd874e62e6b0687f811c50fb691a7d47d3fcf6a51d770fe6a90f3516",
         "docs/development.md": "d089a8078125c6fb674d11cb81407d1dfb2d51ec23293b8f0fd94648e703f964",
         "docs/final-review.md": "89645a9d528a4b0bf247f980387de23b4076cdb846c6aab5cceaa899acd5bd46",
         "docs/implementation-progress.md": "b09c37bde042a7a0334d61f9b23e5962289dce889a242fcc6be07f8ed82c22e3",
@@ -401,7 +401,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "e8db99b2ea4479ca8d830099e600d19ba09de60315ab6f3ac8ea53f9606d3797",
+      "sha256": "6fe0ab78189bc7e778f3e0d3d529151efb02b85f4439cfc56b1cf1b24db46d38",
       "kind": "file"
     },
     "web": {
