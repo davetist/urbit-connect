@@ -2,3 +2,14 @@
 
 .app-name{display:flex;flex-direction:column;gap:3px}.app-id{font:9px/1.35 ui-monospace,monospace;color:var(--muted);font-weight:400}
 :root{--danger:#333;--danger-fill:#333}.badge.caution,.conflict-preview{background:#ededed;border-color:#c8c8c8;color:#333}.notice.error{background:#e3e3e3;color:#222}@media(prefers-color-scheme:dark){:root{--danger:#ddd;--danger-fill:#555}.badge.caution,.conflict-preview{background:#303030;border-color:#777;color:#eee}.notice.error{background:#303030;color:#eee}}
+
+/* Keep consent decisions inside the visible browser area, including Safari chrome.
+   Only the request details scroll; setup and login cards retain their normal flow. */
+.consent-stage{height:calc(100vh - 92px);height:calc(100dvh - 92px);min-height:0;padding:16px 20px max(16px,env(safe-area-inset-bottom))}
+.consent-stage .consent-card{display:flex;flex-direction:column;min-height:0;max-height:100%;min-width:0}
+.consent-details{min-height:0;overflow:auto;overscroll-behavior:contain;overflow-wrap:anywhere}
+.consent-details .app-identity>div{min-width:0}
+.consent-details .app-symbol{flex-shrink:0}
+.consent-stage .actions{flex-shrink:0;margin-top:16px}
+@media(max-width:650px){.consent-stage{height:calc(100vh - 75px);height:calc(100dvh - 75px);padding-left:18px;padding-right:18px}}
+@media(max-height:450px){.consent-stage .consent-card{padding:12px}.consent-stage .actions{margin-top:12px}}

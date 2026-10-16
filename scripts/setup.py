@@ -167,7 +167,7 @@ def main():
     sys.path.insert(0,str(ROOT/'tests/integration'))
     from support import API
     API().setup()
-    command([ROOT/'web/node_modules/.bin/playwright','install','firefox'])
+    command([ROOT/'web/node_modules/.bin/playwright','install','firefox','chromium','webkit'])
     command(['xcodegen','generate','--spec',ROOT/'examples/ios-todo/project.yml'])
     print('Ready:',TARGETS.origin()+'/apps/connect/ ; use the dedicated alpha Simulator. Credentials remain private in .work/alpha/dev/auth.json.')
 if __name__=='__main__':main()

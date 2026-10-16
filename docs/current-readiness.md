@@ -1,12 +1,14 @@
 # Current-source readiness — 2026-10-16
 
+**Consent follow-up:** the default-scale iOS consent issue is now fixed and verified in the official app’s system browser. See the [layout correction and current rerun](consent-layout.md).
+
 Connect remains a reliability alpha candidate. The current standalone `%connect` and `%bitwarden` desks have now been exercised together with official Bitwarden clients, after the repository split and token-identifier repairs. The [Bitwarden acceptance record](https://github.com/davetist/urbit-bitwarden/blob/main/evidence/current-2026-10-16/assessment.md) contains the exact source hashes, client versions, results and qualifications. This is evidence for the generic local-resource contract; Bitwarden protocol and vault behavior remain in the separate repository.
 
 ## Demonstrated integration
 
 Fresh SSO/local unlock and initial sync passed in official CLI 2026.9.1, Chrome extension 2026.9.3, signed macOS desktop 2026.9.1, and an unchanged official iOS 2026.9.1 (3533) source build in Simulator. Extension password edit/autofill, desktop and iOS note edits, cross-client sync, CLI four-type/folder/export-import workflows, native refresh retry/restart and stopped-pier restore/decryption passed. Connect owner revocation denied subsequent official CLI sync; the extension showed its login screen after revocation.
 
-The first CLI sign-in attempt failed before a fresh-profile retry passed; its cause is unconfirmed. The iOS consent page required reduced Safari page scale to reach approval. These remain readiness qualifications. No Android installed-client, physical-device, App Store iOS, Windows/Linux desktop, immediate-push or production-security claim follows from this run.
+The first CLI sign-in attempt failed before a fresh-profile retry passed; its cause is unconfirmed. The initial iOS run required reduced Safari page scale; the subsequent [consent layout fix](consent-layout.md) now passes at default scale. The CLI first-attempt failure remains a separate qualification. No Android installed-client, physical-device, App Store iOS, Windows/Linux desktop, immediate-push or production-security claim follows from this run.
 
 ## Connect acceptance and test repairs
 

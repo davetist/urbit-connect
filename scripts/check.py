@@ -95,6 +95,7 @@ def main():
             elif name=='web-build':
                 run('web-typecheck',['npm','--prefix','web','run','typecheck'])
                 run('web-codec',['npm','--prefix','web','test'],r'ℹ tests (\d+)')
+                run('web-layout',['npm','--prefix','web','run','test:layout'],r'(\d+) passed')
                 run('web-build',['npm','--prefix','web','run','build'])
                 run('web-bundle',[sys.executable,'scripts/bundle_web.py'])
                 run('desk-stage',[sys.executable,'scripts/package_desk.py'])

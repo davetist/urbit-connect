@@ -93,7 +93,7 @@ async function start(): Promise<void> {
     const context = await bootstrap(); account = context.account; ship.textContent = account.ship || 'Your ship';
     const id = new URLSearchParams(window.location.search).get('consent');
     recovery.hidden = !!id || !context.configured;
-    if (id) { stage.className = 'center-stage'; await consent(stage, id); return; }
+    if (id) { stage.className = 'center-stage consent-stage'; await consent(stage, id); return; }
     if (!context.configured) {
       stage.className = 'center-stage'; stage.replaceChildren(el('section', 'consent-card', el('span', 'eyebrow', 'WELCOME TO CONNECT'), el('h1', '', 'Your apps. Your ship.'), el('p', 'lead', 'Give everyday apps a place to store data that you control.'), el('p', 'muted', 'Set this HTTPS address as your Connect endpoint. You can then register known apps or choose the Todo sample. Each connection asks for your approval.'), el('p', 'endpoint mono', window.location.origin), button('Set up Connect', setup))); return;
     }

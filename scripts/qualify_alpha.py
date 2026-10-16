@@ -8,8 +8,8 @@ import sys
 from targets import ROOT, TARGETS, Targets
 import release_check
 
-AUTOMATED = {'tooling', 'protocol-schema', 'web-typecheck', 'web-codec', 'web-build', 'web-bundle', 'desk-stage', 'hoon', 'integration', 'browser-owner', 'browser-eauth', 'browser-expiry', 'sdk', 'sdk-public-consumer', 'ios', 'ios-small', 'reload-retry', 'restore-files', 'load', 'package'}
-COUNTED = {'tooling', 'protocol-schema', 'web-codec', 'hoon', 'integration', 'browser-owner', 'browser-eauth', 'browser-expiry', 'sdk', 'sdk-public-consumer', 'ios', 'ios-small'}
+AUTOMATED = {'tooling', 'protocol-schema', 'web-typecheck', 'web-codec', 'web-layout', 'web-build', 'web-bundle', 'desk-stage', 'hoon', 'integration', 'browser-owner', 'browser-eauth', 'browser-expiry', 'sdk', 'sdk-public-consumer', 'ios', 'ios-small', 'reload-retry', 'restore-files', 'load', 'package'}
+COUNTED = {'tooling', 'protocol-schema', 'web-codec', 'web-layout', 'hoon', 'integration', 'browser-owner', 'browser-eauth', 'browser-expiry', 'sdk', 'sdk-public-consumer', 'ios', 'ios-small'}
 PUBLICATION_ONLY = {'sourceOwner', 'maintenanceContact', 'securityContact', 'publication authorization'}
 MANUAL = {
     'simulator-visual-accessibility': {},

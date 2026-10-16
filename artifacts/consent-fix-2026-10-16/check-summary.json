@@ -1,0 +1,223 @@
+{
+  "recordedAt": "2026-10-16T16:55:19+0200",
+  "scope": [
+    "environment",
+    "protocol",
+    "web-build",
+    "hoon",
+    "integration",
+    "web",
+    "sdk",
+    "ios",
+    "ios-small",
+    "reliability",
+    "load",
+    "package",
+    "evidence"
+  ],
+  "checks": [
+    {
+      "check": "tooling",
+      "passed": true,
+      "seconds": 2.59,
+      "cases": 84
+    },
+    {
+      "check": "xcode",
+      "passed": true,
+      "seconds": 0.22,
+      "cases": null
+    },
+    {
+      "check": "protocol-fixtures",
+      "passed": true,
+      "seconds": 0.06,
+      "cases": null
+    },
+    {
+      "check": "protocol-schema",
+      "passed": true,
+      "seconds": 0.96,
+      "cases": 14
+    },
+    {
+      "check": "web-typecheck",
+      "passed": true,
+      "seconds": 0.47,
+      "cases": null
+    },
+    {
+      "check": "web-codec",
+      "passed": true,
+      "seconds": 1.94,
+      "cases": 19
+    },
+    {
+      "check": "web-layout",
+      "passed": true,
+      "seconds": 7.22,
+      "cases": 12
+    },
+    {
+      "check": "web-build",
+      "passed": true,
+      "seconds": 0.41,
+      "cases": null
+    },
+    {
+      "check": "web-bundle",
+      "passed": true,
+      "seconds": 0.04,
+      "cases": null
+    },
+    {
+      "check": "desk-stage",
+      "passed": true,
+      "seconds": 3.58,
+      "cases": null
+    },
+    {
+      "check": "hoon",
+      "passed": true,
+      "seconds": 16.66,
+      "cases": 80
+    },
+    {
+      "check": "integration",
+      "passed": true,
+      "seconds": 147.55,
+      "cases": 43
+    },
+    {
+      "check": "browser-owner",
+      "passed": true,
+      "seconds": 50.81,
+      "cases": 24
+    },
+    {
+      "check": "foreign-peer",
+      "passed": true,
+      "seconds": 13.97,
+      "cases": null
+    },
+    {
+      "check": "browser-eauth",
+      "passed": true,
+      "seconds": 3.56,
+      "cases": 1
+    },
+    {
+      "check": "foreign-peer-stop",
+      "passed": true,
+      "seconds": 1.66,
+      "cases": null
+    },
+    {
+      "check": "browser-expiry",
+      "passed": true,
+      "seconds": 233.06,
+      "cases": 1
+    },
+    {
+      "check": "sdk",
+      "passed": true,
+      "seconds": 14.26,
+      "cases": 68
+    },
+    {
+      "check": "sdk-public-consumer",
+      "passed": true,
+      "seconds": 2.12,
+      "cases": 2
+    },
+    {
+      "check": "ios",
+      "passed": true,
+      "seconds": 309.23,
+      "cases": 12
+    },
+    {
+      "check": "ios-small",
+      "passed": true,
+      "seconds": 284.55,
+      "cases": 2
+    },
+    {
+      "check": "reload-retry",
+      "passed": true,
+      "seconds": 234.44,
+      "cases": null
+    },
+    {
+      "check": "restore-files",
+      "passed": true,
+      "seconds": 17.46,
+      "cases": null
+    },
+    {
+      "check": "load",
+      "passed": true,
+      "seconds": 8.49,
+      "cases": null
+    },
+    {
+      "check": "package",
+      "passed": true,
+      "seconds": 86.62,
+      "cases": null
+    }
+  ],
+  "executionNote": "Initial --all completed through SDK; native preflight failed because owned Simulators were shut down. Booted verified owned devices, retained source-identical passing stages and ran all remaining original check.py suites with unchanged assertions.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/check.py --all, then unchanged remaining suites after booting the owned Simulators",
+  "countedCases": 362,
+  "skippedCases": 0,
+  "sourceHashes": {
+    "desk": "64b0d75ad930999c39d746a99566e9830689d1ec13032fe8afaff7de6202fadd",
+    "web": "d5a499f130491184bb0a4e8bda64563ce14044a60266051586401a3b7293aa55",
+    "sdk/swift": "44d91b535f7fa289b36581f7f485e09b555476dcaa41b129dc7c8c3e047e1514",
+    "Package.swift": "66c94abc7119a9e392a8868ac53ab8ff169247fe138b85bbcfb757295ab4b56b",
+    "examples/ios-todo": "ff9c36297302bf17a0964e0364540dae579749ccb8042d4baa8841f5c135d2d5",
+    "protocol": "2381afd813d2f13e01d53bcf82072d4801594751aa2fba7f0b7783fa209b942d",
+    "tests": "162806e97d38b59407a52937806f3aaea2b758fc641be7c7ecc97183f2e4b445",
+    "scripts": "7fa957b859bc26f6bd92f41bd0c5f81d18d2568c68669f3cf2a7826285752793",
+    "docs": "9baf12e2cce8fa996b0e6e2199bc059b4b2d4b9d5abdff5250cd3ccec3682538",
+    "toolchain.json": "0d4070b763478df9225bf2ac39a89c1e7909b483fabd3d97bebd2f0125c4d925",
+    "release/version.json": "df1e5c5cddcde1aebd8d58045663d730eb03170a77a09efb9c1bc55987ee8341",
+    "release/ownership.json": "7d29f9f948404dd6e374791a5d2f0234e1a01150e06fe5cafbfd2e073764a103",
+    "release/manifest.schema.json": "e65ac53672fbba80cc1bba7023036575539f736301fad71b97572fab30c0b6e7",
+    "release/README.md": "6ad1ca554e5f2527ff0341070df2c00f0b6742ebb4d372d8ef015db9dcb9feb4",
+    "README.md": "7de3a129255752ac93909c0a4cd471b1542127d9d589444dfe833fcdf2ccd214",
+    "LICENSE": "9e0dabb89ad274e1e9a65f6629504d5af2473a1ee1306a330c42539f7710c761",
+    ".gitignore": "eb063181a6d08248633ccffcc30622d3bce0466c7b5c76f819c2f450e6e30c7f",
+    "third_party": "5941ca0973ef096a61efc4d6a6bcc5bd8320b39fb079b0a41feeeb1740eb1da5",
+    "integrations/grant-probe": "cacc3324d3dcc6bd0cc9e5ae08da7e7685ab947d1429475b528e6bf854d74ff0"
+  },
+  "nativeCases": {
+    "primary": 12,
+    "small": 2
+  },
+  "officialBitwardenIOS": {
+    "officialSourceVersion": "2026.9.1 (3533)",
+    "simulator": "iOS 26.5, iPhone 17 Pro",
+    "freshSimulatorAndProfile": true,
+    "pageScaleChanged": false,
+    "decisionButtonsVisibleAboveBrowserToolbar": true,
+    "nativeTouchScrollShowsFinalPermissionParagraph": true,
+    "approveNativeCallback": true,
+    "localUnlock": true,
+    "automaticInitialSync": true,
+    "recordsVisible": 4,
+    "pushNotificationsEnabled": false
+  },
+  "screenshots": {
+    "ios-consent-default-scale.png": "c88854a8958b1c52abad5d330fe44f8964d7694e2ba842e2072594d108354ef1",
+    "ios-consent-details-scrolled.png": "1e310287880c1be6a95f367a6e4e50f98e2e985ef0940614e119354ffa84c138",
+    "ios-unlocked-after-default-consent.png": "ae4eaae9860d7e55da54bb5029ea874cf9327e005603a291f869bb40ba227f01"
+  },
+  "cleanup": {
+    "temporaryBitwardenSimulatorDeleted": true,
+    "temporaryBitwardenShipStopped": true,
+    "existingConnectSimulatorsRestoredToShutdown": true,
+    "existingConnectPiersPreserved": true
+  }
+}
