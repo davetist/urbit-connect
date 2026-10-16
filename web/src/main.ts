@@ -7,7 +7,15 @@ import { exportData, importData } from './transfers.ts';
 import { manageAccess, registerApp } from './apps.ts';
 
 const root = document.getElementById('app')!;
-const mark = el('a', 'brand', el('span', 'brand-mark', '~'), el('span', '', 'connect')); mark.href = '/apps/connect/';
+// Center the visible tilde itself, independent of font baselines and fallbacks.
+const logo = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+logo.setAttribute('viewBox', '0 0 38 38'); logo.setAttribute('aria-hidden', 'true');
+const wave = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+wave.setAttribute('d', 'M10 21 C13 13 16 16 19 19 S25 25 28 17');
+wave.setAttribute('fill', 'none'); wave.setAttribute('stroke', 'currentColor');
+wave.setAttribute('stroke-width', '2.6'); wave.setAttribute('stroke-linecap', 'round');
+logo.append(wave);
+const mark = el('a', 'brand', el('span', 'brand-mark', logo), el('span', '', 'connect')); mark.href = '/apps/connect/';
 const ship = el('span', 'ship-badge', 'Your ship');
 const header = el('header', 'site-header', mark, ship);
 const notice = el('div', 'notice'); notice.id = 'notice'; notice.hidden = true; notice.setAttribute('role', 'status');
