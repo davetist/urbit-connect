@@ -42,10 +42,12 @@ test('owner can rename, disable and remove a registration with an explicit names
     await expect(page.getByRole('heading', { name: 'Renamed alpha app', exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Manage access', exact: true }).click();
     await page.getByRole('button', { name: 'Disable app', exact: true }).click();
+    await expect(page.getByRole('status')).toHaveText('App disabled. Sessions revoked; documents retained.');
     expect((await owner('clients')).clients.find((item: any) => item.id === app.id).enabled).toBe(false);
     expect((await owner(`namespaces/${app.namespace}/documents`)).documents.some((item: any) => item.id === before.id)).toBe(true);
     await page.getByRole('button', { name: 'Manage access', exact: true }).click();
     await page.getByRole('button', { name: 'Enable app', exact: true }).click();
+    await expect(page.getByRole('status')).toHaveText('App enabled. New connections require consent.');
     await page.getByRole('button', { name: 'Manage access', exact: true }).click();
     await page.getByRole('button', { name: 'Remove registration…', exact: true }).click();
     await page.getByLabel(`Type ${app.namespace} to confirm`).fill('wrong');
@@ -57,11 +59,12 @@ test('owner can rename, disable and remove a registration with an explicit names
     await page.getByRole('button', { name: 'Remove registration and data', exact: true }).click();
     await expect(page.getByText('Registration and live data removed. Old app access is invalid.', { exact: true })).toBeVisible();
     expect((await owner('clients')).clients.some((item: any) => item.id === app.id)).toBe(false);
+    const fresh = await owner('clients', { id: app.id, name: app.name, redirectURI: app.redirectURI });
+    expect(fresh.namespace).not.toBe(app.namespace);
   } finally {
     let fresh = (await owner('clients')).clients.find((item: any) => item.id === app.id);
     if (!fresh) fresh = await owner('clients', { id: app.id, name: app.name, redirectURI: app.redirectURI });
     await owner('clients/' + app.id, { name: app.name, enabled: true });
-    expect(fresh.namespace).not.toBe(app.namespace);
   }
 });
 

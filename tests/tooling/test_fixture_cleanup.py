@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -34,10 +35,14 @@ class FixtureCleanup(unittest.TestCase):
     def test_slirp_launch_failure_terminates_its_allocated_namespace(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'target.json').write_text(json.dumps({'pier':'/mnt/harbor/piers/connect-dev'}))
-            child=Mock(pid=123);child.poll.return_value=None
-            with patch.multiple(netem_host,ROOT=root,SOCKET=root/'control.sock',METADATA=root/'metadata.json',STARTING=root/'starting.json'),patch.object(netem_host,'require_target'),patch.object(netem_host.signal,'signal'),patch.object(netem_host.subprocess,'Popen',side_effect=[child,OSError('slirp unavailable')]):
-                with self.assertRaises(OSError):netem_host.serve('b'*32)
-            child.terminate.assert_called_once();child.wait.assert_called_once()
+            child=subprocess.Popen([sys.executable,'-c','import sys,time;sys.stdout.buffer.write(b"connect-netem-relay-ready\\n");sys.stdout.buffer.flush();time.sleep(60)'],stdout=subprocess.PIPE)
+            try:
+                with patch.multiple(netem_host,ROOT=root,SOCKET=root/'control.sock',METADATA=root/'metadata.json',STARTING=root/'starting.json'),patch.object(netem_host,'require_target'),patch.object(netem_host.signal,'signal'),patch.object(netem_host.subprocess,'Popen',side_effect=[child,OSError('slirp unavailable')]):
+                    with self.assertRaises(OSError):netem_host.serve('b'*32)
+                self.assertIsNotNone(child.poll());self.assertTrue(child.stdout.closed)
+            finally:
+                if child.poll()is None:child.terminate();child.wait(timeout=5)
+                child.stdout.close()
             self.assertTrue(json.loads((root/('netem-outcome-'+'b'*32+'.json')).read_text())['childrenStopped'])
 
     def test_stop_propagates_recorded_restoration_failure(self):

@@ -1,0 +1,234 @@
+{
+  "recordedAt": "2026-10-16T13:48:29+0200",
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/check.py --all",
+  "scope": [
+    "environment",
+    "protocol",
+    "web-build",
+    "hoon",
+    "integration",
+    "web",
+    "sdk",
+    "ios",
+    "ios-small",
+    "reliability",
+    "load",
+    "package",
+    "evidence"
+  ],
+  "checks": [
+    {
+      "check": "tooling",
+      "passed": true,
+      "seconds": 2.47,
+      "cases": 84
+    },
+    {
+      "check": "xcode",
+      "passed": true,
+      "seconds": 0.31,
+      "cases": null
+    },
+    {
+      "check": "protocol-fixtures",
+      "passed": true,
+      "seconds": 0.06,
+      "cases": null
+    },
+    {
+      "check": "protocol-schema",
+      "passed": true,
+      "seconds": 1.04,
+      "cases": 14
+    },
+    {
+      "check": "web-typecheck",
+      "passed": true,
+      "seconds": 0.52,
+      "cases": null
+    },
+    {
+      "check": "web-codec",
+      "passed": true,
+      "seconds": 2.06,
+      "cases": 19
+    },
+    {
+      "check": "web-build",
+      "passed": true,
+      "seconds": 0.52,
+      "cases": null
+    },
+    {
+      "check": "web-bundle",
+      "passed": true,
+      "seconds": 0.05,
+      "cases": null
+    },
+    {
+      "check": "desk-stage",
+      "passed": true,
+      "seconds": 1.59,
+      "cases": null
+    },
+    {
+      "check": "hoon",
+      "passed": true,
+      "seconds": 16.71,
+      "cases": 80
+    },
+    {
+      "check": "integration",
+      "passed": true,
+      "seconds": 150.87,
+      "cases": 43
+    },
+    {
+      "check": "browser-owner",
+      "passed": true,
+      "seconds": 58.04,
+      "cases": 24
+    },
+    {
+      "check": "foreign-peer",
+      "passed": true,
+      "seconds": 12.18,
+      "cases": null
+    },
+    {
+      "check": "browser-eauth",
+      "passed": true,
+      "seconds": 4.05,
+      "cases": 1
+    },
+    {
+      "check": "foreign-peer-stop",
+      "passed": true,
+      "seconds": 1.59,
+      "cases": null
+    },
+    {
+      "check": "browser-expiry",
+      "passed": true,
+      "seconds": 227.23,
+      "cases": 1
+    },
+    {
+      "check": "sdk",
+      "passed": true,
+      "seconds": 14.3,
+      "cases": 68
+    },
+    {
+      "check": "sdk-public-consumer",
+      "passed": true,
+      "seconds": 2.34,
+      "cases": 2
+    },
+    {
+      "check": "ios",
+      "passed": true,
+      "seconds": 263.4,
+      "cases": 12
+    },
+    {
+      "check": "ios-small",
+      "passed": true,
+      "seconds": 261.42,
+      "cases": 2
+    },
+    {
+      "check": "reload-retry",
+      "passed": true,
+      "seconds": 238.86,
+      "cases": null
+    },
+    {
+      "check": "restore-files",
+      "passed": true,
+      "seconds": 17.08,
+      "cases": null
+    },
+    {
+      "check": "load",
+      "passed": true,
+      "seconds": 9.17,
+      "cases": null
+    },
+    {
+      "check": "package",
+      "passed": true,
+      "seconds": 85.05,
+      "cases": null
+    }
+  ],
+  "countedCases": 350,
+  "allPassed": true,
+  "skippedTests": 0,
+  "sourceHashes": {
+    "desk": "fb5b5dab937625a51363de929356abcb953751b8886cd121678f0c8d944f1ec3",
+    "web": "249b5d969f7e6343e8da74abc338c50bb35f549de266e1a6715d0c98bc469d6d",
+    "sdk/swift": "44d91b535f7fa289b36581f7f485e09b555476dcaa41b129dc7c8c3e047e1514",
+    "Package.swift": "66c94abc7119a9e392a8868ac53ab8ff169247fe138b85bbcfb757295ab4b56b",
+    "examples/ios-todo": "ff9c36297302bf17a0964e0364540dae579749ccb8042d4baa8841f5c135d2d5",
+    "protocol": "2381afd813d2f13e01d53bcf82072d4801594751aa2fba7f0b7783fa209b942d",
+    "tests": "162806e97d38b59407a52937806f3aaea2b758fc641be7c7ecc97183f2e4b445",
+    "scripts": "cb38bb31a073afc9eb9ef48cebdc7704b5b17c6d84266d6387a349ce62c3f7f6",
+    "docs": "ff4ab135f4f4b1ff6694ebff417fc9f7f5f5988a9937f9da339073d60dc7fa54",
+    "toolchain.json": "0d4070b763478df9225bf2ac39a89c1e7909b483fabd3d97bebd2f0125c4d925",
+    "release/version.json": "df1e5c5cddcde1aebd8d58045663d730eb03170a77a09efb9c1bc55987ee8341",
+    "release/ownership.json": "7d29f9f948404dd6e374791a5d2f0234e1a01150e06fe5cafbfd2e073764a103",
+    "release/manifest.schema.json": "e65ac53672fbba80cc1bba7023036575539f736301fad71b97572fab30c0b6e7",
+    "release/README.md": "6ad1ca554e5f2527ff0341070df2c00f0b6742ebb4d372d8ef015db9dcb9feb4",
+    "README.md": "7de3a129255752ac93909c0a4cd471b1542127d9d589444dfe833fcdf2ccd214",
+    "LICENSE": "9e0dabb89ad274e1e9a65f6629504d5af2473a1ee1306a330c42539f7710c761",
+    ".gitignore": "eb063181a6d08248633ccffcc30622d3bce0466c7b5c76f819c2f450e6e30c7f",
+    "third_party": "5941ca0973ef096a61efc4d6a6bcc5bd8320b39fb079b0a41feeeb1740eb1da5",
+    "integrations/grant-probe": "cacc3324d3dcc6bd0cc9e5ae08da7e7685ab947d1429475b528e6bf854d74ff0"
+  },
+  "privateFullCheckRecordSHA256": "d94f32f17c5a0e3a278c96c7bda11c325401edee66d47417614911faa5036eb1",
+  "native": {
+    "ios": {
+      "title": "Test - ConnectTodo",
+      "result": "Passed",
+      "totalTestCount": 12,
+      "passedTests": 12,
+      "failedTests": 0,
+      "skippedTests": 0,
+      "expectedFailures": 0,
+      "privateResult": "20261016-133354.xcresult"
+    },
+    "ios-small": {
+      "title": "Test - ConnectTodo",
+      "result": "Passed",
+      "totalTestCount": 2,
+      "passedTests": 2,
+      "failedTests": 0,
+      "skippedTests": 0,
+      "expectedFailures": 0,
+      "privateResult": "20261016-133818.xcresult"
+    }
+  },
+  "visualInspection": {
+    "large": [
+      "Personal-Buy-milk-saved",
+      "large-type-dark-lists"
+    ],
+    "small": [
+      "Personal-Buy-milk-saved",
+      "large-type-dark-lists"
+    ],
+    "scope": "Inspected named exported product screenshots; this is not independent operator/developer signoff."
+  },
+  "initialNativeFailure": {
+    "test": "testPreservedInstallUpgradeAndRejectedCapacityInput",
+    "cause": "XCTest relaunched preserved old app with newer SDK framework",
+    "fix": "Retain validated preserved DYLD_FRAMEWORK_PATH during attachment; remove before updated app launch",
+    "focusedRegression": {
+      "passed": true,
+      "cases": 1,
+      "skipped": 0,
+      "privateResult": "20261016-132039.xcresult"
+    }
+  }
+}

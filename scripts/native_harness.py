@@ -141,6 +141,7 @@ def running(simulator, api_override=None,run_id=None):
                         environment = dict(os.environ); environment['SIMCTL_CHILD_DYLD_FRAMEWORK_PATH'] = str(framework_path)
                         subprocess.run(['xcrun','simctl','launch',simulator,'org.example.urbitconnect.todo'],check=True,capture_output=True,env=environment)
                         result['baselineLaunched'] = True
+                        result['baselineFrameworkPath'] = str(framework_path)
                 elif action=='local-storage': status,result=200,local_stats()
                 elif action=='fill-outbox-capacity':
                     # Only while the test app is terminated and its proxy is down.

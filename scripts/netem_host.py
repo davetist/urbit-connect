@@ -23,6 +23,8 @@ ROOT = Path.home() / '.local/share/urbit-connect-alpha'
 SOCKET = ROOT / 'netem-control.sock'
 METADATA = ROOT / 'netem.json'
 STARTING = ROOT / 'netem-starting.json'
+RELAY_READY = b'connect-netem-relay-ready\n'
+HELPER_STARTUP_TIMEOUT = 15
 
 def run_identity(value=None):
     value=value or secrets.token_hex(16)
@@ -58,7 +60,30 @@ def relay():
             finally: slots.release()
     class Server(socketserver.ThreadingTCPServer):
         daemon_threads = True
-    Server(('0.0.0.0', 8081), Handler).serve_forever()
+    with Server(('0.0.0.0', 8081), Handler) as server:
+        sys.stdout.buffer.write(RELAY_READY); sys.stdout.buffer.flush()
+        server.serve_forever()
+
+
+def wait_for_relay_ready(namespace, deadline):
+    received = bytearray()
+    try:
+        while len(received) < len(RELAY_READY):
+            if namespace.poll() is not None:
+                raise RuntimeError('Owned namespace exited before readiness; private log retained')
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError('Owned namespace relay did not become ready')
+            readable, _, _ = select.select([namespace.stdout], [], [], min(remaining, .1))
+            if not readable: continue
+            chunk = os.read(namespace.stdout.fileno(), len(RELAY_READY) - len(received))
+            if not chunk or not RELAY_READY.startswith(received + chunk):
+                raise RuntimeError('Owned namespace relay readiness was invalid; private log retained')
+            received.extend(chunk)
+        if namespace.poll() is not None:
+            raise RuntimeError('Owned namespace exited after readiness; private log retained')
+    finally:
+        namespace.stdout.close()
 
 
 def control(value):
@@ -156,9 +181,12 @@ def serve(run_id=None):
         return {'profile': profile, 'qdisc': json.loads(tc(['-s', '-j', 'qdisc', 'show', 'dev', 'tap0']).stdout), 'isolatedNamespace': True}
 
     try:
-        namespace = subprocess.Popen(['unshare', '-Urn', sys.executable, __file__, 'relay'], stdout=log, stderr=log)
+        deadline = time.monotonic() + HELPER_STARTUP_TIMEOUT
+        namespace = subprocess.Popen(['unshare', '-Urn', sys.executable, __file__, 'relay'], stdout=subprocess.PIPE, stderr=log)
+        # The relay runs only after unshare has entered its new user/network
+        # namespaces. Its bound socket is the readiness boundary for slirp.
+        wait_for_relay_ready(namespace, deadline)
         slirp = subprocess.Popen([str(tools / 'usr/bin/slirp4netns'), '--configure', '--mtu=1500', '--api-socket=' + str(api_socket), str(namespace.pid), 'tap0'], env=env, stdout=log, stderr=log)
-        deadline = time.monotonic() + 15
         while not api_socket.exists():
             if namespace.poll() is not None or slirp.poll() is not None: raise RuntimeError('Owned network helper exited; private log retained')
             if time.monotonic() >= deadline: raise TimeoutError('Owned network helper did not initialize')

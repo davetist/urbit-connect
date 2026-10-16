@@ -4,6 +4,8 @@ A personal app backend on your Urbit ship, with a native Swift SDK and an iOS to
 
 **Reliability alpha candidate:** desk/Swift/Todo version `0.2.0-alpha.1`, protocol 1, SQLite schema 2. The alpha adds restart recovery, bounded offline queues, retained-draft recovery, safer manager actions and installation tooling. See the [alpha evidence](artifacts/alpha/report.md) and [qualification matrix](tests/acceptance/alpha-matrix.md). The historical [210-case prototype report](artifacts/acceptance/report.md) is separate from final alpha qualification. Real-host soak, independent operator/developer trials and release ownership/notices remain gates. This is a local source/Simulator deliverable; public native distribution is deferred.
 
+The [2026-10-16 readiness assessment](docs/current-readiness.md) records the current automated acceptance and fresh official-client integration results with the separate Bitwarden desk, including the remaining qualifications.
+
 The ship can read documents. The SDK sends data directly to the paired HTTPS ship endpoint, without a developer data service. An app that can display your data can also copy it; an SDK cannot prevent a malicious app publisher from doing that. HTTPS protects transport, and `%connect` enforces app permissions on the ship.
 
 ## Run the isolated alpha

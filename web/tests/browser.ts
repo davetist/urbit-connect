@@ -18,7 +18,9 @@ export async function login(page: import('@playwright/test').Page): Promise<void
   const button = page.getByRole('button', { name: 'Log in to ship' });
   await expect(page.locator('h1')).toBeVisible();
   if (await button.isVisible()) {
-    await button.click(); const input = page.locator('input[type=password]');
+    await button.click();
+    await page.waitForURL(url => url.pathname === '/~/login');
+    const input = page.locator('input[type=password]');
     await input.fill(credentials().code); await input.press('Enter');
   }
   await expect(page.getByRole('heading', { name: 'Documents', exact: true })).toBeVisible();

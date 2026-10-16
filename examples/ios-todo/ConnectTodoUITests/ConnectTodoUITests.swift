@@ -18,26 +18,50 @@ import XCTest
     }
     private func login(_ app: XCUIApplication) throws {
         let login = app.buttons["Log in to ship"]
-        if login.waitForExistence(timeout: 5) { login.tap() }
-        else if safari.buttons["Log in to ship"].exists { safari.buttons["Log in to ship"].tap() }
+        let remoteLogin = safari.buttons["Log in to ship"]
         let local = app.secureTextFields.firstMatch
-        let field = local.waitForExistence(timeout: 2) ? local : safari.secureTextFields.firstMatch
+        let remote = safari.secureTextFields.firstMatch
+        let ready = app.buttons["Approve connection"], remoteReady = safari.buttons["Approve connection"]
+        let initial = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "login.exists == true OR remoteLogin.exists == true OR local.exists == true OR remote.exists == true OR ready.exists == true OR remoteReady.exists == true"),
+            object: ["login": login, "remoteLogin": remoteLogin, "local": local, "remote": remote, "ready": ready, "remoteReady": remoteReady])
+        try require(XCTWaiter().wait(for: [initial], timeout: 15) == .completed)
+        if login.exists { login.tap() }
+        else if remoteLogin.exists { remoteLogin.tap() }
+        let loaded = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "local.exists == true OR remote.exists == true OR ready.exists == true OR remoteReady.exists == true"),
+            object: ["local": local, "remote": remote, "ready": ready, "remoteReady": remoteReady])
+        try require(XCTWaiter().wait(for: [loaded], timeout: 15) == .completed)
+        let field = local.exists ? local : remote
         if field.exists {
             let path = try XCTUnwrap(ProcessInfo.processInfo.environment["CONNECT_TEST_CREDENTIALS_PATH"])
             let values = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: path))) as? [String: String])
-            field.tap(); field.typeText(try XCTUnwrap(values["code"]))
+            let available = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: field)
+            try require(XCTWaiter().wait(for: [available], timeout: 10) == .completed)
+            field.tap()
+            // Embedded browser fields can be visible in the app while Safari owns
+            // the keyboard. A hardware keyboard need not appear in either tree.
+            let responder = safari.keyboards.firstMatch.waitForExistence(timeout: 2) ? safari : app
+            responder.typeText(try XCTUnwrap(values["code"]))
             if safari.buttons["Done"].waitForExistence(timeout: 2) { safari.buttons["Done"].tap() }
             else if app.buttons["Done"].exists { app.buttons["Done"].tap() }
             if app.buttons["Continue"].exists { app.buttons["Continue"].tap() }
             else { safari.buttons["Continue"].tap() }
-            if safari.alerts["Save Password?"].waitForExistence(timeout: 2) { safari.tap() }
+            if safari.alerts["Save Password?"].waitForExistence(timeout: 2) {
+                // XCTest cancels this system interruption before dispatching the tap.
+                safari.tap()
+                try require(safari.alerts["Save Password?"].waitForNonExistence(timeout: 5))
+            }
             let submitted = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: field)
             if XCTWaiter().wait(for: [submitted], timeout: 3) != .completed {
                 // Safari can use the first tap to dismiss its keyboard accessory.
                 // Submit again only while the original login form remains visible.
                 let retry = safari.buttons["Continue"]
                 if retry.exists && retry.isHittable { retry.tap() }
-                if safari.alerts["Save Password?"].waitForExistence(timeout: 2) { safari.tap() }
+                if safari.alerts["Save Password?"].waitForExistence(timeout: 2) {
+                    safari.tap()
+                    try require(safari.alerts["Save Password?"].waitForNonExistence(timeout: 5))
+                }
             }
         }
     }
@@ -63,9 +87,6 @@ import XCTest
         try require(row.waitForExistence(timeout: 5)); row.tap()
     }
     func testNativeWorkflowRecoveryAndRevocation() async throws {
-        addUIInterruptionMonitor(withDescription: "Do not save disposable ship credentials") { alert in
-            if alert.buttons["Not Now"].exists { alert.buttons["Not Now"].tap(); return true }; return false
-        }
         let harness = try NativeHarness(); _ = try await harness.call("reset")
         let app = XCUIApplication(); app.launch()
         try begin(app, manager: true)
@@ -152,7 +173,10 @@ import XCTest
         let harness = try NativeHarness(); _ = try await harness.call("reset")
         let baseline = try await harness.call("fresh-baseline-app")
         XCTAssertEqual(baseline["baselineLaunched"] as? Bool, true)
-        let app = XCUIApplication(); app.activate()
+        let app = XCUIApplication(bundleIdentifier: "org.example.urbitconnect.todo")
+        // XCTest can relaunch while attaching; retain the preserved binary’s matching SDK.
+        app.launchEnvironment["DYLD_FRAMEWORK_PATH"] = try XCTUnwrap(baseline["baselineFrameworkPath"] as? String)
+        app.activate()
         try begin(app); try login(app); try consent("Approve connection", app: app)
         try require(app.navigationBars["My lists"].waitForExistence(timeout: 15))
         try newList("Preserved install", app: app); try saved(app)
@@ -162,6 +186,7 @@ import XCTest
         let before = try await harness.call("local-storage")
         XCTAssertEqual(before["schema"] as? Int, 1); XCTAssertEqual(before["pendingCount"] as? Int, 1)
         _ = try await harness.call("install-app-update")
+        app.launchEnvironment.removeValue(forKey: "DYLD_FRAMEWORK_PATH")
         app.launch()
         try require(app.navigationBars["My lists"].waitForExistence(timeout: 10)); app.terminate()
         let after = try await harness.call("local-storage")

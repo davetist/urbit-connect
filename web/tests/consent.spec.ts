@@ -6,6 +6,7 @@ test('owner login reaches the real bundled dashboard', async ({ page, shipContex
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'Open your Connect' })).toBeVisible();
   await page.getByRole('button', { name: 'Log in to ship' }).click();
+  await page.waitForURL(url => url.pathname === '/~/login');
   const input = page.locator('input[type=password]');
   await expect(input).toBeVisible();
   await input.fill(credentials().code);

@@ -20,7 +20,7 @@ def run(name,command,count=None):
     output=result.stdout;path=ROOT/'.work/alpha/logs'/('check-'+name+'.log');path.parent.mkdir(parents=True,exist_ok=True);path.write_text(output);path.chmod(0o600)
     matches=re.findall(count,output)if count else []
     passed=result.returncode==0 and(not count or any(int(n)>0 for n in matches))
-    if re.search(r'(?m)(?:^|\s)[1-9][0-9]* skipped\b|ℹ skipped [1-9]',output):passed=False
+    if re.search(r'(?m)(?:^|\s)[1-9][0-9]* skipped\b|ℹ skipped [1-9]|\bskipped[= ][1-9][0-9]*\b',output):passed=False
     REPORTS.append({'check':name,'passed':passed,'seconds':round(time.monotonic()-start,2),'cases':int(matches[-1])if matches else None})
     if not passed:raise RuntimeError(name+' failed; inspect its private log '+str(path))
     print('PASS:',name,('('+matches[-1]+' cases)')if matches else '',flush=True)
@@ -98,11 +98,11 @@ def main():
                 run('web-build',['npm','--prefix','web','run','build'])
                 run('web-bundle',[sys.executable,'scripts/bundle_web.py'])
                 run('desk-stage',[sys.executable,'scripts/package_desk.py'])
-            elif name=='hoon':run('hoon',[sys.executable,'scripts/test_hoon.py','--suite','state,auth,store,limits,codec,json,fixtures,http,entry,policy,integrations'],r'PASS: (\d+) executed Hoon tests')
+            elif name=='hoon':run('hoon',[sys.executable,'scripts/test_hoon.py','--suite','state,auth,store,limits,codec,json,fixtures,http,entry,policy,integrations,native-callbacks'],r'PASS: (\d+) executed Hoon tests')
             elif name=='integration':
                 prepare_integration();run('integration',[sys.executable,'scripts/test_integration.py'],r'Ran (\d+) tests?')
             elif name=='web':
-                seed_browser();prepare_expired_consent();run('browser-owner',[sys.executable,'scripts/browser_test.py','--spec','consent.spec.ts,management.spec.ts,races.spec.ts,editor-boundary.spec.ts,alpha-manager.spec.ts'],r'\"expected\": (\d+)')
+                seed_browser();prepare_expired_consent();run('browser-owner',[sys.executable,'scripts/browser_test.py','--spec','consent.spec.ts,management.spec.ts,races.spec.ts,editor-boundary.spec.ts,alpha-manager.spec.ts,resource-management.spec.ts'],r'\"expected\": (\d+)')
                 try:
                     run('foreign-peer',[sys.executable,'scripts/foreign_peer.py','start'])
                     run('browser-eauth',[sys.executable,'scripts/browser_test.py','--spec','eauth.spec.ts'],r'\"expected\": (\d+)')

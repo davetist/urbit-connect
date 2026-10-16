@@ -1,0 +1,25 @@
+{
+  "releaseIdentity": "75d7ac3cdea4d6c07c8032672a41581cec835b94a2d8ba2aeb0e4943c352f1b8",
+  "qualificationScope": "private-alpha",
+  "qualified": false,
+  "failures": [
+    "Required evidence pending: simulator-visual-accessibility",
+    "Required evidence pending: restore-operators",
+    "Required evidence pending: independent-sdk-integration",
+    "Required evidence pending: real-arm64-install-update",
+    "Required evidence pending: real-host-latency-loss-capacity",
+    "Required evidence pending: real-host-soak",
+    "Required evidence pending: independent-auth-storage-review",
+    "Required evidence pending: practical-trial"
+  ],
+  "automatedCases": 350,
+  "publicationBlockers": [
+    "sourceOwner",
+    "maintenanceContact",
+    "securityContact",
+    "publication authorization"
+  ],
+  "checksSHA256": "d94f32f17c5a0e3a278c96c7bda11c325401edee66d47417614911faa5036eb1",
+  "targetsSHA256": "ae5e73c0d876892fc9bd993aa162f7591fe6d7e8b994d00a29279d2890f93b35",
+  "interpretation": "Pending evidence gates are separate from the complete passing automated run. Partial screenshot inspection is not full visual/accessibility signoff; older real-host and independent evidence is not rebound to this candidate."
+}

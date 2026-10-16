@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "fixtureId": "alpha-9a70fe8593eb",
+  "simulator": "ABB49C2A-EACB-4EAD-869B-FB2764A74C58",
+  "baselineBundleSHA256": "04152edbcdc1f551c3e239e9cc086e59b03bf92e754c2e8c75366655a277a676",
+  "baselineRuntimeSHA256": "d940df3cb9d481da6cb52e49003747c665544433388615ffb3a8a1399a4ad5f0",
+  "before": {
+    "requestHashes": [
+      "e503a74eb57013a8d1b96fcb8dde6440ec868dd3841cbb6013f86cb9c4cddcd3"
+    ],
+    "pendingCount": 1,
+    "databaseBytes": 4096,
+    "schema": 1,
+    "walBytes": 98912,
+    "mutationIDsSHA256": "c2b8912270a9838b63a59698b27309d8c8cb13e1da0f47d08eb6b703b60aede4"
+  },
+  "after": {
+    "schema": 2,
+    "databaseBytes": 4096,
+    "walBytes": 115392,
+    "mutationIDsSHA256": "c2b8912270a9838b63a59698b27309d8c8cb13e1da0f47d08eb6b703b60aede4",
+    "pendingCount": 1,
+    "requestHashes": [
+      "e503a74eb57013a8d1b96fcb8dde6440ec868dd3841cbb6013f86cb9c4cddcd3"
+    ]
+  },
+  "uninstalledBetweenVersions": false,
+  "retainedPairing": true,
+  "capacityRejectPreservedInput": true,
+  "catchUpEffects": 1
+}
