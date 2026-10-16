@@ -4,6 +4,7 @@ public enum ConnectError: Error, Equatable, Sendable {
     case invalidJSON(String), invalidIdentifier, invalidRevision, protocolMismatch
     case invalidOrigin, unauthorized, notConnected, authorizationDenied, authorizationCancelled, accountChanged, restoreDetected, storage(String), transport(String)
     case server(status: Int, code: String, message: String)
+    @available(*, deprecated, message: "Connect no longer enforces local product quotas; handle storage errors instead.")
     case localCapacity(resource: LocalCapacityResource, limit: Int)
     case missingDesk, notConfigured, unsupportedProtocol
 }
@@ -22,6 +23,8 @@ public struct ConnectEndpoint: Equatable, Sendable {
     }
 }
 
+/// Retained for source compatibility; Connect no longer emits local quota errors.
+@available(*, deprecated, message: "Connect no longer enforces local product quotas.")
 public enum LocalCapacityResource: Equatable, Sendable { case pendingMutations, pendingRequestBytes, retainedAccounts }
 
 public struct Revision: Codable, Hashable, Sendable {
@@ -38,9 +41,10 @@ public struct Revision: Codable, Hashable, Sendable {
 }
 
 /// JSON numbers retain their source spelling. Encoding validates values even when constructed directly.
+/// The default byte bound is Data's Int representation limit, not a product quota.
 public enum JSONValue: Equatable, Sendable {
     case null, bool(Bool), string(String), number(String), array([JSONValue]), object(JSONObject)
-    public static func parse(_ data: Data, maxBytes: Int = 262_144, maxDepth: Int = 16) throws -> JSONValue {
+    public static func parse(_ data: Data, maxBytes: Int = .max, maxDepth: Int = 16) throws -> JSONValue {
         guard (1...24).contains(maxDepth), data.count <= maxBytes, String(data: data, encoding: .utf8) != nil else {
             throw ConnectError.invalidJSON("Input exceeds its byte limit or is not UTF-8")
         }
@@ -50,7 +54,7 @@ public enum JSONValue: Equatable, Sendable {
         guard parser.index == parser.bytes.count else { throw ConnectError.invalidJSON("Trailing input") }
         return value
     }
-    public func encoded(maxBytes: Int = 262_144, maxDepth: Int = 16) throws -> Data {
+    public func encoded(maxBytes: Int = .max, maxDepth: Int = 16) throws -> Data {
         guard (1...24).contains(maxDepth) else { throw ConnectError.invalidJSON("Invalid depth bound") }
         let data = try rawEncoded(depth: 0, maxDepth: maxDepth)
         _ = try Self.parse(data, maxBytes: maxBytes, maxDepth: maxDepth)

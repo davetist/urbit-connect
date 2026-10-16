@@ -1,18 +1,75 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["manifestVersion", "version", "protocolVersion", "sourceCommit", "source", "toolchain", "artifacts", "evidence", "publicationBlockers", "qualified"],
+  "required": [
+    "manifestVersion",
+    "version",
+    "protocolVersion",
+    "sourceCommit",
+    "source",
+    "toolchain",
+    "artifacts",
+    "evidence",
+    "publicationBlockers",
+    "readinessPolicy"
+  ],
   "properties": {
-    "manifestVersion": {"const": 1},
-    "version": {"type": "string", "minLength": 1},
-    "protocolVersion": {"const": 1},
-    "sourceCommit": {"type": ["string", "null"]},
-    "source": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "object", "required": ["sha256", "files"], "properties": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "files": {"type": "object", "minProperties": 1}}, "additionalProperties": false}},
-    "toolchain": {"type": "object"},
-    "artifacts": {"type": "object"},
-    "evidence": {"type": "object"},
-    "publicationBlockers": {"type": "array", "items": {"type": "string"}},
-    "qualified": {"const": false}
+    "manifestVersion": {
+      "const": 2
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocolVersion": {
+      "const": 1
+    },
+    "sourceCommit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "sha256",
+          "files"
+        ],
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "files": {
+            "type": "object",
+            "minProperties": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "toolchain": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "publicationBlockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "readinessPolicy": {
+      "const": "informational"
+    }
   },
   "additionalProperties": false
 }

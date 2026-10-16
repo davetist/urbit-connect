@@ -25,20 +25,4 @@ struct DraftArchiveTests {
         try await client.removeRetainedAccount(archiveID: archive.id, confirmation: archive.id)
         #expect(try await client.retainedAccounts().count == 1)
     }
-    @Test func accountBudgetRejectsNewPairingWithoutEvictingDrafts() async throws {
-        let root = FileManager.default.temporaryDirectory.appending(path: "connect-archives-" + UUID().uuidString)
-        defer { try? FileManager.default.removeItem(at: root) }
-        let ships = Dictionary(uniqueKeysWithValues: (0...16).map { ("ship\($0).example", ShipTransport(origin: "https://ship\($0).example", instance: "instance\($0)")) })
-        let config = try ConnectConfiguration(clientID: "connect-test", redirectURI: URL(string: "org.example.connect.test:/oauth/callback")!)
-        let client = try ConnectClient(configuration: config, persistenceDirectory: root, tokens: MemoryTokenStore(), transport: { ships[$0.host!]! }, automaticallySync: false)
-        for index in 0..<16 {
-            _ = try await client.connect(to: URL(string: "https://ship\(index).example")!, presentation: TestPresenter())
-            _ = try await client.put(collection: "lists", id: UUID(), data: ["title": .string("Draft \(index)")], expectedRevision: nil)
-        }
-        let selected = await client.account()
-        await #expect(throws: ConnectError.localCapacity(resource: .retainedAccounts, limit: 16)) { try await client.connect(to: URL(string: "https://ship16.example")!, presentation: TestPresenter()) }
-        #expect(await client.account() == selected)
-        let retained = try await client.retainedAccounts()
-        #expect(retained.count == 16); #expect(retained.allSatisfy { $0.pendingCount == 1 })
-    }
 }

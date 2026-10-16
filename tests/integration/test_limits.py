@@ -26,40 +26,6 @@ class LimitsTests(unittest.TestCase):
         status,preview,_=self.api.request('/connect/owner/v1/imports/validate','POST',{'namespace':self.space,'mode':'compare-and-swap','export':envelope},owner=True)
         self.assertEqual(status,200);self.assertEqual(preview['operations'][0]['data'],data)
         self.assertEqual(self.write(mutation(put(data={'child':data})))[0],400)
-    def test_utf8_document_and_request_byte_bounds(self):
-        # Canonical {"x":"..."} overhead is eight UTF-8 bytes.
-        self.assertEqual(self.write(mutation(put(data={'x':'a'*(16384-8)})))[0],200)
-        self.assertEqual(self.write(mutation(put(data={'x':'a'*(16385-8)})))[0],413)
-        self.assertEqual(self.write(mutation(put(data={'x':'é'*8192})))[0],413)
-        raw=json.dumps(mutation(put()),separators=(',',':')).encode()
-        self.assertEqual(self.write(raw+b' '*(262144-len(raw)))[0],200)
-        self.assertEqual(self.write(raw+b' '*(262145-len(raw)))[0],413)
-    def test_batch_count_and_payload_atomicity(self):
-        self.assertEqual(self.write(mutation(*[put()for _ in range(32)]))[0],200)
-        self.assertEqual(self.write(mutation(*[put()for _ in range(33)]))[0],400)
-        first=put();large=put(data={'x':'x'*16384})
-        self.assertEqual(self.write(mutation(first,large))[0],413)
-        self.assertEqual(self.api.request('/connect/v1/collections/lists/documents/'+first['id'],token=self.token)[0],404)
-    def test_thousand_document_limit_and_stable_snapshot_pages(self):
-        ids=[]
-        for start in range(0,1000,32):
-            ops=[put()for _ in range(min(32,1000-start))];ids.extend(o['id']for o in ops)
-            self.assertEqual(self.write(mutation(*ops))[0],200)
-        self.assertEqual(self.write(mutation(put()))[0],429)
-        status,page,_=self.api.request('/connect/v1/snapshots','POST',{},token=self.token);self.assertEqual(status,200)
-        expectedCursor=page['atCursor'];found=[]
-        while True:
-            found.extend(d['id']for d in page['documents'])
-            self.assertEqual(page['atCursor'],expectedCursor)
-            if page['nextPage']is None:break
-            status,page,_=self.api.request('/connect/v1/snapshots/'+page['snapshotId']+'?page='+page['nextPage'],token=self.token);self.assertEqual(status,200)
-        self.assertEqual(set(found),set(ids));self.assertEqual(len(found),1000)
-    def test_namespace_payload_quota(self):
-        for _ in range(16):
-            ops=[put(data={'x':'a'*(16384-8)})for _ in range(16)]
-            # Full 16-document request exceeds 256KiB by its envelope, so use two eight-document batches.
-            for part in (ops[:8],ops[8:]):self.assertEqual(self.write(mutation(*part))[0],200)
-        self.assertEqual(self.write(mutation(put(data={'x':'a'})))[0],429)
     def test_scope_checked_before_receipt_and_no_conflict_body_leak(self):
         op=put();body=mutation(op);self.assertEqual(self.write(body)[0],200)
         read=self.api.connect(CLIENT,REDIRECT,'documents:read')['access_token']

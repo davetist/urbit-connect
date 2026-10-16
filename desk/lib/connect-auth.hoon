@@ -88,8 +88,6 @@
   =/  registered  (~(get by clients.work) client)
   ?~  registered  [work invalid]
   ?.  enabled.u.registered  [work invalid]
-  ?:  (gte (lent ~(tap by sessions.work)) 32)
-    [work [429 (object:cc ~[['error' [%s 'temporarily_unavailable']]])]]
   =/  value=session:c
     :*  id  client  namespace.req  epoch.req  scopes.req  label.req
         (shax access)  (add now ~m10)  (shax refresh)  ~

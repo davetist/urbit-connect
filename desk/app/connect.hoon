@@ -66,10 +66,6 @@
       =/  ctx=context:c
         [our.bowl src.bowl now.bowl eny.bowl rid =(src.bowl our.bowl) .^(? %j /(scot %p our.bowl)/fake/(scot %da now.bowl)) req]
       =.  nonce.state.world  +(nonce.state.world)
-      ?:  ?&  ?=(^ body.request.req)
-              (gth p.u.body.request.req 262.144)
-          ==
-        [(give-simple-payload:app:server rid (payload:ch 413 (error:cc 'request_too_large' 'Request exceeds 256 KiB' ~))) this]
       =/  attempt  (mule |.(!>((handle:ch world ctx))))
       ?:  ?=(%| -.attempt)
         =/  value

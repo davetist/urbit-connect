@@ -1,25 +1,25 @@
 {
-  "manifestVersion": 1,
+  "manifestVersion": 2,
   "version": "0.2.0-alpha.1",
   "protocolVersion": 1,
   "sourceCommit": null,
   "source": {
     "desk": {
-      "sha256": "64b0d75ad930999c39d746a99566e9830689d1ec13032fe8afaff7de6202fadd",
+      "sha256": "40f0950e027b7c16cdb11a24bdc89499e8426543b4ccfce052ec5660d90af467",
       "files": {
-        "desk/app/connect.hoon": "e79baa3ab985ff878f15409152685348e7ecb3783f1f372c6459c895bd10ac53",
+        "desk/app/connect.hoon": "3c7fbb9e302ae1169f802965af083c35a8b8cf901d6bc59d0f00d25502997e84",
         "desk/desk.bill": "d6cf88b4f21e82bc8bd6b7c0f6c50038d1d79adeafb09fe926df8bdcfcf4af21",
         "desk/desk.docket-0": "f7b939080cf29f8e8a227e0821b1a5bc6cd4fc804a8dcf9ec9c1fcfcb75f0d4f",
-        "desk/lib/connect-assets.hoon": "fd431d739bb943e15023456cb3522f2aa89eb175b19db3980d2944b39a779895",
-        "desk/lib/connect-auth.hoon": "53447ad479e529b4fe3f1499015f9773cde2426909c4342fe63c31db1892e808",
-        "desk/lib/connect-codec.hoon": "719d2e6279303f3fdbd0f558dd93cf10a213cd73aa7746c5bc30e25ef242aca3",
+        "desk/lib/connect-assets.hoon": "127090574041495ddade49f5f36e8a9de33392121ca8151e1f5fcbac06a1d21f",
+        "desk/lib/connect-auth.hoon": "b549fd4492ae36c64a7fa0af11170d9f87d162b29824375762744967e375674e",
+        "desk/lib/connect-codec.hoon": "70245f40be3ab1766e17815535c0d77dcae83e3650c3345db530bf953906932e",
         "desk/lib/connect-entry.hoon": "5b8b640431030691c9e1d4c1a604f5d22fcd04066a480749dd3b60dfede3e7f4",
-        "desk/lib/connect-http.hoon": "1a496a2bdcb91c5e81fc551c416b4bbf31aba7be82f06ca71d0967ba29924021",
-        "desk/lib/connect-integrations.hoon": "40b6329834bc2dcf03d9ccee98061fd68a1f6b3c73de78dccc7ac5bbaaad5f19",
-        "desk/lib/connect-json.hoon": "384c0b96000824b86cdd604927629d78d14bfce8036d1bac5958f47bd1d89f1a",
+        "desk/lib/connect-http.hoon": "19486867fe2d85e375397f04e8b8d237563865057599343564482d4e55826433",
+        "desk/lib/connect-integrations.hoon": "73151941e62b148f7e0e69bcb8fbecb6d9778d75be3cdde7e07d96c8ec4e7002",
+        "desk/lib/connect-json.hoon": "b0ea9ed81d7ea5dd8637c08abc298732d4eab9625693b9aad6ba3bdd00cba7cb",
         "desk/lib/connect-policy.hoon": "4afbfcf30b1a5a782f0594f005caa57b6f5b5a90ace73a72817418598a4d1f9c",
         "desk/lib/connect-state.hoon": "a7e66eaac431561a01ae0fbb7378a7e77f935833bfe5fc73e5bb1336625715a4",
-        "desk/lib/connect-store.hoon": "71d016a01d4eb63b448886326ce9a250316508abf1bc92ce3f9154eba9e3c5a0",
+        "desk/lib/connect-store.hoon": "128fb38b6e011a41a56caea6d1be491fad9e910401a4d3929dfe51082bc23131",
         "desk/lib/default-agent.hoon": "70a8af06601e8d1b75b261b2ac8b2cb06d5622baa1d1b1f8fec9236ce167d113",
         "desk/lib/docket.hoon": "031be1e2e944835a3d11a90f26c6c61f9bbd40123d2dd249ff7b728acbb1d025",
         "desk/lib/server.hoon": "d0a566085300a6deae334b98c4844dc11e90f0315015a91e97c2fbb61db31d68",
@@ -39,41 +39,41 @@
         "desk/sur/connect.hoon": "840ed5911b92828c1ab4bf1161a0380db419bc3723a49d285f29db9a44ccedcd",
         "desk/sur/docket.hoon": "dd930bf411fa129551bf78496b23a96e19743ec4534f4a08bfa37c92c71fc029",
         "desk/sys.kelvin": "0a66fa5dec5893d2e3a8e854c4d6c81d62882863e4c8574ce18da9daea5a7cc4",
-        "desk/tests/connect/auth.hoon": "bec3d1acc515e45c959cc1ff1a89150d2b286963ac1f0e3577aa7466a0b22d7f",
+        "desk/tests/connect/auth.hoon": "7969ec1e5088e0a7630f1e77321b39ae483411fb85cad764fb80fb08fb858953",
         "desk/tests/connect/codec.hoon": "07e63ce158a4a9afbdddb1d8e76f2aaaa005116a6d5d7792b834a92608c09d60",
         "desk/tests/connect/entry.hoon": "3547a8f71266f4ef48b3e8e6c643b5e36b60a4bad7a69eaa75f7d24773191b44",
         "desk/tests/connect/fixtures.hoon": "09a4ebcf17afcf751bf685720654567fd5123bff8a4a8c1e695fb4fa705027e8",
         "desk/tests/connect/http.hoon": "4823142786499fe449cbcd6536596dc4cecf6dfe5a761f4a2c3f5666fd65f33d",
         "desk/tests/connect/integrations.hoon": "bf4d0e3df34bce9952a83b2519ef4cd09b2c17f58fb589f5743dbf9bbb1aaaee",
         "desk/tests/connect/json.hoon": "f0b1ba4fcf2fa9b1be8b6c6de9b60567a73d3890eeba2e659aab8de048fa3382",
-        "desk/tests/connect/limits.hoon": "231c3d6e1048b7bf2962026bb8882f21f1a0d5c6c6b7017e619ad65c4b56fe57",
+        "desk/tests/connect/limits.hoon": "e865c92c7ff5f8ae6443b7fddad4eaca2beefd368233822ef842f22f0e657d21",
         "desk/tests/connect/native-callbacks.hoon": "ef02d180e1b286b8824c979ffe60d1f5da5690f68d974dbf10b81373420efd46",
         "desk/tests/connect/policy.hoon": "3c0117453729adc8b4948b084809d147146c06746b621ac9a03e25ffd08ca256",
         "desk/tests/connect/state.hoon": "5244f9385832dff48beb123883597d28862f4f759dd75af515c4e79a314d2667",
-        "desk/tests/connect/store.hoon": "bc8c5f006434a7e3c0a9018591c127ecee61813470eb4bd070c3543c26355f9c"
+        "desk/tests/connect/store.hoon": "6529410efeebb86da5238b13d5f3b3868a6352930e359451564fc202ad6aaab8"
       }
     },
     "web": {
-      "sha256": "d5a499f130491184bb0a4e8bda64563ce14044a60266051586401a3b7293aa55",
+      "sha256": "d8b7674827719db414c154611ae5114394b3f5bd475dd4cd6d59a1f88f59e666",
       "files": {
         "web/index.html": "f4bac6eafcbc012e862a1dd471c954e0c4a0f3a8a34d2c12bf79372da0d99d15",
         "web/package-lock.json": "e6694d9f9cc0398c17c3d5f3e31db8767c29a74b4e5495bca5df83afa903992e",
         "web/package.json": "c41de89452c1de7709197642cc07d094fca7be97fd7ebebbdf10b8e939d79508",
         "web/playwright.config.ts": "89208ad72cbc6c7093329ec07b29f40b543836ed8bcd9d13d8363e7159855806",
         "web/playwright.layout.config.ts": "5f309701db3f261afaa6355d4eac29f9e067afb2d70ecdb1620b1935bf5d27f3",
-        "web/src/api.ts": "42f1f129bb4f76589b55050093f2c692d65e6c1a3a9b4dc05104c6f60d9e0817",
+        "web/src/api.ts": "f467016036ac886666eb9dcdb33d5c476a6b015375189b4b90ea7c9bf3655203",
         "web/src/apps.ts": "11f908988c6c5671d2bbeb0f1eac2670107d251dec1447d16644bccf31667ffc",
-        "web/src/codec.ts": "cdef46675037f469d94591310a7f7e286ddf573b5b8e736088c3fe9f4ab8dd17",
+        "web/src/codec.ts": "836a4c0951ed3f759960817f8a4bf0b7177ef547f0c38d0cb85e98e6d1ce2f5a",
         "web/src/consent.ts": "ecdd1f00a0c75858b92b1c4bba17575cd073f03a479d3d239046c07453b0c6c0",
-        "web/src/documents.ts": "ebc960a399610bc1d65f7ad32f7d099513851d707fe51e790a1384ab77bd85ff",
+        "web/src/documents.ts": "4da20f4902b5d1a32c7bf7a4bf9603680cea4ff8eff19f852592cc38ea947923",
         "web/src/dom.ts": "3ee62c712408a0807ec72977a634830c93edbf3e65c213552ead8db08ec6139b",
         "web/src/main.ts": "63b88c0d0dd3aa21fde954a03d306811fe953061d946a943371df12069188fa2",
         "web/src/styles.css": "a9af93fdf2690ebdf9cc7c1940d9b76f761fd9aba73d3f2c74595e72175ab013",
-        "web/src/transfers.ts": "58b6e3d7e6384dfc0771bc6ddd06d73ad834c5aae7d34efeaec56a714f4da79d",
+        "web/src/transfers.ts": "fbb8cb973ce282bf782c0686d0498d5c0324ea2525d678cbc21b40739916cd34",
         "web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
         "web/tests/alpha-manager.spec.ts": "0724412c2cfb89d75da30650d1ffcb94e0e6eba3faa07238bdfe3c661bac29db",
         "web/tests/browser.ts": "142bf16cd87ec8d5555f1eace26937e0c760d92269a7fe517574c74c0e9374f7",
-        "web/tests/codec.test.ts": "d6a770aa188f4c308bac86980b70cdd45d96e43ac63bf9881e7cb4f38f2152b0",
+        "web/tests/codec.test.ts": "19dcc3c24f78657308da1187dd8de83b94d95d0314f0e6b79c0508c34facc288",
         "web/tests/consent.layout.ts": "53045aaea7c4eed3a215ac90393670fdeb4ae2df327cdbeb275d95a0e0f71ff7",
         "web/tests/consent.spec.ts": "f6c64e8f477f391787cc11e1871258c9af2d29751117918ce080f9922de9b670",
         "web/tests/eauth.spec.ts": "483e206f8929cd3a6131f7c02bd380f81007081b25f80c27ab567962977a104f",
@@ -89,33 +89,33 @@
       }
     },
     "sdk/swift": {
-      "sha256": "44d91b535f7fa289b36581f7f485e09b555476dcaa41b129dc7c8c3e047e1514",
+      "sha256": "e2ad79b23a3153560bf221a9976ce5118d6bda3f93b6483500afb9dad5fcf5eb",
       "files": {
         "sdk/swift/Package.swift": "d6a593904ebf2c601233f83d92782fe9982ac76d2f52517c562e71e6b2e66967",
         "sdk/swift/Sources/CSQLite/module.modulemap": "c121281d5395a9bb1c92e3110af7c157d34222dcde8fdd785ff5c427a62af902",
         "sdk/swift/Sources/CSQLite/shim.h": "b052d8e561e942f97b503033ecd2eaa2b35213bdbf374983efe9e68eabdfc024",
         "sdk/swift/Sources/UrbitConnect/AuthorizationSession.swift": "343b25d4813158bcf5776ff7e9808917c058dff911ba0f37288eb1774ff02615",
-        "sdk/swift/Sources/UrbitConnect/ConnectClient.swift": "5c7c3264a013cf446dfddb165b180f7add3a2c991f6831001bae191f261aa132",
-        "sdk/swift/Sources/UrbitConnect/HTTPTransport.swift": "ea40f6d9853ef4d73ec9ef4044dad55f265360c8f1cdcfff1ac443507a7f2ac2",
+        "sdk/swift/Sources/UrbitConnect/ConnectClient.swift": "cf7ce288b80f5e6f12aadaefdef9259b0377eac0f9ba14b6bcef1f04f0a47808",
+        "sdk/swift/Sources/UrbitConnect/HTTPTransport.swift": "84df004e3510519f3459fb1e10da7b9c39a534032c7e07363aae25a6198e4e07",
         "sdk/swift/Sources/UrbitConnect/JSONParser.swift": "d840c34a7b599f7b8e8a70ce462f8e5e5f53b88f3e5f66a4f7b4ca59d7d3fe0e",
-        "sdk/swift/Sources/UrbitConnect/LocalStore.swift": "5b5104ed7ab828441c4da251fe2e24a779a9a3bb1a36f9f4a3a323303b28b368",
-        "sdk/swift/Sources/UrbitConnect/Models.swift": "2959533ece574cfb9dcf7412d7d9b1b402c109d1589d052ccb1f53f8e97c79a9",
+        "sdk/swift/Sources/UrbitConnect/LocalStore.swift": "c94a972d1a37be9ec0150a53ae8c9ede87caeee5965b2ef0258cf82160dcf28e",
+        "sdk/swift/Sources/UrbitConnect/Models.swift": "0284f46557b3023f5c7d2f9ff27bc88429685e205fb1ef5293164ddd5d6d69cd",
         "sdk/swift/Sources/UrbitConnect/SyncEngine.swift": "67886b1e6f7d0b1420d1397ded0278aa787f4de9305bbb6d572a3a76f7efd303",
         "sdk/swift/Sources/UrbitConnect/TokenStore.swift": "f44161e9b58ae361d67683b4503b2d2b7e379d68740f327bf2a28292eb28b6de",
-        "sdk/swift/Sources/UrbitConnect/Wire.swift": "aa4bda945a0f735d8057197c17b5b502f0a2d0b3e176ed336e686197d2104fa0",
+        "sdk/swift/Sources/UrbitConnect/Wire.swift": "3b4f41eeb0d934956eb4263b37a294d713aaaee61b6a90b35bd84146865b1eb9",
         "sdk/swift/Tests/SQLiteFaultHelper/fault.c": "80c9e251259e0e6336659d26db84feb7c47e9f5246a0814a727b914c6395723a",
         "sdk/swift/Tests/SQLiteFaultHelper/include/SQLiteFaultHelper.h": "4e26a64bb3edc4d0068180aa0d89765e309a37c47caabd6a9fae4fd6dc06b0bf",
         "sdk/swift/Tests/UrbitConnectTests/AuthorizationTests.swift": "5d22bb7272f5175fa3137399c4a91b1a7ae9fd14da73bb7aa94cc5acd9087f6b",
-        "sdk/swift/Tests/UrbitConnectTests/CapacityTests.swift": "ccf18bef7e2850cbd423f6ac21637704f2ebb97ac1feae60ee0a2c86d218a27d",
+        "sdk/swift/Tests/UrbitConnectTests/CapacityTests.swift": "d3939bd2d37dd9fea33c9068f9e46a3f340ec87753d7139e9b422b8db18708a1",
         "sdk/swift/Tests/UrbitConnectTests/CredentialRecoveryTests.swift": "318e1a10e88edfd53b871eb3cd80168969b476b5bfb99a8dc80749d4cfd5ea21",
-        "sdk/swift/Tests/UrbitConnectTests/DraftArchiveTests.swift": "d9b2c67cca1555c02adc5845454458b1949f8e923c4612a2800e384ad532e0e4",
+        "sdk/swift/Tests/UrbitConnectTests/DraftArchiveTests.swift": "f2ac5b74a2ae1a0f870c474ba8666150a1afabe6a7af7f670276e8cdf1ac3e11",
         "sdk/swift/Tests/UrbitConnectTests/Fixtures/json-boundaries.json": "2ae83880aa7dcb8aeee49fd0ca02511047b225cba30b603f1f082f88152d2223",
         "sdk/swift/Tests/UrbitConnectTests/LifecycleTests.swift": "6632337f7c18607755321b1be11c31dc3b789274e07529a3a71e9b50791f48da",
         "sdk/swift/Tests/UrbitConnectTests/LocalStoreTests.swift": "6644c17dce0aef69c00fa6a21e0397a8de7b0f9323eb3790a72e2c10e5cc086b",
         "sdk/swift/Tests/UrbitConnectTests/PreflightTests.swift": "31ede1a4765c4fe72d2df6e21f2ed16b9cbea56ff7c7592e144d86219441236a",
         "sdk/swift/Tests/UrbitConnectTests/ProtocolTests.swift": "2a6d3859a9ee61c226019a39681228a82432adab3a47934d871eaeae1b92e83e",
         "sdk/swift/Tests/UrbitConnectTests/ReliabilityTests.swift": "f38895254661734c9d50e4bc490aad8671fb207dd965242c698b9fb987740ab0",
-        "sdk/swift/Tests/UrbitConnectTests/StorageRecoveryTests.swift": "63aa0fc3206256f90d24772eb3f98579a66fbfb9245036ff9c8eadbfad1107cf",
+        "sdk/swift/Tests/UrbitConnectTests/StorageRecoveryTests.swift": "f3ca74824a7160bab2eaee8dc45af2f7584f472e7376b3247ae795c0411d810f",
         "sdk/swift/Tests/UrbitConnectTests/Support.swift": "c5d88d420234eb9915361c37baf3f9a749059b61d18a188bd27a18f326ed25a3",
         "sdk/swift/Tests/UrbitConnectTests/SyncEngineTests.swift": "85d8cc4a0a3232b12a4a2548224cf444699eec51f9cf138e052fddc6f1d6f645"
       }
@@ -127,7 +127,7 @@
       }
     },
     "examples/ios-todo": {
-      "sha256": "ff9c36297302bf17a0964e0364540dae579749ccb8042d4baa8841f5c135d2d5",
+      "sha256": "4f2b879164da32cbd34968ee8d115d8eabcfd8e82b303e995b5458775dcbeb27",
       "files": {
         "examples/ios-todo/ConnectTodo/ConflictView.swift": "d2a644e1593610cfc4e9d7fbc9f39033bf3dd7c4af0d76705d7425a7022b9911",
         "examples/ios-todo/ConnectTodo/ConnectTodoApp.swift": "b60c66747d0acb555a8e61e67cadd282acd7f20ddc4acd69bf42a8a8cb99de52",
@@ -136,7 +136,7 @@
         "examples/ios-todo/ConnectTodo/ListsView.swift": "15dea6bc854c66778a8723a2c383a017c7879f27ac0ee3fdf1cbe86afcaabedc",
         "examples/ios-todo/ConnectTodo/PairingView.swift": "63b5aaa7776cd1a14f7b4828c1f1a9f958c5a58a69b4a8b5839a74cbd2980bb0",
         "examples/ios-todo/ConnectTodo/TodoModel.swift": "750ed8d2daadff117069ca3f4c85c7b771bf016aeb96dd6144b7b11aa9d043b6",
-        "examples/ios-todo/ConnectTodo/TodoStore.swift": "9dbecf5eb1f7d5b05a62604799ce8bbc6c8c65a0fddae808db5b06216dcf62fb",
+        "examples/ios-todo/ConnectTodo/TodoStore.swift": "8c7e25c4f39e62bed7e49b13b02b6a37b0d84982df406d4d79b30f10799ed970",
         "examples/ios-todo/ConnectTodo.xcodeproj/project.pbxproj": "cee70ff3ec5f2842f58ac901ec499dbba2e7b295089c08147635e8b374a672a9",
         "examples/ios-todo/ConnectTodo.xcodeproj/project.xcworkspace/contents.xcworkspacedata": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f",
         "examples/ios-todo/ConnectTodo.xcodeproj/xcshareddata/xcschemes/ConnectTodo.xcscheme": "7196cbaad3c731179f65b679f623f24bc219d1ae9be416903987482e3fa41b0f",
@@ -144,13 +144,13 @@
         "examples/ios-todo/ConnectTodoTests/LiveSDKTests.swift": "5054cd214c978fb84ba8c8c0411a0366e8b998d46a3f83a147312bbc7fdb3a7d",
         "examples/ios-todo/ConnectTodoTests/TLSTests.swift": "0919a76014137bd672f4ce5f2753df5c8827414884a283b61d3be0696c8c9fd1",
         "examples/ios-todo/ConnectTodoTests/TodoModelTests.swift": "3d6eee9fac9039aff3ff43127de1050ba4788631aa1c56efd887b2b7ade41fc8",
-        "examples/ios-todo/ConnectTodoUITests/ConnectTodoUITests.swift": "9dee3183d6257432c39c56b66ff7eb106387174c43d0af8bd678f0f5202dadcf",
+        "examples/ios-todo/ConnectTodoUITests/ConnectTodoUITests.swift": "12aa204abf75bc8c95eff88a0cf93cb8e12ca4bd42589bbd37f3952f99c45ddc",
         "examples/ios-todo/ConnectTodoUITests/NativeHarness.swift": "50b283d80018353b3addf8e7646ca7a414418d536935385231590f74cef97694",
         "examples/ios-todo/project.yml": "132fc929b7c9f6005ab0369dba6823e8ff4980f9b95d8cb2b403b68665ccf1a6"
       }
     },
     "protocol": {
-      "sha256": "2381afd813d2f13e01d53bcf82072d4801594751aa2fba7f0b7783fa209b942d",
+      "sha256": "b407cae5e02ee895a609976b96c28539ee120b11c3e8f51bec8de2b171acd6e8",
       "files": {
         "protocol/v1/fixtures/conflict.json": "4c14d321ed2d63349b680a4795af47544268312972b181d3678b2b20d56b2115",
         "protocol/v1/fixtures/consent-denied.json": "d672b5c0fede9c71b88a9d5159ea5d8c6dada161f034b9850941d09de95a9316",
@@ -166,17 +166,33 @@
         "protocol/v1/fixtures/snapshot.json": "b5b60084db3c1b85a3d6f1b773c1b00af5648b82fc3b540126dc64e4ae05fc02",
         "protocol/v1/fixtures/stale-cursor.json": "77d25986194ea9802348c116cfbd72e7314240aa5948c3dd20fe40ef6b369c2c",
         "protocol/v1/fixtures/update.json": "dc81040b733b339f7ec4674a0655e4385bb19b8c571f910b9233dba43156309c",
-        "protocol/v1/openapi.yaml": "5354cb105e8c32a61eb80ec0d310a2d84288ab5dc6455e879a71d5d8439e3c78"
+        "protocol/v1/openapi.yaml": "951340eae8bd8265c0e00ce7b555f481b51c489d69042c373a377c73b4d0c718"
       }
     },
     "tests": {
-      "sha256": "162806e97d38b59407a52937806f3aaea2b758fc641be7c7ecc97183f2e4b445",
+      "sha256": "d28244a172680f22aabe31a45188a7f279796d59a11d4c83fe01dd47b1f5dbca",
       "files": {
-        "tests/acceptance/alpha-matrix.md": "5a2597cc840c34bd500fc8d6cd0f51527f4110b7cd4b7ff38c54918db076acfb",
-        "tests/acceptance/prototype-checklist.md": "a1da987dd63ed9cbe272e388d2dfdc028aa8f1271c9d20f2c6645f2a67d828a8",
+        "tests/acceptance/alpha-matrix.md": "7f71901561e5ac53b01bba3d558cb4de180a598eec369cafa1c81908ab4966ac",
+        "tests/acceptance/prototype-checklist.md": "b875abe6d9edf835d552c32e6348413642dc4b4d1466668cb7a64c35eb17d374",
         "tests/consumers/swift/Package.swift": "9d9ba850cd661d81eafd53583d89614c35e6bcb4d792ad41351c2bf6b407ab97",
         "tests/consumers/swift/Sources/NotesConsumer/NotesConsumer.swift": "603fcf4342a58310169a52a1e74c3486aa60608151c736089acc31bb10b81c59",
         "tests/consumers/swift/Tests/NotesConsumerTests/NotesConsumerTests.swift": "c6ff91a9031554f32dc0e3224ebc81951c65f655280ae4af7f9eb0f5fa146a72",
+        "tests/historical/retired-policy/README.md": "967858353450270367259d55d2c3a6c3af6351203258e8b7b961362bc99b3649",
+        "tests/historical/retired-policy/desk__tests__connect__auth.hoon.txt": "bec3d1acc515e45c959cc1ff1a89150d2b286963ac1f0e3577aa7466a0b22d7f",
+        "tests/historical/retired-policy/desk__tests__connect__limits.hoon.txt": "231c3d6e1048b7bf2962026bb8882f21f1a0d5c6c6b7017e619ad65c4b56fe57",
+        "tests/historical/retired-policy/docs__operations__connect-dev-alpha-soak.service.txt": "d83f21025e0bbd6aa886639f779a879719e46fad8f9a081394d657cef93c2b2d",
+        "tests/historical/retired-policy/examples__ios-todo__ConnectTodoUITests__ConnectTodoUITests.swift.txt": "9dee3183d6257432c39c56b66ff7eb106387174c43d0af8bd678f0f5202dadcf",
+        "tests/historical/retired-policy/scripts__native_harness.py.txt": "2b114a5536a96674822e8249a57e39234ed43feed95bc05bdffef44e7784298e",
+        "tests/historical/retired-policy/scripts__real_bounds.py.txt": "7cf81b50b2d29a3168035abdd448fc5f8a54c6249805be2a841e1bef69533f88",
+        "tests/historical/retired-policy/scripts__real_load.py.txt": "4004a1cdec77648c7bc671d4480f105b38909edbef4a2f3753696613f9382052",
+        "tests/historical/retired-policy/scripts__real_soak.py.txt": "36f69bde93e13d9dccc40dc8b49080dc826a3621ede013d1743b1524fc53b61c",
+        "tests/historical/retired-policy/sdk__swift__Tests__UrbitConnectTests__CapacityTests.swift.txt": "ccf18bef7e2850cbd423f6ac21637704f2ebb97ac1feae60ee0a2c86d218a27d",
+        "tests/historical/retired-policy/sdk__swift__Tests__UrbitConnectTests__DraftArchiveTests.swift.txt": "d9b2c67cca1555c02adc5845454458b1949f8e923c4612a2800e384ad532e0e4",
+        "tests/historical/retired-policy/sdk__swift__Tests__UrbitConnectTests__StorageRecoveryTests.swift.txt": "63aa0fc3206256f90d24772eb3f98579a66fbfb9245036ff9c8eadbfad1107cf",
+        "tests/historical/retired-policy/tests__integration__test_limits.py.txt": "c407e58fe443abd5710e762e619c7546f230104cbd9d27ca78b9b3c5a75aaea3",
+        "tests/historical/retired-policy/tests__tooling__test_qualification.py.txt": "211259f6b4d76efea4e6bf2c2e16c27556a48ea11d2e360c865a0203d66bce52",
+        "tests/historical/retired-policy/tests__tooling__test_real_soak.py.txt": "2d9a389786b52b542f83eb34c898984de0a3e1e96d1c70fc9cfe0e6c2df1ac6e",
+        "tests/historical/retired-policy/web__tests__codec.test.ts.txt": "d6a770aa188f4c308bac86980b70cdd45d96e43ac63bf9881e7cb4f38f2152b0",
         "tests/integration/support.py": "9735faca85028db2b7011dd1d2c5076360f36fcaf7906f335badfacbfb5582e9",
         "tests/integration/test_alpha_reliability.py": "378ebfae6bb80f231ab3c2be90402d645b661beb1782fa6fcfd1a59096675a10",
         "tests/integration/test_auth.py": "1522daa233733356922822a3dc82cca19b41577e0adcd3a811739d6719884eb3",
@@ -184,7 +200,7 @@
         "tests/integration/test_entrypoints.py": "83d753110c0706359339a9542f940c8687f7e0ae12f7f9a1fdba7fdf1a95dde6",
         "tests/integration/test_info.py": "8c5b32f6e174448e6ddad2b4ed362240bae1080e46324812e1c42680ef3d0e8e",
         "tests/integration/test_lifecycle.py": "c72100f4286b030d8cdfcb572d6ef7378d12ea9206b5b5276e5561b7f986cbdd",
-        "tests/integration/test_limits.py": "c407e58fe443abd5710e762e619c7546f230104cbd9d27ca78b9b3c5a75aaea3",
+        "tests/integration/test_limits.py": "e013fced958910774d8e9cf9dc9bd8ff57e68a3721f80a4e8412c4ca5530db3f",
         "tests/integration/test_owner.py": "0fa3107180478e093d17723035f1ae0d927abe651d83cbd7cea5f4f0841c5172",
         "tests/integration/test_recovery.py": "dc8ad0a1c761a6c451f86a872a35bc100b937ae86abd79cb4339ccc3ede3b3bf",
         "tests/integration/test_sync.py": "383144ae1ef3c00401d93adced923188b11c93f95c97c834f295968b886e7a6e",
@@ -196,11 +212,9 @@
         "tests/tooling/test_native_authorization.py": "571209275b23dc9112c6a468c51b7ce0c27857e154922bfd83a63bbe69679243",
         "tests/tooling/test_native_evidence.py": "2a13ae104cb7b882f0411bbb335f30a7d68b0d1680e400febf2d04bc166e778e",
         "tests/tooling/test_netem_startup.py": "8a52be20e9a8c32220ebd08b32367e73457255408d8bbd0065c82b7b0f96463a",
-        "tests/tooling/test_qualification.py": "211259f6b4d76efea4e6bf2c2e16c27556a48ea11d2e360c865a0203d66bce52",
         "tests/tooling/test_real_install.py": "1f8b309420782b16f7ad8e8b5f28fa9e73b36b21cf7c14828fa2ec74ce826e7b",
         "tests/tooling/test_real_load.py": "6f7071f64a097d063580b0b8b71af5f9e402741e861319da9e56a1f3d9098fd6",
         "tests/tooling/test_real_reference.py": "df19f3721cf6476fd693d539b1dde3db8699ff7cb311d38777640976bf94ecd3",
-        "tests/tooling/test_real_soak.py": "2d9a389786b52b542f83eb34c898984de0a3e1e96d1c70fc9cfe0e6c2df1ac6e",
         "tests/tooling/test_release_check.py": "c48b96107717fbac739638f75a1a93bac1cc15a866693239d642c9f2ab22ac3b",
         "tests/tooling/test_resource_fixture.py": "ab2b61d31c675ac2de756d4d315a8da65af0dad1be4c127c18d9a059c8020266",
         "tests/tooling/test_resource_sources.py": "5e37e61ab296c3538b5311bae66ef468514d5483ae6ff80bff69a7fbaad40bb2",
@@ -208,13 +222,13 @@
       }
     },
     "scripts": {
-      "sha256": "7fa957b859bc26f6bd92f41bd0c5f81d18d2568c68669f3cf2a7826285752793",
+      "sha256": "168fffd83ba93f510c75e48dcdd411d6c66ff8ffede0445fcdeb5620ccec6025",
       "files": {
         "scripts/benchmark.py": "f650758a7ece6613aa88c3e5310ec61430b4b2c769cb55cb5efb19a80379e261",
         "scripts/browser_test.py": "c6917b067085678077cddb631cf12891045521ce930466710373127b83b3077c",
         "scripts/bundle_web.py": "e944b95293c2668934d9eb03ccc86ec434f76da079dba04fe1e87718331c40d6",
         "scripts/capture_app_baseline.py": "809d1fb595772597bd5fd76af6eebd19d0c7efe2066eeb4783abf845e80ee935",
-        "scripts/check.py": "5e828b2b208076ef5f1c47bd24de8ae5beee8050b5591285e9389283ee066c9e",
+        "scripts/check.py": "5afa12c8dd049273aafe1dbc1e00da720eb97f860cac79520d4d7cd2db1c1322",
         "scripts/cleanup.py": "3e41bb3c781a5c207eb3589c5bb6b71cbd54fa911f2c011e01bacfda116ee62c",
         "scripts/dev_proxy.py": "b8ff7fd7a51534e8a902b7dba32f4bab3f07a71f0b2da4a87f1bc806841ac4a5",
         "scripts/dev_ship.py": "d799652f22237e4e8cb4b07703e01843ad1368144cc846cc790b7bc43c2abf1c",
@@ -222,26 +236,26 @@
         "scripts/expired_tls.py": "011403835b1ca0166e3c8ed13fcd5b3644b96998a709ed486dd4d60d7a705449",
         "scripts/export_native_evidence.py": "3eb303022fd71b000d21cccaa39f515ace7411274e71c8e434fa2900305ca40a",
         "scripts/foreign_peer.py": "11988b364c75a4798ae5e8db95e2a2d80493defc48ff16edb275ebdf9262c5f5",
-        "scripts/ios_test.py": "70913466a979bd773dc838f384ddac536c93c97a810d9c8759dc954fd6d0a7af",
-        "scripts/native_harness.py": "2b114a5536a96674822e8249a57e39234ed43feed95bc05bdffef44e7784298e",
+        "scripts/ios_test.py": "9594b9d6d9b049fc539cd2eb8acb618444c164d62465be023fff68305125dce4",
+        "scripts/native_harness.py": "bf7ae463946f78b760518492c70b328a0ae1c974ffe810f2d3f24d4cdc385181",
         "scripts/netem_host.py": "42489ba4aa08a12ee8780fe0cfd497ad7c276e4316674ece93a70f815de55d91",
         "scripts/open_owner_ui.py": "400848f6f4448417ae19db62c8610c4912c30c8fdbf794e341a5855c43c6c697",
         "scripts/package_desk.py": "155bdcff68e85f00ba2984784e70b2483cc150cf233902cba5490ffdbf76dc45",
         "scripts/protocol_fixtures.py": "260eb7c47bc01938281779b4956d53d79a34dc49b24df892780a1b4a68a9104a",
-        "scripts/qualify_alpha.py": "ccdc15083f94b43f87e82cbb0aff875dd34694363e067074f96fe31b6433ba21",
-        "scripts/real_bounds.py": "7cf81b50b2d29a3168035abdd448fc5f8a54c6249805be2a841e1bef69533f88",
+        "scripts/qualify_alpha.py": "d37b56ec4abc9147697a651a0ee4d16faaf71d88ff88df54364061e17148581f",
+        "scripts/real_bounds.py": "b6ac445cd6ba5d1ef64da521fa30248f381562208576fb81124ab698e8635ef7",
         "scripts/real_install.py": "d7b266ff4da6402c5c21f5a7d38a5c1fa9666c678c35a21329ee2b87b3ae65cd",
-        "scripts/real_load.py": "4004a1cdec77648c7bc671d4480f105b38909edbef4a2f3753696613f9382052",
+        "scripts/real_load.py": "77bc26ef63079855a792b378673dec4b627084093435b6746498e7d6c2d86d24",
         "scripts/real_owner_login.py": "43d140d94b650e5b3a0fd75fd5fe7f415345773ae98f6de58a35d2313641611d",
         "scripts/real_reference.py": "9b0f6a164c8fe1f99504d008eb6527dda4f8bc4ede3d1684d0d63e4ff4ea9be5",
-        "scripts/real_soak.py": "36f69bde93e13d9dccc40dc8b49080dc826a3621ede013d1743b1524fc53b61c",
+        "scripts/real_soak.py": "291343c1c931e9c8792e5f29c16bdb189a4b416aef7c3d20b9167a8ce93775e6",
         "scripts/real_test_support.py": "802b27fc2917b9365ce4ed40bd5a4fd470b8f78b296b93472427d83c26a09570",
-        "scripts/release_check.py": "a115485875223328051b10a2b7be50c64eeab8a35d7c1b1117b0a1aac778306f",
+        "scripts/release_check.py": "c62782770a9ce2b6f9cab8cc6a1b2a02a814a8409721a8e7b7b36a8452396b81",
         "scripts/reload_rehearsal.py": "bf177281bf98b016597cdd9e579c8c01dd3e0aa459fc75d35229d76d706a7938",
         "scripts/requirements.lock": "6504ccdff32db63ece3c7b12e7ebc4845947a22165f37bd4dbf4f915b8f36c90",
         "scripts/resource_fixture.py": "65761b180be3e8a096255f0aee272141664a237280edea0285dfe05fbc5742ca",
         "scripts/restore_rehearsal.py": "306ac8da0a9980b742d29b796004ffc8946e3ed3d2070041140fb3db50c28467",
-        "scripts/setup.py": "4c0806b11ddbc5c8ef0dee3928e34cb122417ec9821a8d3cd92df70294e6f723",
+        "scripts/setup.py": "68726eccb1f7ed2fc4f2e5a844b4856807969b6d422455694877521b2766450a",
         "scripts/targets.py": "a9c2a4043b04baa64dcffb3e38406efc44dd093eee27e385a041a9b574ab6282",
         "scripts/test_hoon.py": "9c647a5dd93f601c8e5ea624b7218e292e36c6549563549955f9185836485f3a",
         "scripts/test_integration.py": "507bc010fe03a4c5f0fc5c309de15e966f7de931c86f34b14a83b60d788dc832",
@@ -250,41 +264,41 @@
       }
     },
     "docs": {
-      "sha256": "4508c4126ce06cc7524b750cb49b2f69c58df8803abd5ee0c9228be601fa95b3",
+      "sha256": "1e5ea06979af9616735cce45d3f40c5e3801ece208594d9a5e9b7f60b4b0bef6",
       "files": {
-        "docs/alpha-handoff.md": "85422290c48ef949f0d4131dc626eb6045b572f4557db0889a69842fd78beaf1",
+        "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "0149230f0ac7bd656f903c3d4cf1bd4c57af0b1216acf8d857dd389d1e650127",
         "docs/backup-policy.md": "5f828eee59fca6b969fc916a1f241af8ac91d37925ecac1af1bf3581800e8fe0",
         "docs/base-source-provenance.json": "135352e857e82eb445e20f8874a1e48e152686aacc90fd03207bd3c1ebeb162b",
-        "docs/capacity.md": "a25fdce9d2ae16c9bafcb5e75ce1920f5d29369d3245f5a2a5c9583655b6a230",
-        "docs/compatibility.md": "899ffad6bc3be73432fd92d31a73727016a10386aa129553e4d01667c22f865f",
-        "docs/consent-layout.md": "db644543d2cbb53cf2c07e5c5f78c9c43b6e28b8b8d9e3c1bac2bd61af860dd0",
-        "docs/contributing.md": "a7c21c02569ec7148c9bcb1674b958f026d5f66ee2f724c3a4d93d680ad1dd66",
-        "docs/current-readiness.md": "cf7e701dfd874e62e6b0687f811c50fb691a7d47d3fcf6a51d770fe6a90f3516",
-        "docs/development.md": "d089a8078125c6fb674d11cb81407d1dfb2d51ec23293b8f0fd94648e703f964",
-        "docs/final-review.md": "89645a9d528a4b0bf247f980387de23b4076cdb846c6aab5cceaa899acd5bd46",
-        "docs/implementation-progress.md": "b09c37bde042a7a0334d61f9b23e5962289dce889a242fcc6be07f8ed82c22e3",
-        "docs/install.md": "ef075b33d1d7128fbfdf4552f0a2d53b4ae32cbdad94b9ffd84d9690252e631a",
-        "docs/known-limitations.md": "09820d309ea3d768eeacce820bc7e3e01cfc6672798dfe00921df589c40855ee",
+        "docs/capacity.md": "403d12132baa9419a0fe663f4274452e8455edf46f1ae15f6bb46b146f315b92",
+        "docs/compatibility.md": "068911e1249dff5fb1f484e45cfe8ceaddd3379004e276cf08f64a8c6588e04a",
+        "docs/consent-layout.md": "c968650e9b14f1bd45bdec1bdbe6c0e141f94fb15d051ce9c7fa38a500418edd",
+        "docs/contributing.md": "50f94012e11bf8453a0a9c7c8f54100c1cf95500883b79e5ea6f82698d4c815d",
+        "docs/current-readiness.md": "9a485160a8a72ffdb10be8bab1cfc20406ed49ff54094e04d7cdfcdfac3f22d8",
+        "docs/development.md": "197729b88e393a431847303f8b03b3b25d53a44303de911c834e14d3ffebac14",
+        "docs/final-review.md": "b03a5a5d20bf50de2c6a0be1fae10a9b7fff632624471e729cf7cfbfb5409c47",
+        "docs/historical/isolated-alpha.md": "e41c4d7c1fd644c5ed4b5dc7daed0966191a4b4627e14c992145380a84e1c4a7",
+        "docs/implementation-progress.md": "f79666569ab3cba95603b5caf171bce1e89a1b28e893dd3eb42ee03a9a97f07c",
+        "docs/install.md": "d041fa01ef09352f125ee9f16762bb0938047e36fa8fab0a6a987f5b188db956",
+        "docs/known-limitations.md": "ed664099966431d79a66743821c6f3656c1fcc2e90b918d4c342ce4a5e61fc3f",
         "docs/landscape-source-provenance.json": "01a713d83940da1d383f4279d5f2728bdcde2e19987055c662402f5ee8b278b4",
-        "docs/operations/connect-dev-alpha-soak.service": "d83f21025e0bbd6aa886639f779a879719e46fad8f9a081394d657cef93c2b2d",
-        "docs/operations/reference.Caddyfile": "5aa323924bdca3d6960148dad224c930cd04226476959b74350247cfb3814994",
-        "docs/operations/tailscale-reference.Caddyfile": "9588e05a412896926e569e3b1b54ea07357e0b53daaf6fb81aeba2e4c7311033",
-        "docs/operations.md": "eb8e47ffc789ae5b918baa8c8ff8286868d9085ac0c708f754168028eba32b42",
-        "docs/protocol.md": "62642c4359015de2eab10ee08642f9370b1df93d63b4785c1ebf240582946aeb",
-        "docs/quickstart-owner.md": "f303b6a81a8dd602c52af421460cab1bf9521564dfd7eb0cccfbb82de47d8c3f",
-        "docs/release-checklist.md": "b0188cd44ac085e783a9d92c0280eadfb171e6186e3e2260785538c355e1213f",
-        "docs/resource-integrations.md": "5fe78d60499d466bd8ef1575b828fd4df92790e8b6594ba57225e3ba32c1fca3",
-        "docs/sdk-integration.md": "ba0a97ce4067809e178cc5d5cf44a72cfbbe827226b9816a2184237421d5a318",
-        "docs/security.md": "600b08420c39b6a5b5d57a5bc6a066ac19de94ecd132652cb350d9754821b942",
-        "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "17c968ea90c8063eebbcd9e6149c3555c98d9a503984fc9c12b4680e1a396387",
-        "docs/superpowers/plans/2026-10-13-connect-alpha-product.md": "3e2e037d0a8434f3a91dd6816c286d599891c6d3bb17b75194c7a7fe7c9e5969",
-        "docs/superpowers/specs/2026-10-12-connect-design.md": "6023831be56637b110fafe2caea6947cd4d12f04553492df4fc2ec9d576b13c1",
-        "docs/superpowers/specs/2026-10-13-connect-alpha-product-brief.md": "a70967117e938894f79c87b77f6fe68bcac732bd756e39c1581e59f344d867ea",
-        "docs/support.md": "36ebb3375d71978f5a9a5c3e14bed9351c5272fa4ea55da08ee60246c6b029c5",
-        "docs/supported-platforms.md": "aa6947fc850672fe8ac554395f855fc6ebb39d3832a253de2a21c2a5a541ffb2",
-        "docs/update.md": "9ace04ce702e40135545809d82e044058a0dd7f6c47148fb4c9e4a56233ebf0e",
-        "docs/web-assets.json": "f33964d6e664ee2a96f1877705dda04210b41e43db469c41af95e7f082bcfd92"
+        "docs/operations/reference.Caddyfile": "006c846bbce1a0a96e6c2714728fb82c7da1ad62ac3a75429eff20342dbc590c",
+        "docs/operations/tailscale-reference.Caddyfile": "d785c1b51650cd669d5f641b1af3f05b5118e8693701313d27457127b2afb280",
+        "docs/operations.md": "37161dcf02688ccd2889a96a55fd958dc7c63e68c08dc66056aa4709b731c8b9",
+        "docs/protocol.md": "3f2f54d4fd9ed81c03892a1b949e178ecd06792dc113cd36067352afdb46f076",
+        "docs/quickstart-owner.md": "9632102870362d99903aa7f2f2b3c665cffc7294b67ac35ada668445791489e6",
+        "docs/release-checklist.md": "cf41d2b96a534ab8985b36ce33aa877399581168a771fe2e10111cbb508fa762",
+        "docs/resource-integrations.md": "44d98c773c54ec1fc39809b5d66524498809a7bc06c700cbc06b0fd603f74f7f",
+        "docs/sdk-integration.md": "237739e4e454b57e2136e9e1adcfc015e6e4dca11569e2c04499b7fd8d24c7f6",
+        "docs/security.md": "442007457cf338348610cad40b108edc201e41754b1231b61ed922469afcf581",
+        "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "e3c98e2efece58d2eaa40e3d5cc44f576e0c2884809f6c8deda0ecb67a721544",
+        "docs/superpowers/plans/2026-10-13-connect-alpha-product.md": "5407d68f3206a868b3fd92bd2ad65469d53c6ac157f1fd349c6e82940ba12282",
+        "docs/superpowers/specs/2026-10-12-connect-design.md": "a8b1c02efd2d53c850086fa13c249ec3c39ba9b8b912e7fdb6a306a7297561b9",
+        "docs/superpowers/specs/2026-10-13-connect-alpha-product-brief.md": "c096d118e7621154c4bec6285c0b219662d0ca5eb0c7deb2952bf2f1d0a8767b",
+        "docs/support.md": "d027d251be87c07dd1395b910bbf6e4b349f75acd22c660319396c0516143b85",
+        "docs/supported-platforms.md": "726e69b09443a01676b64fd94e79dc9ae83fecd07312d795a52cfce3056c2155",
+        "docs/update.md": "520df7dc5d519ba5ce0686305cf3194013f8de2c3552c6ed19ef287aad0f3b78",
+        "docs/web-assets.json": "bd05ec739c42990d5544f58bf85950c20a5926c58c63c6d542a2ccf24a743cbd"
       }
     },
     "toolchain.json": {
@@ -306,21 +320,21 @@
       }
     },
     "release/manifest.schema.json": {
-      "sha256": "e65ac53672fbba80cc1bba7023036575539f736301fad71b97572fab30c0b6e7",
+      "sha256": "ce5dff82e157505845e5fcd740b68d44397e89adcb6a26c14bc04c2221643ac5",
       "files": {
-        "release/manifest.schema.json": "a2f434da267c3a9d27dca5852e1d7ddc5f714e44b16c08411b8a0f174dfbd164"
+        "release/manifest.schema.json": "34847edd5309816f2dd2872b62997d229239a42952c68737952506b5400a6ce7"
       }
     },
     "release/README.md": {
-      "sha256": "6ad1ca554e5f2527ff0341070df2c00f0b6742ebb4d372d8ef015db9dcb9feb4",
+      "sha256": "dbef25fd4e4524279ae11c2077c17e976da02cb861e8b53ae24e8c692fadfa83",
       "files": {
-        "release/README.md": "f51b74ab75eacb5e285fd40083b1b982fb3dbe52eb64704445e949542db3d05e"
+        "release/README.md": "6c4a55180cc7d29f4ee48a53b92734a66caab186f2bbacfc121883907581f3a5"
       }
     },
     "README.md": {
-      "sha256": "7de3a129255752ac93909c0a4cd471b1542127d9d589444dfe833fcdf2ccd214",
+      "sha256": "b68ab03b09874286e13ab5f5435656fdbacff2c0a3d99ad13d7732045ffa4842",
       "files": {
-        "README.md": "53af1228d2bb42f7a8659977d5cbca967cb05ab68be4670bec1ec869fb50c4c8"
+        "README.md": "671a04ecd0dada30f3e3b9e192ac75d3547373d7fe0d758dcd1169c9fa2063e7"
       }
     },
     "LICENSE": {
@@ -386,27 +400,27 @@
   "artifacts": {
     "desk": {
       "path": "dist/connect-0.2.0-alpha.1.tgz",
-      "sha256": "3d2f8ba1549db75ac9cc79d18121ba2942f2eaf64dfc873a5c4e897ff1b14c13",
+      "sha256": "d4841f6ea5e95db1f8c17b6a426f6025dbd743a128267a7165a9b2220e276f70",
       "kind": "file"
     },
     "sdk": {
       "path": "dist/connect-sdk-0.2.0-alpha.1.tgz",
-      "sha256": "d4afaa848c48ceabb8572220c84958e6515fe3cdf17848bc12b51a7135e22808",
+      "sha256": "d2db94b0681de8cecaa53a16aa29160b702e191b998469e88b609e2995e3004e",
       "kind": "file"
     },
     "todo": {
       "path": "dist/connect-todo-source-0.2.0-alpha.1.tgz",
-      "sha256": "353d047719b1d9ec3fb966822791b9c7a881e08e8dbea72f60a9a746a6eabee6",
+      "sha256": "6012a471842fc90e6f00aeb4d85acf3a5c7cec107891f4414fc349a01344c4fb",
       "kind": "file"
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "6fe0ab78189bc7e778f3e0d3d529151efb02b85f4439cfc56b1cf1b24db46d38",
+      "sha256": "6f70e8f1d3842675eaa1a9efcc82a83a9626246af113ae20622def5cc01c24b4",
       "kind": "file"
     },
     "web": {
       "path": "web/dist",
-      "sha256": "590aa8a05b6f25f4d3c9cf41067b57832a85fca7999fe32cc55076f8294e8f91",
+      "sha256": "b9608e0bc56093e8bf9fc4f29e8b7590df0b0d74342c4ff68e2ad240e55e1edf",
       "kind": "tree"
     }
   },
@@ -493,5 +507,5 @@
     "securityContact",
     "publication authorization"
   ],
-  "qualified": false
+  "readinessPolicy": "informational"
 }

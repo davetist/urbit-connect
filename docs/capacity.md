@@ -1,27 +1,31 @@
-# Capacity and local durability
+# Resources and local durability
 
-Protocol 1 retains these server bounds:
+Connect does not impose product quotas on document size, live document count, namespace/agent payload bytes, registrations, durable sessions, mutation batch length, import totals, SDK outbox size, retained account count, or SQLite database pages. The desk does not reject requests by byte count, and web/native response decoding has no aggregate byte ceiling. Actual memory, disk, the host HTTP stack and any separately configured proxy remain finite. Removing quotas is not evidence of performance at every data size.
 
-| Resource | Limit |
+The web importer sends eight documents at a time to show progress. Collection and snapshot pages contain up to 100 documents; change pages contain up to 100 whole batches. Clients follow continuation pages to completion. Owner-listing and snapshot offsets are validated against the actual document count, not a fixed numeric ceiling. The SDK retries an expired snapshot at most three times per attempt, then retries through its connection loop. On a 429 response it waits and retries the same continuation without dropping accumulated pages; cancellation and reauthorization still stop the request. Incremental catch-up follows `hasMore` until complete and rejects a cursor that does not advance. These retry/scheduling controls do not truncate retained content or cap total records. A single mutation remains atomic and rejects duplicate targets.
+
+## Retained controls and their reasons
+
+| Control | Reason |
 |---|---|
-| Document data | 16 KiB encoded UTF-8 JSON |
-| Request / batch | 256 KiB / 32 operations |
-| Namespace | 1,000 live documents / 4 MiB live JSON |
-| Entire Connect agent | 16 MiB live JSON |
-| Owner registrations / sessions | 8 / 32 |
-| Journal | 1,024 batches / 1 MiB |
-| Snapshots | 4 concurrently, expiring after 60 seconds |
-| Mutation receipts / tombstones | 30 days |
-| Per-session document requests | 120 per minute |
+| JSON data depth 16; wire/persistence/export depth 24 | Bounds recursive parser work while allowing an entire valid document inside its envelopes. |
+| Portable finite numbers: absolute value ≤ 9007199254740991, exponent/fraction ≤ 1024, spelling ≤ 2048 bytes | Prevents silent cross-language precision loss and pathological exponent expansion; source spellings remain exact. |
+| Collection/client identifiers ≤ 48 characters, canonical UUIDs, decimal revisions ≤ 128 digits | Shared wire grammar; canonical identifiers prevent ambiguous paths and revision interpretation. |
+| Registration labels ≤ 80 bytes, device labels/scopes/schemes ≤ 64 bytes, issuer/redirect ≤ 256 bytes, OAuth state/instance identity ≤ 128 bytes, received authorization code ≤ 256 bytes | Bounds credential and routing metadata parsed at the authorization boundary; these fields do not hold document content. |
+| PKCE verifier 43–128 characters; S256 challenge 43 characters | Required PKCE encoding and entropy contract. |
+| Pending consent/code slots: four per client, 32 globally; starts: 30/minute/client | Bounds unfinished authorization work and prevents one public client ID occupying the entire transient pool. Slots expire or are consumed; durable grants have no count quota. |
+| CSRF browser contexts: eight, 30-minute lifetime | Bounds temporary cookie-bound owner form state; oldest contexts can be replaced without deleting documents or grants. |
+| Snapshot views: one per session, two per namespace, four globally, renewable 60-second inactivity lease | Bounds concurrently pinned immutable views. Valid page reads renew the inactivity lease. A validated rate-limited continuation receives its 60-second retry wait plus the normal 60-second allowance, which also covers the SDK's 45-second resource timeout. Abandoned/expired views are released; live documents are retained. |
+| Long poll: one per session, up to 25 seconds | Prevents duplicate pending listeners and lets clients recover cancellation. HTTP SDK timeouts are 35/45 seconds around the poll window. |
+| Document requests: 120/minute/session | Per-session processing fairness. `Retry-After` communicates retry timing; no data is evicted. |
+| Change journal: 1,024 batches or 1 MiB per namespace | Bounds retained incremental replay history. A journal gap requires a fresh snapshot, not data deletion. A batch larger than the journal budget can be committed and recovered by snapshot. |
+| Receipts/tombstones: 30 days, no count cap | Keeps exact-byte retry deduplication and deleted-ID fencing for a defined recovery period. Clients stop blind retries after it. |
+| Access tokens: ten minutes; grants: 30 days; consent: five minutes; code: 60 seconds | Limits credential exposure and enforces single-use authorization exchange. |
+| Refresh family: 4,096 consumed token hashes, then revoke and reauthorize | Retains every consumed token needed to detect reuse, bounding security history without silently forgetting replay protection. This retained security-state boundary can require reauthorization during unusually frequent refresh. |
+| Reference Caddy timeouts: header 10s, body 15s, write 45s, idle 60s, dial 5s, upstream header 35s | Releases stalled connections; these timeouts do not cap stored document bytes. Existing deployed proxy settings need an explicit update; this cleanup changes templates only. |
+| Loopback redirect ports 1024–65535 | Accepts dynamic unprivileged TCP listeners while excluding reserved system-service ports. |
+| SQLite 64-page WAL checkpoint, 1 MiB journal-size target at checkpoint, three-second lock wait | Controls transaction-log reuse and lock contention, not database size or draft count. |
 
-One app can hold at most four pending authorizations/codes and two snapshots. The global authorization pool remains 32 and the snapshot pool remains four. These per-app bounds leave room for another app under single-app saturation; they do not promise availability against callers impersonating every public client ID. Completed/expired/revoked requests release their applicable slots.
+SQLite uses full synchronous WAL transactions. Disk-full, lock, and commit failures leave existing drafts intact. Outbox replacements remain transactional and preserve exact request bytes/IDs. A queued edit is not **Saved on your ship**. Removing a database cap does not allocate disk or evade SQLite's native representation limits. The SDK opens each database afresh and no longer sets `max_page_count`; in [SQLite 3.51.0 pager source](https://github.com/sqlite/sqlite/blob/version-3.51.0/src/pager.c), that setting lives in the pager and resets at open, rather than persisting in the database file. This is a source-based conclusion, not a new migration experiment. The public JSON byte-bound parameter retains its `Int` type for source compatibility; its default is the native `Data` representation ceiling, with no smaller product quota.
 
-Live JSON is measured independently from metadata, RSS and physical pier/event-log size. Deleting live data does not erase historical events, tombstones or backups. Back up and provision disk space for measured event-log growth.
-
-The alpha local outbox accepts at most 1,000 pending mutations or 16 MiB of encoded mutation requests per account. A capacity error rejects the new enqueue, keeps previously queued requests intact and leaves the editor input visible. Capacity is released after acknowledgement; conflict replacement must work even at the limit and must roll back if replacement fails. A queued edit is not **Saved on your ship**.
-
-SQLite uses full synchronous WAL transactions. Supported migrations keep exact queued request bytes, IDs and dependencies. Disk-full and interrupted writes must fail atomically. Confirmed cache data can be reconstructed from the ship; unsent drafts cannot. Do not delete drafts to meet a storage budget. See the final alpha evidence for measured database/WAL usage and implemented cache budgets; physical-device storage qualification is outside this Simulator milestone.
-
-Each local database is limited to 128 MiB, with a 64-page automatic WAL checkpoint and a 1 MiB journal-size limit at checkpoint. A churn regression checks that the active WAL remains below 1.4 MiB. The private app directory retains at most 16 account databases (up to 2 GiB of database pages, plus bounded WAL/shared-memory files). Re-pairing an existing account is allowed at that limit. A seventeenth account is refused before consent; no account or unsent draft is evicted. Use **Review retained drafts** to read/export an older account, then deliberately remove it if space is needed. Existing over-limit legacy data is retained for recovery; new writes still obey the limits.
-
-Todo stores a list and its tasks in one document. Once its encoded list reaches 16 KiB, keep the rejected task or edit visible and split future work into another list. The list schema is unchanged. A conflict compares the revision that was actually displayed; resolving it never silently overwrites a newer revision.
+Live JSON bytes are informational accounting, not physical pier size. Logical deletes do not erase old events or backups. Confirmed cache data can be reconstructed; unsent drafts cannot. Retained-account export/removal remains deliberate. Todo still stores a list and its tasks in one document, without the former 16 KiB product cap.

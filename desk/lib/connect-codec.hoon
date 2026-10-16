@@ -91,7 +91,7 @@
   ?>  (uuid id)
   =/  ops  (field 'operations' value)
   ?>  ?=([%a *] ops)
-  ?>  &((gth (lent p.ops) 0) (lte (lent p.ops) 32))
+  ?>  (gth (lent p.ops) 0)
   [id (shax body) (turn p.ops decode-operation)]
 ++  decode-operation
   |=  value=json

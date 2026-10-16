@@ -1,3 +1,5 @@
+> Historical plan/specification. Its product quotas and mandatory qualification gates were superseded on 2026-10-16; see [current policy](../../current-readiness.md) and [retained controls](../../capacity.md). It is not a current acceptance contract.
+
 # %connect: SDK, desk, and iOS prototype design
 
 Date: 2026-10-12

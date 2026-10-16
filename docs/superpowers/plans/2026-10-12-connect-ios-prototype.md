@@ -1,3 +1,5 @@
+> Historical plan/specification. Its product quotas and mandatory qualification gates were superseded on 2026-10-16; see [current policy](../../current-readiness.md) and [retained controls](../../capacity.md). It is not a current acceptance contract.
+
 # %connect iOS Todo Prototype Implementation Plan
 
 > **For agentic workers:** Use `superpowers:executing-plans` for sequential implementation. Use `superpowers:subagent-driven-development` only if the user selects delegation. Track steps with the checkboxes below. The original request authorized planning only. The subsequent user instruction authorized implementation and isolated verification; commits, production ship changes, and publication remain unauthorized.

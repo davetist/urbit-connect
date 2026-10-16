@@ -139,13 +139,6 @@ struct VisibleList: Identifiable {
         case ConnectError.unsupportedProtocol: return "This ship uses an unsupported Connect protocol. Use the compatible desk and SDK versions listed in the integration guide."
         case ConnectError.accountChanged: return "This address now identifies a different ship instance. Review your retained drafts before pairing it."
         case ConnectError.restoreDetected: return "The ship was restored. Reconnect and review your drafts before saving them again."
-        case ConnectError.localCapacity(let resource, _):
-            switch resource {
-            case .pendingMutations: return "This iPhone has 1,000 pending changes. Your new input is kept. Synchronize or review existing drafts before adding another."
-            case .pendingRequestBytes: return "Pending changes have reached 16 MiB on this iPhone. Your new input is kept. Synchronize or review existing drafts first."
-            case .retainedAccounts: return "This app has 16 saved ship accounts. Export drafts and remove an older account before pairing another."
-            }
-        case ConnectError.invalidJSON(let message) where message.contains("byte limit"): return "This list exceeds the 16 KiB document limit. Your input is kept. Use another list for additional tasks."
         case ConnectError.invalidJSON(let message), ConnectError.storage(let message), ConnectError.transport(let message): return message
         case ConnectError.server(_, _, let message): return message
         case TodoModelError.unsupportedSchema, TodoModelError.invalidData, TodoModelError.duplicateTaskID: return "This change does not match the supported todo format. Your existing data is unchanged."

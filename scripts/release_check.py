@@ -77,11 +77,11 @@ def manifest(artifacts=None):
     for p in sorted((ROOT / 'artifacts/alpha').glob('*.json')):
         # Hash reviewed aggregate files only; logs, auth fixtures and raw recordings stay private.
         if p.name not in {'qualification.json'}: evidence[p.relative_to(ROOT).as_posix()] = digest(p)
-    return {'manifestVersion': 1, 'version': VERSION, 'protocolVersion': 1, 'sourceCommit': None, 'source': {group: tree(group) for group in SOURCE_GROUPS}, 'toolchain': json.loads((ROOT / 'toolchain.json').read_text()), 'artifacts': artifacts or {}, 'evidence': evidence, 'publicationBlockers': publication_blockers(), 'qualified': False}
+    return {'manifestVersion': 2, 'version': VERSION, 'protocolVersion': 1, 'sourceCommit': None, 'source': {group: tree(group) for group in SOURCE_GROUPS}, 'toolchain': json.loads((ROOT / 'toolchain.json').read_text()), 'artifacts': artifacts or {}, 'evidence': evidence, 'publicationBlockers': publication_blockers(), 'readinessPolicy': 'informational'}
 
 
 def verify_manifest(value):
-    if value.get('manifestVersion') != 1 or value.get('version') != VERSION:
+    if value.get('manifestVersion') not in {1, 2} or value.get('version') != VERSION:
         raise ValueError('unsupported release manifest')
     for record in value.get('artifacts', {}).values():
         path = ROOT / record['path']

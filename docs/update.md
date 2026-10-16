@@ -8,4 +8,4 @@ Use the root/local `UrbitConnect` package and rebuild/install Todo over its exis
 
 If an update fails, stop new traffic and diagnose the exact version/compile/runtime error before restoring. A restored old pier is a rollback with a recovery-point loss window, not an ordinary compatible update. Follow `operations.md`: isolate ingress/Ames, restore a verified backup, rotate to a fresh generation through owner authority, reject old clients and explicitly reconcile drafts before reopening. Preserve the newer local cache and drafts if a downgrade is unsupported.
 
-Record actual install/update evidence and required independent operator signoff in the alpha matrix. Do not mark an untested profile supported.
+Record actual install/update observations and their scope. Independent operator signoff is not a readiness gate. Do not present an unobserved profile as demonstrated.

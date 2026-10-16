@@ -24,4 +24,4 @@ For logout, reuse detection or abandoned exchanges, the owning resource sends `%
 
 The resource owns its wire protocol, encryption envelopes, tokens, retries, storage limits and HTTP responses. Resource grants never authorize Connect document routes. The generic implementation contains no consumer-specific client IDs, scopes, token claims or timing exceptions. [grant-probe](../integrations/grant-probe/desk/app/grant-probe.hoon) demonstrates the interface with a fixed-response notes resource.
 
-Durable state version 2 appends the integration-policy map. Version 0 and version 1 states migrate without changing existing clients or documents. The source change does not qualify a new alpha release; existing release gates remain open.
+Durable state version 2 appends the integration-policy map. Version 0 and version 1 states migrate without changing existing clients or documents. Existing observations retain their original source scope; Connect no longer issues an alpha-qualification verdict or requires independent/timed signoff.

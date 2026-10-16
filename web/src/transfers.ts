@@ -6,7 +6,6 @@ export async function exportData(app: App, account: Account): Promise<void> {
   const collections: Record<string, Document[]> = Object.create(null);
   for (const row of result.documents) (collections[row.collection] ??= []).push(row);
   const envelope = { formatVersion: 1, source: account, namespace: app.namespace, collections };
-  // Compact encoding keeps every quota-valid export within the importer's bound.
   const blob = new Blob([stringifyJSON(envelope, false, 24)], { type: 'application/json' });
   const url = URL.createObjectURL(blob), link = el('a'); link.href = url; link.download = `${app.id}-export.json`; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000); notify(`Exported ${result.documents.length} documents from a consistent snapshot.`);
@@ -25,16 +24,14 @@ export function importData(app: App, changed: () => Promise<void>): void {
     const batches: JSONValue[][] = [];
     actions.replaceChildren(); result.replaceChildren();
     const selected = file.files?.[0]; if (!selected) throw new Error('Choose an export file');
-    if (selected.size > 8 * 1024 * 1024) throw new Error('Export exceeds 8 MiB');
     const text = await selected.text(); if (!current(expected)) return;
-    const envelope = parseJSON(text, 8 * 1024 * 1024, 24);
+    const envelope = parseJSON(text, undefined, 24);
     if (!isObject(envelope) || !isObject(envelope.collections)) throw new Error('Invalid Connect export');
     const rows: { collection: string; value: JSONValue }[] = [];
     for (const [collection, records] of Object.entries(envelope.collections)) {
       if (!Array.isArray(records)) throw new Error('Each collection must contain an array');
       for (const record of records) rows.push({ collection, value: record });
     }
-    if (rows.length > 1000) throw new Error('Import exceeds 1,000 documents');
     const seen = new Set<string>();
     for (const row of rows) {
       if (!isObject(row.value) || typeof row.value.id !== 'string') throw new Error('Every document needs an ID');
@@ -42,7 +39,7 @@ export function importData(app: App, changed: () => Promise<void>): void {
       if (seen.has(key)) throw new Error('Export contains a duplicate document'); seen.add(key);
     }
     let conflicts = 0;
-    // Small batches preserve the 256 KiB request bound even at max document size.
+    // Small batches keep progress visible; this is scheduling, not an import quota.
     for (let offset = 0; offset < rows.length; offset += 8) {
       const collections: JSONObject = Object.create(null);
       for (const row of rows.slice(offset, offset + 8)) ((collections[row.collection] ??= []) as JSONValue[]).push(row.value);

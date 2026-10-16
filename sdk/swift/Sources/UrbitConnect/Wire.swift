@@ -38,7 +38,7 @@ extension ConnectDocument {
         let raw = try wire.string("id"), collection = try wire.string("collection")
         guard ConnectIdentifiers.document(raw), let id = UUID(uuidString: raw), ConnectIdentifiers.collection(collection) else { throw ConnectError.invalidIdentifier }
         self.id = id; self.collection = collection; data = try wire.object("data")
-        _ = try JSONValue.object(data).encoded(maxBytes: 16_384)
+        _ = try JSONValue.object(data).encoded()
         revision = try Revision(wire.string("revision")); updatedAt = try wire.string("updatedAt")
     }
     var wire: JSONObject { ["id": .string(id.uuidString.lowercased()), "collection": .string(collection), "data": .object(data), "revision": .string(revision.rawValue), "updatedAt": .string(updatedAt)] }

@@ -46,20 +46,6 @@ import Testing
         #expect(try LocalStore(url: url).mutations() == [queued])
         #expect(try LocalStore(url: url).mutations().first?.body == queued.body)
     }
-    @Test func legacyOverBudgetQueueIsPreservedAndCanReleaseCapacityWithoutEviction() throws {
-        let url = CapacityTests().url(); defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let rows = try (0..<1001).map { _ in try CapacityTests().mutation(bytes: 17000) }
-        try seedSchemaOne(url, rows: rows)
-        let store = try LocalStore(url: url)
-        #expect(try store.mutations() == rows)
-        #expect(throws: ConnectError.self) { try store.enqueue(CapacityTests().mutation()) }
-        #expect(try store.mutations().map(\.id) == rows.map(\.id))
-        // Completing old work releases both budgets. It never silently drops rows.
-        for row in rows.prefix(20) { try store.removeMutation(row.id) }
-        try store.enqueue(CapacityTests().mutation())
-        #expect(try LocalStore(url: url).mutations().count == 982)
-        #expect(try LocalStore(url: url).mutations().dropLast().map(\.id) == rows.dropFirst(20).map(\.id))
-    }
     @Test func schemaOneMigrationPreservesPendingBytesAndCanBeRepeated() throws {
         let url = CapacityTests().url(); defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
@@ -112,17 +98,6 @@ import Testing
             }
             #expect(try LocalStore(url: url).mutations().count == 2)
         }
-    }
-    @Test func conflictReplacementWorksAtCapacityAndFailureRestoresTheFamily() throws {
-        let url = CapacityTests().url(); defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = try LocalStore(url: url)
-        for _ in 0..<1000 { try store.enqueue(CapacityTests().mutation()) }
-        let before = try store.mutations(), replacement = try CapacityTests().mutation()
-        try store.replaceMutations(removing: [before[0].id], with: replacement)
-        #expect(try store.mutations().count == 1000)
-        let full = try store.mutations()
-        #expect(throws: ConnectError.self) { try store.replaceMutations(removing: [replacement.id], with: CapacityTests().mutation(bytes: 16 * 1024 * 1024 + 1)) }
-        #expect(try store.mutations().map(\.id) == full.map(\.id))
     }
     @Test func sustainedOutboxChurnBoundsWALGrowth() throws {
         let url = CapacityTests().url(); defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }

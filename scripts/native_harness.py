@@ -143,31 +143,11 @@ def running(simulator, api_override=None,run_id=None):
                         result['baselineLaunched'] = True
                         result['baselineFrameworkPath'] = str(framework_path)
                 elif action=='local-storage': status,result=200,local_stats()
-                elif action=='fill-outbox-capacity':
-                    # Only while the test app is terminated and its proxy is down.
-                    import socket
-                    try:
-                        with socket.create_connection(('127.0.0.1',TARGETS.port('https')),timeout=1): raise ValueError('Capacity injection requires isolated offline ingress')
-                    except OSError: pass
-                    path = local_database(); connection = sqlite3.connect(path)
-                    try:
-                        rows = list(connection.execute('SELECT id,created,wire,request_bytes FROM outbox ORDER BY rowid'))
-                        if len(rows) != 1 or capacity_backup.exists(): raise ValueError('Capacity fixture requires one backed-up mutation')
-                        capacity_backup.write_text(json.dumps({'fixtureId':TARGETS.fixture_id,'database':str(path),'rows':[(r[0],r[1],base64.b64encode(r[2]).decode(),r[3]) for r in rows]})); capacity_backup.chmod(0o600)
-                        with connection:
-                            for _ in range(999):
-                                wire = json.loads(rows[0][2]); wire['id'] = str(uuid.uuid4())
-                                body = json.loads(base64.b64decode(wire['body'])); body['requestId'] = wire['id']
-                                request = json.dumps(body,separators=(',',':')).encode();wire['body'] = base64.b64encode(request).decode()
-                                connection.execute('INSERT INTO outbox(id,created,wire,request_bytes) VALUES(?,?,?,?)',(wire['id'],rows[0][1],json.dumps(wire,separators=(',',':')).encode(),len(request)))
-                    finally: connection.close()
-                    status,result=200,local_stats()
-                elif action=='restore-outbox-capacity': restore_capacity();status,result=200,local_stats()
                 elif action=='record-app-update':
                     before,after = value['before'],value['after']
                     if before['schema'] != 1 or after['schema'] != 2 or before['pendingCount'] != 1 or after['pendingCount'] != 1 or before['requestHashes'] != after['requestHashes'] or before['mutationIDsSHA256'] != after['mutationIDsSHA256']: raise ValueError('App update did not preserve queued requests')
                     baseline = json.loads((TARGETS.work/'baseline-Todo.json').read_text())
-                    report = {'passed':True,'fixtureId':TARGETS.fixture_id,'simulator':simulator,'baselineBundleSHA256':baseline['bundleSHA256'],'baselineRuntimeSHA256':baseline['runtimeFrameworksSHA256'],'before':before,'after':after,'uninstalledBetweenVersions':False,'retainedPairing':True,'capacityRejectPreservedInput':True,'catchUpEffects':1}
+                    report = {'passed':True,'fixtureId':TARGETS.fixture_id,'simulator':simulator,'baselineBundleSHA256':baseline['bundleSHA256'],'baselineRuntimeSHA256':baseline['runtimeFrameworksSHA256'],'before':before,'after':after,'uninstalledBetweenVersions':False,'retainedPairing':True,'catchUpEffects':1}
                     (ROOT/'artifacts/alpha/app-update.json').write_text(json.dumps(report,indent=2)+'\n')
                     status,result=200,{'recorded':True}
                 elif action=='seed-load':

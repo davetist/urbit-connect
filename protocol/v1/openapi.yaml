@@ -91,17 +91,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -304,17 +293,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -472,17 +450,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -598,17 +565,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -705,17 +661,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -847,17 +792,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -1006,17 +940,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -1123,17 +1046,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -1277,17 +1189,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -1403,17 +1304,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -1441,7 +1331,8 @@
             "in": "query",
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Canonical nonnegative decimal offset, no greater than the number of documents in this listing or snapshot. There is no fixed total-document ceiling."
           },
           {
             "name": "limit",
@@ -1453,7 +1344,8 @@
               "default": 100
             }
           }
-        ]
+        ],
+        "description": "Read an immutable snapshot page. A validated successful page renews its 60-second inactivity lease. An authenticated, authorized, unexpired app continuation throttled with Retry-After: 60 retains its view for that wait plus the normal inactivity allowance. Expiry, revocation and namespace generation checks still apply."
       }
     },
     "/connect/owner/v1/bootstrap": {
@@ -1529,17 +1421,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -1638,17 +1519,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -1783,17 +1653,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -1881,17 +1740,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -2017,17 +1865,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -2170,17 +2007,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -2277,17 +2103,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -2430,17 +2245,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -2530,17 +2334,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -2675,17 +2468,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -2713,7 +2495,8 @@
             "in": "query",
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Canonical nonnegative decimal offset, no greater than the number of documents in this listing or snapshot. There is no fixed total-document ceiling."
           },
           {
             "name": "limit",
@@ -2801,17 +2584,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -2954,17 +2726,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -3089,17 +2850,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -3242,17 +2992,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -3376,17 +3115,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -3528,17 +3256,6 @@
               }
             }
           },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
           "429": {
             "description": "Capacity or rate limit; Retry-After supplied",
             "headers": {
@@ -3658,7 +3375,8 @@
             "in": "query",
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Canonical nonnegative decimal offset, no greater than the number of documents in this listing or snapshot. There is no fixed total-document ceiling."
           },
           {
             "name": "limit",
@@ -3670,7 +3388,8 @@
               "default": 100
             }
           }
-        ]
+        ],
+        "description": "Read an immutable snapshot page. A validated successful page renews its 60-second inactivity lease. An authenticated, authorized, unexpired app continuation throttled with Retry-After: 60 retains its view for that wait plus the normal inactivity allowance. Expiry, revocation and namespace generation checks still apply."
       }
     },
     "/connect/owner/v1/clients/{id}/remove": {
@@ -3764,17 +3483,6 @@
           },
           "410": {
             "description": "Expired snapshot/cursor or changed epoch; resnapshot",
-            "headers": {
-              "Cache-Control": {
-                "schema": {
-                  "const": "no-store"
-                },
-                "description": "No token or document response may be cached by intermediaries"
-              }
-            }
-          },
-          "413": {
-            "description": "Encoded request/document exceeds byte bound",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -3974,7 +3682,6 @@
           "operations": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 32,
             "items": {
               "oneOf": [
                 {
@@ -4210,7 +3917,6 @@
           "results": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 32,
             "items": {
               "$ref": "#/components/schemas/CommitResult"
             }
@@ -4285,7 +3991,6 @@
           "changes": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 32,
             "items": {
               "oneOf": [
                 {
@@ -4611,13 +4316,11 @@
         "properties": {
           "count": {
             "type": "integer",
-            "minimum": 0,
-            "maximum": 32
+            "minimum": 0
           },
           "operations": {
             "type": "array",
             "minItems": 0,
-            "maxItems": 32,
             "items": {
               "oneOf": [
                 {
@@ -4679,7 +4382,6 @@
           "scopes": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 8,
             "items": {
               "type": "string",
               "minLength": 1,
@@ -4690,7 +4392,6 @@
           "redirectURIs": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 8,
             "items": {
               "type": "string",
               "maxLength": 256

@@ -48,7 +48,6 @@
   ^-  @t
   =/  data  body.request.request
   ?~  data  ''
-  ?>  (lte p.u.data 262.144)
   ?>  =(p.u.data (met 3 q.u.data))
   q.u.data
 ++  json-body
@@ -276,7 +275,7 @@
         |=  [a=record:c b=record:c]
         ?:  =(collection.key.a collection.key.b)  (aor id.key.a id.key.b)
         (aor collection.key.a collection.key.b)
-      =/  offset  (parameter 'page' 0 0 1.000)
+      =/  offset  (parameter 'page' 0 0 (lent rows))
       =/  limit  (parameter 'limit' 100 1 100)
       =/  selected  (scag limit (slag offset rows))
       =/  next  (add offset (lent selected))
@@ -285,7 +284,7 @@
       =/  snapshot  (~(get by snapshots.world) (snag 1 segments))
       ?~  snapshot  (fail 410 'snapshot_expired' 'Start a new snapshot')
       ?.  =(session.u.snapshot (cat 3 'owner-' (ud:cc key)))  (fail 404 'not_found' 'Snapshot does not exist')
-      (snapshot-page u.snapshot)
+      (snapshot-page u.snapshot |)
     ?:  =(2 (lent segments))
       ?:  =('consents' (snag 0 segments))
         =/  pending  (~(get by pending.auth.state.world) (snag 1 segments))
@@ -353,7 +352,6 @@
         `(decode:ci u.policy-json)
       ?>  ?~(policy (valid-redirect:ca redirect) (~(has in redirects.u.policy) redirect))
       ?:  (~(has by clients.auth.state.world) id)  (fail 409 'client_exists' 'This client is already registered')
-      ?:  (gte (lent ~(tap by clients.auth.state.world)) 8)  (fail 429 'client_capacity' 'Eight clients are already registered')
       =/  namespace  (cat 3 'app-' (ud:cc nonce.state.world))
       =/  app=client:c  [id name redirect namespace & now.ctx]
       =?  integrations.state.world  ?=(^ policy)
@@ -430,11 +428,7 @@
       =/  db  u.space
       ?:  =('mutations' (snag 2 segments))
         =/  request  (decode-mutation:cc (body request.ctx))
-        =/  other
-          %+  roll  ~(tap by spaces.state.world)
-          |=  [entry=[p=@t q=space:c] total=@ud]
-          ?:(=(p.entry namespace) total (add total bytes.q.entry))
-        =/  result  (mutate:cs db [namespace epoch.db & & &] now.ctx request (sub 16.777.216 other))
+        =/  result  (mutate:cs db [namespace epoch.db & & &] now.ctx request)
         =.  spaces.state.world  (~(put by spaces.state.world) namespace next.result)
         (reply status.outcome.result body.outcome.result)
       ?:  =('snapshots' (snag 2 segments))
@@ -511,8 +505,6 @@
         =/  data  (field:cc 'data' doc)
         ?>  ?=([%o *] data)
         ?>  (bounded:cj (en:json:html data))
-        ?>  (lte (met 3 (en:json:html data)) 16.384)
-        ?>  (lth (lent ops) 32)
         =/  current  (~(get by records.u.db) [collection id])
         =/  dead  (~(get by tombstones.u.db) [collection id])
         =/  expected=json
@@ -533,11 +525,7 @@
       ?~  db  (fail 404 'not_found' 'Namespace does not exist')
       =/  request  (decode-mutation:cc (en:json:html (field:cc 'mutation' value)))
       =.  digest.request  (shax (body request.ctx))
-      =/  other
-        %+  roll  ~(tap by spaces.state.world)
-        |=  [entry=[p=@t q=space:c] total=@ud]
-        ?:(=(p.entry namespace) total (add total bytes.q.entry))
-      =/  result  (mutate:cs u.db [namespace epoch.u.db & & &] now.ctx request (sub 16.777.216 other))
+      =/  result  (mutate:cs u.db [namespace epoch.u.db & & &] now.ctx request)
       =.  spaces.state.world  (~(put by spaces.state.world) namespace next.result)
       (reply status.outcome.result body.outcome.result)
     (fail 404 'not_found' 'Unknown owner operation')
@@ -569,16 +557,24 @@
       (reply 200 (object:cc ~[['account' (account state.world our.ctx)] ['grant' (grant:ca session)]]))
     =/  minute  (div now.ctx ~m1)
     =/  count  ?:(=(minute minute.session) requests.session 0)
+    ?:  &(=(4 (lent path)) =(~['connect' 'v1' 'snapshots'] (scag 3 path)))
+      =/  throttled  (gte count 120)
+      =.  sessions.auth.state.world
+        ?:  throttled  sessions.auth.state.world
+        (~(put by sessions.auth.state.world) id.session session(minute minute, requests +(count)))
+      ?.  read.auth  (fail 403 'insufficient_scope' 'Read permission required')
+      ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
+      =/  found  (~(get by snapshots.world) (snag 3 path))
+      ?~  found  (fail 410 'snapshot_expired' 'Start a new snapshot')
+      ?.  &(=(session.u.found id.session) =(namespace.u.found namespace.session))
+        (fail 404 'not_found' 'Snapshot does not exist')
+      (snapshot-page u.found throttled)
     ?:  (gte count 120)  (fail 429 'rate_limited' 'Wait before making more document requests')
     =.  sessions.auth.state.world  (~(put by sessions.auth.state.world) id.session session(minute minute, requests +(count)))
     ?:  =(path ~['connect' 'v1' 'mutations'])
       ?.  =(method %'POST')  (fail 405 'method_not_allowed' 'Use POST')
       =/  request  (decode-mutation:cc (body request.ctx))
-      =/  other
-        %+  roll  ~(tap by spaces.state.world)
-        |=  [entry=[p=@t q=space:c] total=@ud]
-        ?:(=(p.entry namespace.session) total (add total bytes.q.entry))
-      =/  result  (mutate:cs db auth now.ctx request (sub 16.777.216 other))
+      =/  result  (mutate:cs db auth now.ctx request)
       =.  spaces.state.world  (~(put by spaces.state.world) namespace.session next.result)
       (reply status.outcome.result body.outcome.result)
     ?.  read.auth  (fail 403 'insufficient_scope' 'Read permission required')
@@ -613,13 +609,6 @@
       ?.  =(method %'POST')  (fail 405 'method_not_allowed' 'Use POST')
       ?>  (keys:cc (json-body request.ctx) *(set @t))
       (make-snapshot db namespace.session id.session)
-    ?:  &(=(4 (lent path)) =(~['connect' 'v1' 'snapshots'] (scag 3 path)))
-      ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
-      =/  found  (~(get by snapshots.world) (snag 3 path))
-      ?~  found  (fail 410 'snapshot_expired' 'Start a new snapshot')
-      ?.  &(=(session.u.found id.session) =(namespace.u.found namespace.session))
-        (fail 404 'not_found' 'Snapshot does not exist')
-      (snapshot-page u.found)
     ?:  =(path ~['connect' 'v1' 'changes'])
       ?.  =(method %'GET')  (fail 405 'method_not_allowed' 'Use GET')
       =/  after  (~(got by args) 'after')
@@ -663,17 +652,22 @@
     =/  id  (secret 'snapshot')
     =/  value=snapshot:c  [id session namespace epoch.state.world epoch.db revision.db (add now.ctx ~m1) rows]
     =.  snapshots.world  (~(put by snapshots.world) id value)
-    (snapshot-page value)
+    (snapshot-page value |)
   ++  snapshot-page
-    |=  value=snapshot:c
+    |=  [value=snapshot:c throttled=?]
     ^-  http-result:c
     ?.  &((gth expires.value now.ctx) =(global.value epoch.state.world))
       (fail 410 'snapshot_expired' 'Start a new snapshot')
     =/  space  (~(get by spaces.state.world) namespace.value)
     ?~  space  (fail 410 'epoch_changed' 'Namespace was erased')
     ?.  =(epoch.u.space epoch.value)  (fail 410 'epoch_changed' 'Namespace was erased')
-    =/  offset  (parameter 'page' 0 0 1.000)
+    =/  offset  (parameter 'page' 0 0 (lent records.value))
     =/  limit  (parameter 'limit' 100 1 100)
+    ::  Successful reads renew inactivity. A valid throttled continuation gets
+    ::  the advertised 60-second retry wait plus the normal 60-second lease.
+    =.  value  value(expires (add now.ctx ?:(throttled ~m2 ~m1)))
+    =.  snapshots.world  (~(put by snapshots.world) id.value value)
+    ?:  throttled  (fail 429 'rate_limited' 'Wait before making more document requests')
     =/  selected  (scag limit (slag offset records.value))
     =/  next  (add offset (lent selected))
     =/  result

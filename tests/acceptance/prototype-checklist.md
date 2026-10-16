@@ -1,3 +1,5 @@
+> Historical prototype record. Commands, limits and criteria below are preserved as history, not current instructions or readiness gates.
+
 # Prototype acceptance checklist
 
 **PASS — 2026-10-12.** All A1–A12 contracts passed within the agreed local Simulator prototype. The final combined runner executed 210 cases without skipped, expected-failure, or flaky cases. Independent review findings were fixed and regression-tested. Fresh setup, package installation, visual inspection, and owned-resource cleanup are complete. See the [acceptance report](../../artifacts/acceptance/report.md) and [implementation ledger](../../docs/implementation-progress.md) for evidence and implementation rulings.

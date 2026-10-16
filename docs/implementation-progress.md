@@ -1,3 +1,5 @@
+> Historical implementation/review record. Earlier quotas, commands and qualification gates below are superseded by `current-readiness.md` and `capacity.md`; prior passes are not claims for changed source.
+
 # Implementation ledger — plan: docs/superpowers/plans/2026-10-12-connect-ios-prototype.md
 
 User authorized implementation on 2026-10-12. The planning-only statements in the original documents describe the prior turn; implementation is now authorized, including isolated development resources and required test tooling. No production ship changes, commits, or publication are authorized.

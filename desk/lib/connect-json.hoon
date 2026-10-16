@@ -15,7 +15,6 @@
 ++  bounded-depth
   |=  [text=@t limit=@ud]
   ^-  ?
-  ?:  (gth (met 3 text) 262.144)  |
   =/  chars  (trip text)
   =/  depth=@ud  0
   =/  quoted=?  |

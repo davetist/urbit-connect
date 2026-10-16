@@ -1,3 +1,5 @@
+> Historical plan/specification. Its product quotas and mandatory qualification gates were superseded on 2026-10-16; see [current policy](../../current-readiness.md) and [retained controls](../../capacity.md). It is not a current acceptance contract.
+
 # %connect Reliability Alpha Implementation Plan
 
 **Private qualification update, 2026-10-14:** The owner explicitly removed source owner and maintenance/security contact fields as blockers for the private alpha. They remain deferred publication metadata. Keep all technical, independent-human and seven-day trial gates. Following the memory investigation and bounded diagnostic, the owner authorized a fresh soak of 6 actual hours; preserve earlier failed runs and never credit their elapsed time to the new run.

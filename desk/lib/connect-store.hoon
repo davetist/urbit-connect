@@ -17,14 +17,14 @@
     (gth expires.q.item now)
   db
 ++  mutate
-  |=  [db=space:c auth=authority:c now=@da request=mutation:c available=@ud]
+  |=  [db=space:c auth=authority:c now=@da request=mutation:c]
   ^-  transition:c
   |^
   ?.  =(epoch.auth epoch.db)  (fail 401 'epoch_changed' 'Namespace was erased')
   ?.  (levy operations.request |=(op=operation:c ?:(?=(%put -.op) write.auth delete.auth)))
     (fail 403 'insufficient_scope' 'The current grant cannot perform this operation')
   =/  count  (lent operations.request)
-  ?.  &((gth count 0) (lte count 32))  (fail 400 'invalid_batch' 'Use one to 32 operations')
+  ?.  (gth count 0)  (fail 400 'invalid_batch' 'Use at least one operation')
   =/  targets  (turn operations.request |=(op=operation:c key.op))
   ?.  =(count (lent ~(tap in (silt targets))))  (fail 400 'duplicate_target' 'A batch may touch each document once')
   =/  work  (clean db now)
@@ -32,7 +32,6 @@
   ?^  prior
     ?.  =(digest.u.prior digest.request)  (fail 409 'idempotency_mismatch' 'Request ID already identifies different bytes')
     [db [200 result.u.prior]]
-  ?:  (gte (lent ~(tap by receipts.work)) 10.000)  (fail 429 'receipt_capacity' 'Retry after receipt retention expires')
   =/  revision  +(revision.work)
   =/  expiry  (add now ~d30)
   =/  ops  operations.request
@@ -41,9 +40,6 @@
   |-  ^-  transition:c
   ?~  ops
     =/  bytes  (roll ~(val by records.work) |=([row=record:c total=@ud] (add total (met 3 (en:json:html data.row)))))
-    ?:  |((gth bytes 4.194.304) (gth bytes available) (gth (lent ~(tap by records.work)) 1.000))
-      (fail 429 'quota_exceeded' 'Document count or payload quota exceeded')
-    ?:  (gth (lent ~(tap by tombstones.work)) 10.000)  (fail 429 'tombstone_capacity' 'Retry after tombstone retention expires')
     =/  commit  (object:cc ~[['revision' (decimal:cc revision)] ['results' [%a (flop results)]]])
     =/  ordered  (flop changes)
     =/  size  (met 3 (en:json:html [%a ordered]))
@@ -82,7 +78,6 @@
     =.  work  work(records (~(del by records.work) key.op), tombstones (~(put by tombstones.work) key.op [revision expiry]))
     $(ops t.ops, results [result results], changes [result changes])
   ?.  ?=([%o *] data.op)  (fail 400 'invalid_document' 'Documents must be JSON objects')
-  ?:  (gth (met 3 (en:json:html data.op)) 16.384)  (fail 413 'document_too_large' 'Document exceeds 16 KiB')
   ?.  (bounded:cj (en:json:html data.op))  (fail 400 'invalid_document' 'Document exceeds 16 levels of nesting')
   =/  row=record:c  [key.op data.op revision now]
   =.  work  work(records (~(put by records.work) key.op row))

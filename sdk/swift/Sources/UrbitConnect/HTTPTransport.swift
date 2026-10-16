@@ -6,7 +6,7 @@ struct HTTPResponse: Sendable {
     let retryAfter: TimeInterval?
     var json: JSONObject {
         get throws {
-            guard let object = try JSONValue.parse(body, maxBytes: 2_097_152, maxDepth: 24).objectValue else { throw ConnectError.invalidJSON("Expected an object response") }
+            guard let object = try JSONValue.parse(body, maxDepth: 24).objectValue else { throw ConnectError.invalidJSON("Expected an object response") }
             return object
         }
     }
@@ -54,11 +54,10 @@ actor HTTPTransport: ConnectTransport {
         if body != nil { request.setValue(form ? "application/x-www-form-urlencoded" : "application/json", forHTTPHeaderField: "Content-Type") }
         if let token { request.setValue("Bearer " + token, forHTTPHeaderField: "Authorization") }
         let (stream, response) = try await session.bytes(for: request)
-        guard let response = response as? HTTPURLResponse, let finalURL = response.url, Self.sameOrigin(finalURL, origin), response.expectedContentLength <= 2_097_152 else { throw ConnectError.protocolMismatch }
+        guard let response = response as? HTTPURLResponse, let finalURL = response.url, Self.sameOrigin(finalURL, origin) else { throw ConnectError.protocolMismatch }
         if (300..<400).contains(response.statusCode) { throw ConnectError.invalidOrigin }
-        var bytes = Data(); bytes.reserveCapacity(Int(max(0, response.expectedContentLength)))
+        var bytes = Data()
         for try await byte in stream {
-            guard bytes.count < 2_097_152 else { throw ConnectError.protocolMismatch }
             bytes.append(byte)
         }
         return .init(status: response.statusCode, body: bytes, retryAfter: response.value(forHTTPHeaderField: "Retry-After").flatMap(Double.init))

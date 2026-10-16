@@ -1,3 +1,5 @@
+> Historical implementation/review record. Earlier quotas, commands and qualification gates below are superseded by `current-readiness.md` and `capacity.md`; prior passes are not claims for changed source.
+
 # Independent implementation review
 
 A fresh-context reviewer inspected the complete authored desk, SDK, owner UI, native sample, tests, tooling and documentation. The review was read-only and did not access private credentials or alter the running fixtures. It identified no Critical findings and four Important findings. The author retained responsibility for the fixes and final runtime acceptance; no second review substitutes for regression testing.

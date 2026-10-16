@@ -20,7 +20,6 @@ public actor ConnectClient {
     private var pollTask: Task<HTTPResponse, any Error>?
     private var refreshTask: Task<Void, any Error>?
     private var observers: [UUID: (String, AsyncStream<CollectionState>.Continuation)] = [:]
-    private static let maximumRetainedAccounts = 16
 
     public init(configuration: ConnectConfiguration, persistenceDirectory: URL) throws {
         self.configuration = configuration; directory = persistenceDirectory
@@ -74,7 +73,6 @@ public actor ConnectClient {
             let candidate = try makeTransport(origin)
             let account = try await inspect(candidate, origin: origin)
             try check(expected)
-            try checkAccountCapacity(account)
             let request = try AuthorizationRequest(configuration: configuration, origin: origin)
             let callback = try await presentation.authorize(url: request.url, callbackScheme: configuration.redirectURI.scheme!)
             try check(expected); let code = try request.code(from: callback)
@@ -122,7 +120,6 @@ public actor ConnectClient {
         Data((account.issuer.absoluteString + "\0" + account.instanceId + "\0" + client).utf8).sha256Hex
     }
     private func install(_ next: Credentials, transport: any ConnectTransport) throws {
-        try checkAccountCapacity(next.account)
         let selected = Self.accountKey(next.account, client: configuration.clientID)
         let storage = try LocalStore(url: directory.appending(path: selected + ".sqlite"))
         if let old = try storage.metadata("binding"), let binding = try JSONValue.parse(old).objectValue {
@@ -166,7 +163,7 @@ public actor ConnectClient {
         return try store?.documents().filter { $0.collection == collection } ?? []
     }
     public func put(collection: String, id: UUID, data: JSONObject, expectedRevision: Revision?) async throws -> PendingMutationID {
-        _ = try JSONValue.object(data).encoded(maxBytes: 16_384)
+        _ = try JSONValue.object(data).encoded()
         return try queue(collection: collection, id: id, data: data, expected: expectedRevision)
     }
     public func delete(collection: String, id: UUID, expectedRevision: Revision) async throws -> PendingMutationID {
@@ -207,13 +204,6 @@ public actor ConnectClient {
             return true
         }.sorted { $0.lastPathComponent < $1.lastPathComponent }
     }
-    private func checkAccountCapacity(_ account: ConnectAccount) throws {
-        let id = Self.accountKey(account, client: configuration.clientID)
-        let files = try accountFiles()
-        guard files.contains(where: { $0.deletingPathExtension().lastPathComponent == id }) || files.count < Self.maximumRetainedAccounts else {
-            throw ConnectError.localCapacity(resource: .retainedAccounts, limit: Self.maximumRetainedAccounts)
-        }
-    }
     private func recordRecoveryAccount(_ account: ConnectAccount, in storage: LocalStore) throws {
         try storage.setMetadata("recovery-account", value: JSONValue.object(["clientId": .string(configuration.clientID), "account": .object(account.wire)]).encoded())
     }
@@ -241,7 +231,7 @@ public actor ConnectClient {
         let drafts = try saved.mutations().map { mutation -> JSONValue in
             .object(["mutationId": .string(mutation.id.rawValue.uuidString.lowercased()), "collection": .string(mutation.collection), "documentId": .string(mutation.documentID.uuidString.lowercased()), "draft": mutation.draft.map(JSONValue.object) ?? .null, "expectedRevision": mutation.expected.map { .string($0.rawValue) } ?? .null, "status": .string(mutation.status.rawValue)])
         }
-        return try JSONValue.object(["formatVersion": .number("1"), "clientId": .string(configuration.clientID), "account": archive.account.map { .object($0.wire) } ?? .null, "drafts": .array(drafts)]).encoded(maxBytes: 32 * 1024 * 1024, maxDepth: 24)
+        return try JSONValue.object(["formatVersion": .number("1"), "clientId": .string(configuration.clientID), "account": archive.account.map { .object($0.wire) } ?? .null, "drafts": .array(drafts)]).encoded(maxDepth: 24)
     }
     /// Deliberately discards an older account after the caller confirms its ID.
     public func removeRetainedAccount(archiveID: String, confirmation: String) throws {
@@ -364,10 +354,9 @@ public actor ConnectClient {
                     guard let object = item.objectValue else { throw ConnectError.protocolMismatch }
                     rows.append(try .init(wire: object))
                 }
-                guard rows.count <= 1000 else { throw ConnectError.protocolMismatch }
                 guard let page = wire["nextPage"]?.stringValue else { break }
                 guard seenPages.insert(page).inserted else { throw ConnectError.protocolMismatch }
-                response = try await authorized(path: "/connect/v1/snapshots/" + Self.query(id) + "?page=" + Self.query(page), generation: expected)
+                response = try await snapshotPage(path: "/connect/v1/snapshots/" + Self.query(id) + "?page=" + Self.query(page), generation: expected)
                 try check(expected)
                 if response.status == 410 { expired = true; break }
                 guard response.status == 200 else { throw try ServerFailure(response) }; wire = try response.json
@@ -377,10 +366,22 @@ public actor ConnectClient {
         }
         throw ConnectError.transport("Snapshots expired repeatedly; retrying when the connection is stable")
     }
+    private func snapshotPage(path: String, generation expected: UUID) async throws -> HTTPResponse {
+        while true {
+            let response = try await authorized(path: path, generation: expected)
+            try check(expected)
+            guard response.status == 429 else { return response }
+            let failure = try ServerFailure(response)
+            // Keep this continuation and prior pages while the ship asks us to wait.
+            let delay = RetryDelay.seconds(backoff: 60, retryAfter: failure.retryAfter)
+            try await Task.sleep(for: .seconds(delay))
+            try check(expected)
+        }
+    }
     private func pullChanges(generation expected: UUID) async throws {
         guard let cursor = try store?.cursor() else { try await takeSnapshot(generation: expected); return }
         var after = cursor
-        for _ in 0..<16 {
+        while true {
             let response = try await authorized(path: "/connect/v1/changes?after=" + Self.query(after) + "&wait=0&limit=100", generation: expected)
             try check(expected)
             if response.status == 410 { try await recoverCursor(response, generation: expected); return }
@@ -389,7 +390,6 @@ public actor ConnectClient {
             if wire["hasMore"]?.boolValue == false { return }
             let next = try wire.string("nextCursor"); guard next != after else { throw ConnectError.protocolMismatch }; after = next
         }
-        throw ConnectError.protocolMismatch
     }
     private func consumeChanges(_ response: HTTPResponse, generation expected: UUID) async throws {
         if response.status == 410 { try await recoverCursor(response, generation: expected); return }

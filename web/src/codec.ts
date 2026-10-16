@@ -34,10 +34,10 @@ function validateNumber(raw: string): void {
     if (integer > '9007199254740991' || (integer === '9007199254740991' && /[1-9]/.test(remainder))) throw new Error('Number exceeds the portable range');
   }
 }
-export function parseJSON(text: string, maxBytes = 262144, maxDepth = 16): JSONValue {
+export function parseJSON(text: string, maxBytes?: number, maxDepth = 16): JSONValue {
   if (!Number.isInteger(maxDepth) || maxDepth < 1 || maxDepth > 24) throw new Error('Invalid depth bound');
   validateString(text);
-  if (new TextEncoder().encode(text).length > maxBytes) throw new Error('JSON exceeds its byte limit');
+  if (maxBytes !== undefined && new TextEncoder().encode(text).length > maxBytes) throw new Error('JSON exceeds its byte limit');
   let index = 0;
   const whitespace = () => { while (index < text.length && /[\x20\t\r\n]/.test(text[index])) index++; };
   const consume = (char: string) => { whitespace(); if (text[index] !== char) return false; index++; return true; };

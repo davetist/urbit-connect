@@ -7,7 +7,7 @@
 =/  req  ^-  mutation:c
   ['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' 0x1 ~[one]]
 |%
-++  first  (mutate:cs empty:cs auth now req 16.777.216)
+++  first  (mutate:cs empty:cs auth now req)
 ++  test-create-read-update-delete
   =/  made  first
   =/  row  (~(get by records.next.made) key.one)
@@ -19,37 +19,37 @@
 ++  test-atomic-batch-conflict
   =/  made  first
   =/  bad=operation:c  one(key ['lists' '22222222-2222-4222-8222-222222222222'])
-  =/  result  (mutate:cs next.made auth now req(id 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', operations ~[bad one]) 16.777.216)
+  =/  result  (mutate:cs next.made auth now req(id 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', operations ~[bad one]))
   ;:  weld
     (expect-eq !>(409) !>(status.outcome.result))
     (expect-eq !>(next.made) !>(next.result))
   ==
 ++  test-same-request-same-result
   =/  made  first
-  =/  again  (mutate:cs next.made auth now req 16.777.216)
+  =/  again  (mutate:cs next.made auth now req)
   ;:  weld
     (expect-eq !>(200) !>(status.outcome.again))
     (expect-eq !>(made) !>(again))
   ==
 ++  test-changed-body-same-request-rejected
   =/  made  first
-  =/  again  (mutate:cs next.made auth now req(digest 0x2) 16.777.216)
+  =/  again  (mutate:cs next.made auth now req(digest 0x2))
   (expect-eq !>(409) !>(status.outcome.again))
 ++  test-duplicate-target-rejected
-  =/  result  (mutate:cs empty:cs auth now req(operations ~[one one]) 16.777.216)
+  =/  result  (mutate:cs empty:cs auth now req(operations ~[one one]))
   (expect-eq !>(400) !>(status.outcome.result))
 ++  test-reauthenticated-retry-recovers-receipt
   =/  made  first
-  =/  again  (mutate:cs next.made auth now req 16.777.216)
+  =/  again  (mutate:cs next.made auth now req)
   ;:  weld
     (expect-eq !>(200) !>(status.outcome.again))
     (expect-eq !>(outcome.made) !>(outcome.again))
   ==
 ++  test-permissions-before-receipt
   =/  made  first
-  =/  denied  (mutate:cs next.made auth(write |) now req 16.777.216)
+  =/  denied  (mutate:cs next.made auth(write |) now req)
   (expect-eq !>(403) !>(status.outcome.denied))
 ++  test-epoch-mismatch
-  =/  denied  (mutate:cs empty:cs auth(epoch 2) now req 16.777.216)
+  =/  denied  (mutate:cs empty:cs auth(epoch 2) now req)
   (expect-eq !>(401) !>(status.outcome.denied))
 --

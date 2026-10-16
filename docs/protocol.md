@@ -26,35 +26,23 @@ A document is `{id,collection,data,revision,updatedAt}`. IDs are lower-case UUID
 
 A success contains `{revision,results}`; each compact result identifies its collection, ID, revision and deletion status. It does not contain document bodies. The receipt binds exact submitted bytes, request UUID, namespace, global epoch and namespace epoch. Repeating the exact request returns the same success; changed bytes return `idempotency_mismatch`. A new authorized session in the same epochs can recover the prior receipt. Clients persist exact bytes before sending and stop blindly retrying mutations older than the 30-day receipt window.
 
-Errors use `{error:{code,message,requestId}}`, with an optional `retryAfterSeconds` field. This implementation supplies the `Retry-After` header: one second for an occupied long-poll slot, 60 seconds for other capacity/rate limits. A 409 `conflict` adds the target, current revision or tombstone revision, `deleted`, and `current` only for a read-authorized caller. The client preserves both the draft and current version. OAuth routes use standard OAuth error objects instead. Missing authority is 401; scope/owner denial 403; malformed input 400; missing document 404; stale sync state 410; byte limits 413; capacity/rate bounds 429 with Retry-After.
+Errors use `{error:{code,message,requestId}}`, with an optional `retryAfterSeconds` field. This implementation supplies the `Retry-After` header: one second for an occupied long-poll slot, 60 seconds for other capacity/rate limits. A 409 `conflict` adds the target, current revision or tombstone revision, `deleted`, and `current` only for a read-authorized caller. The client preserves both the draft and current version. OAuth routes use standard OAuth error objects instead. Missing authority is 401; scope/owner denial 403; malformed input 400; missing document 404; stale sync state 410; transient-capacity/rate bounds 429 with Retry-After.
 
 ## Synchronization
 
 A collection GET is ordered by document ID with limit 1–100 and an epoch-bound continuation. It is a live listing, not a consistent export.
 
-`POST /snapshots` captures an immutable namespace view at a cursor and returns the first page. Subsequent pages refer to that snapshot ID and offset, are bound to its session, and never mix in later writes. Pages contain `{snapshotId,atCursor,documents,nextPage}`. The snapshot expires after 60 seconds. Begin changes strictly after `atCursor` once all pages are durably installed in one local transaction. Clear transient snapshots and polls on agent reload.
+`POST /snapshots` captures an immutable namespace view at a cursor and returns the first page. Subsequent pages refer to that snapshot ID and offset, are bound to its session, and never mix in later writes. Pages contain `{snapshotId,atCursor,documents,nextPage}`. The snapshot has a renewable 60-second inactivity lease. Each validated successful page renews it; an authenticated, authorized, unexpired continuation that is rate-limited receives the advertised 60-second wait plus that inactivity allowance. Invalid, expired, revoked or wrong-owner requests do not renew it. The SDK retains accumulated pages while waiting for a 429 continuation retry. Begin changes strictly after `atCursor` once all pages are durably installed in one local transaction. Clear transient snapshots and polls on agent reload.
 
 `GET /changes?after=...&wait=25&limit=100` returns whole change batches, `nextCursor`, and `hasMore`. Cursors encode global epoch, namespace epoch and revision; clients treat them as opaque. A put change includes `document` and `deleted:false`; a delete includes collection, ID, revision and `deleted:true`. A 410 gap restarts a snapshot while retaining unsent drafts. A changed identity/restore epoch requires reauthorization. Authorization is rechecked at delivery, including a pending poll, snapshot page or receipt. Revocation preserves owner data and invalidates access promptly.
 
-## Bounds
+## Execution and retention controls
 
-| Resource | Bound |
-|---|---:|
-| Document data / request | 16 KiB / 256 KiB UTF-8 |
-| Atomic batch | 32 operations |
-| Live namespace | 1,000 documents / 4 MiB |
-| Total live payload | 16 MiB |
-| Registered clients / active sessions | 8 / 32 |
-| Receipts / tombstones | 10,000 each per namespace, 30 days |
-| Change journal | 1,024 batches or 1 MiB per namespace |
-| Immutable snapshots | 1 per session, 4 globally, 60 seconds |
-| Long polling | 1 per session, at most 25 seconds |
-| Document requests | 120 per minute per session |
-| Authorization starts | 30 per minute per client, 32 pending globally |
+There are no product document-byte, request-byte, mutation-count, live-storage, registration or durable-session quotas. See [capacity.md](capacity.md) for the retained controls and concrete reasons: recursive JSON depth/numeric validity, canonical identifier grammar, finite response pages, transient authorization/snapshot/poll slots, request rates, credential lifetimes and replay-history retention. Pages continue until complete; a response page size is not a total-data ceiling.
 
-Capacity exhaustion rejects new work; it never silently discards unexpired deduplication receipts or tombstones. Owner operations obey the same data bounds and version checks. Erasing one namespace advances its epoch and revokes its sessions. Restoring an older pier requires an explicit global restore-epoch rotation and reauthorization, since rollback cannot be inferred reliably from the restored state itself.
+Receipts and tombstones retain a 30-day recovery window with no count cap. Journal expiry requires a fresh snapshot and never removes live documents. Owner and app writes share validation, permission and atomic version checks. Erasing one namespace advances its epoch and revokes its sessions. Restoring an older pier requires explicit global restore-epoch rotation and reauthorization, since rollback cannot be inferred reliably from restored state alone.
 
-Refresh families retain at most 4096 consumed token hashes. Reaching that bound revokes the family and requires a fresh owner-approved connection.
+Refresh families retain at most 4,096 consumed token hashes. Reaching this retained security-history boundary revokes that family and requires fresh owner-approved connection; consumed tokens are never silently forgotten while their family stays valid.
 
 ## Opt-in local resources
 

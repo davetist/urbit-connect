@@ -10,4 +10,4 @@ Prerequisites: a supported ship allowing custom desks; its backed-up pier; a rea
 6. In Todo create **Personal**, add **Buy milk**, and wait for **Saved on your ship**. Offline edits have a pending/local status. Open the manager to inspect the same document. Review any conflicting edits deliberately.
 7. Manage a session from the ship: rename or disable its registration, revoke one/all sessions while keeping documents, export data, or confirm erase/removal. Removal frees a slot and invalidates pending consent, sessions and the old namespace. Re-registration gets a fresh namespace.
 
-Setup time and time to the first save are separate measurements. The ten-minute first-save target begins after the desk, sample registration and Simulator are ready. An independent owner/developer trial is a release gate; these instructions alone do not satisfy it.
+Setup time and time to the first save are separate measurements. The ten-minute first-save target begins after the desk, sample registration and Simulator are ready. There is no required independent trial or timed readiness verdict.

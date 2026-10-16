@@ -20,7 +20,7 @@ The SDK stores credentials in non-synchronizing, device-only Keychain items. Its
 
 ## Resource bounds and delivery
 
-See [protocol.md](protocol.md) for JSON, byte, count, journal, snapshot, session and rate limits. All document/auth responses use no-store. The owner bundle uses same-origin assets with restrictive response headers and text-safe DOM rendering. There are no third-party analytics or a developer data backend in this implementation.
+See [capacity.md](capacity.md) for retained parser, concurrency, credential-lifetime, replay-history and rate controls, with their reasons. Product document/storage/app/session/outbox quotas are removed. All document/auth responses use no-store. The owner bundle uses same-origin assets with restrictive response headers and text-safe DOM rendering. There are no third-party analytics or a developer data backend in this implementation.
 
 This is a local prototype, not a production security certification. The acceptance report distinguishes pure handler tests, actual HTTP/Gall behavior, and native UI evidence. App attestation, universal-link deployment, independent ship identity verification, background push, arbitrary queries, attachment storage and host-blind encryption are outside this version.
 

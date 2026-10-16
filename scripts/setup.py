@@ -119,10 +119,10 @@ def tls(identity):
     if not(profile/'cert9.db').exists():command([certutil,'-N','-d','sql:'+str(profile),'--empty-password'])
     command([certutil,'-A','-d','sql:'+str(profile),'-n','Connect Prototype Test CA','-t','C,,','-i',directory/'ca.crt'])
     quote=lambda p:json.dumps(str(p))
-    (WORK/'Caddyfile').write_text('{\n admin off\n persist_config off\n auto_https off\n storage file_system {\n  root '+quote(WORK/'caddy-storage')+'\n }\n}\nhttps://localhost:18443, https://127.0.0.1:18443 {\n bind 127.0.0.1\n tls '+quote(directory/'server.crt')+' '+quote(directory/'server.key')+'\n request_body {\n  max_size 262144\n }\n reverse_proxy 127.0.0.1:18432 {\n  header_up Forwarded "proto=https"\n }\n}\n')
+    (WORK/'Caddyfile').write_text('{\n admin off\n persist_config off\n auto_https off\n storage file_system {\n  root '+quote(WORK/'caddy-storage')+'\n }\n}\nhttps://localhost:18443, https://127.0.0.1:18443 {\n bind 127.0.0.1\n tls '+quote(directory/'server.crt')+' '+quote(directory/'server.key')+'\n reverse_proxy 127.0.0.1:18432 {\n  header_up Forwarded "proto=https"\n }\n}\n')
     with (WORK/'Caddyfile').open('a')as config:
         config.write('\nhttps://localhost:18447 {\n bind 127.0.0.1\n tls '+quote(directory/'server.crt')+' '+quote(directory/'server.key')+'\n reverse_proxy 127.0.0.1:31336 {\n  header_up Forwarded \"proto=https\"\n }\n}\n')
-        config.write('\nhttps://localhost:18448 {\n bind 127.0.0.1\n tls '+quote(directory/'server.crt')+' '+quote(directory/'server.key')+'\n request_body {\n  max_size 262144\n }\n reverse_proxy 127.0.0.1:31334 {\n  header_up Forwarded "proto=https"\n }\n}\n')
+        config.write('\nhttps://localhost:18448 {\n bind 127.0.0.1\n tls '+quote(directory/'server.crt')+' '+quote(directory/'server.key')+'\n reverse_proxy 127.0.0.1:31334 {\n  header_up Forwarded "proto=https"\n }\n}\n')
         for port,certificate in [(18444,'untrusted'),(18445,'wrong-host')]:
             config.write(f'\nhttps://localhost:{port} {{\n bind 127.0.0.1\n tls '+quote(directory/(certificate+'.crt'))+' '+quote(directory/(certificate+'.key'))+'\n respond "TLS test only" 200\n}\n')
 

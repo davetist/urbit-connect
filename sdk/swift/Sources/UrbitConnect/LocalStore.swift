@@ -3,9 +3,6 @@ import CSQLite
 
 /// Synchronous by design: one ConnectClient actor owns each connection.
 final class LocalStore {
-    static let maximumPendingMutations = 1000
-    static let maximumPendingRequestBytes = 16 * 1024 * 1024
-    static let maximumDatabaseBytes = 128 * 1024 * 1024
     private var database: OpaquePointer?
     private let url: URL
     private let transient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
@@ -24,8 +21,6 @@ final class LocalStore {
             guard version <= 2 else { throw ConnectError.storage("This cache requires a newer SDK") }
             try execute("PRAGMA journal_mode=WAL"); try execute("PRAGMA synchronous=FULL"); try execute("PRAGMA busy_timeout=3000")
             try execute("PRAGMA wal_autocheckpoint=64"); try execute("PRAGMA journal_size_limit=1048576")
-            let pageSize = try scalarInteger("PRAGMA page_size")
-            try execute("PRAGMA max_page_count=\(Self.maximumDatabaseBytes / pageSize)")
             if version == 0 {
                 try transaction {
                     try execute("CREATE TABLE meta (key TEXT PRIMARY KEY, value BLOB NOT NULL)")
@@ -75,7 +70,7 @@ final class LocalStore {
         guard sqlite3_bind_text(statement, index, value, -1, transient) == SQLITE_OK else { throw failure() }
     }
     private func bind(_ value: Data, to index: Int32, in statement: OpaquePointer) throws {
-        let result = value.withUnsafeBytes { bytes in sqlite3_bind_blob(statement, index, bytes.baseAddress, Int32(bytes.count), transient) }
+        let result = value.withUnsafeBytes { bytes in sqlite3_bind_blob64(statement, index, bytes.baseAddress, UInt64(bytes.count), transient) }
         guard result == SQLITE_OK else { throw failure() }
     }
     private func bind(_ value: Int, to index: Int32, in statement: OpaquePointer) throws {
@@ -118,12 +113,6 @@ final class LocalStore {
     func enqueue(_ mutation: StoredMutation) throws {
         let wire = try mutation.encoded(), bytes = try requestBytes(mutation)
         try transaction {
-            guard try scalarInteger("SELECT COUNT(*) FROM outbox") < Self.maximumPendingMutations else {
-                throw ConnectError.localCapacity(resource: .pendingMutations, limit: Self.maximumPendingMutations)
-            }
-            guard try scalarInteger("SELECT COALESCE(SUM(request_bytes),0) FROM outbox") + bytes <= Self.maximumPendingRequestBytes else {
-                throw ConnectError.localCapacity(resource: .pendingRequestBytes, limit: Self.maximumPendingRequestBytes)
-            }
             try statement("INSERT INTO outbox(id,created,wire,request_bytes) VALUES(?,?,?,?)") { stmt in
                 try bind(mutation.id.rawValue.uuidString, to: 1, in: stmt)
                 guard sqlite3_bind_double(stmt, 2, mutation.createdAt.timeIntervalSince1970) == SQLITE_OK else { throw failure() }
@@ -134,15 +123,7 @@ final class LocalStore {
     private func requestBytes(_ mutation: StoredMutation) throws -> Int { try (mutation.body ?? mutation.requestBody()).count }
     func update(_ mutation: StoredMutation) throws {
         try transaction {
-            let old: Int? = try statement("SELECT request_bytes FROM outbox WHERE id=?") { stmt in
-                try bind(mutation.id.rawValue.uuidString, to: 1, in: stmt)
-                switch sqlite3_step(stmt) { case SQLITE_ROW: return Int(sqlite3_column_int64(stmt, 0)); case SQLITE_DONE: return nil; default: throw failure() }
-            }
-            guard let old else { return }
             let bytes = try requestBytes(mutation)
-            if bytes > old, try scalarInteger("SELECT COALESCE(SUM(request_bytes),0) FROM outbox") + bytes - old > Self.maximumPendingRequestBytes {
-                throw ConnectError.localCapacity(resource: .pendingRequestBytes, limit: Self.maximumPendingRequestBytes)
-            }
             try statement("UPDATE outbox SET wire=?,request_bytes=? WHERE id=?") { stmt in
                 try bind(mutation.encoded(), to: 1, in: stmt); try bind(bytes, to: 2, in: stmt)
                 try bind(mutation.id.rawValue.uuidString, to: 3, in: stmt); try done(stmt)

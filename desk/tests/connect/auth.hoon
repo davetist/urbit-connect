@@ -58,15 +58,4 @@
     (expect-eq !>(400) !>(status.outcome.result))
     (expect-eq !>(~) !>(sessions.next.result))
   ==
-++  test-session-capacity
-  =/  made  first
-  =/  session  (~(got by sessions.next.made) 'session')
-  =/  entries
-    %-  malt
-    %+  turn  (gulf 1 32)
-    |=  index=@ud
-    =/  id  (ud:cc index)
-    [id session(id id)]
-  =/  result  (exchange:ca db(sessions entries) 'secret' 'client' 'test:/callback' verifier now 'new' 'a' 'r')
-  (expect-eq !>(429) !>(status.outcome.result))
 --

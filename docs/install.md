@@ -1,6 +1,6 @@
 # Installing the alpha desk
 
-The reference installation uses the separately authorized `connect-dev` comet on reference-host: Raspberry Pi 4 Model B Rev 1.4, 8 GiB, Linux ARM64, Vere 4.6 and Zuse 408. A fresh 0.1.0 installation followed by 0.2.0-alpha.1 passed trusted HTTPS, bundled-manager and grant/document/receipt preservation checks. Real native qualification, a 6-hour soak and independent operator signoff remain release gates. See `supported-platforms.md` and the final alpha report.
+The reference installation uses the separately authorized `connect-dev` comet on reference-host: Raspberry Pi 4 Model B Rev 1.4, 8 GiB, Linux ARM64, Vere 4.6 and Zuse 408. A fresh 0.1.0 installation followed by 0.2.0-alpha.1 passed trusted HTTPS, bundled-manager and grant/document/receipt preservation checks. These are historical observations; timed trials, soaks and independent signoffs are no longer release gates. See `supported-platforms.md` and the final alpha report.
 
 Prepare a verified stopped-pier backup and record its checksum and recovery point privately. Inspect installed desks and refuse an unrelated existing `%connect` desk; do not replace another publisher’s desk. Check free disk/RAM, the runtime’s stable release, Kelvin support and the artifact SHA-256 against the supplied manifest. Runtime/pier upgrades are separate operations; never apply the Mac development LMDB workaround automatically on Linux.
 

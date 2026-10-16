@@ -4,7 +4,7 @@
 |---|---|
 | Apple Silicon macOS development | Pinned Vere 4.6/kernel 408, Xcode 26.6 (17F113), Node/npm and dedicated local fake ships; alpha rerun recorded separately |
 | iPhone Simulator | Intended deployment floor iOS 18+; actual fixture runtime iOS 26.5 (23F77), iPhone 17 Pro and iPhone SE (3rd generation); inspect both final UI runs and screenshots |
-| Linux ARM64/Pi-class real ship | Authorized connect-dev on reference-host, Pi 4 Model B Rev 1.4 / 8 GiB, aarch64 kernel 6.18.50+rpt-rpi-v8, Vere 4.6 / Zuse 408. Fresh install, 0.1→0.2 update, trusted HTTPS, resource bounds and packet-loss HTTP checks passed; real native, soak and independent operator evidence remain pending |
+| Linux ARM64/Pi-class real ship | Authorized connect-dev on reference-host, Pi 4 Model B Rev 1.4 / 8 GiB, aarch64 kernel 6.18.50+rpt-rpi-v8, Vere 4.6 / Zuse 408. Fresh install, 0.1→0.2 update, trusted HTTPS, resource bounds and packet-loss HTTP checks passed; these are historical observations, not requirements for a new timed/signoff qualification |
 | Physical iPhone / TestFlight | Deferred; Simulator or deployment-target compilation is not physical-device/distribution evidence |
 | Additional hosts/providers | Unqualified; custom desks, stable kernel/runtime, normal trusted HTTPS and adequate resources are prerequisites |
 

@@ -59,7 +59,7 @@ def run(suite,only=None,small=False,real=False):
     elif suite=='unit':command+=['-only-testing:ConnectTodoTests']
     elif suite in ('ui','all'):
         if suite=='all':command+=['-only-testing:ConnectTodoTests']
-        command+=['-only-testing:ConnectTodoUITests/ConnectTodoUITests/'+name for name in ['testNativeWorkflowRecoveryAndRevocation','testPreservedInstallUpgradeAndRejectedCapacityInput']]
+        command+=['-only-testing:ConnectTodoUITests/ConnectTodoUITests/'+name for name in ['testNativeWorkflowRecoveryAndRevocation','testPreservedInstallUpgrade']]
     environment=dict(os.environ)
     environment['TEST_RUNNER_CONNECT_TEST_CREDENTIALS_PATH']=str(ROOT/'.work/alpha/dev/auth.json')
     environment['TEST_RUNNER_CONNECT_TEST_ORIGIN']=TARGETS.origin()

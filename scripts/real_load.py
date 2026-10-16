@@ -81,55 +81,7 @@ def snapshot(api, token):
 
 
 def run():
-    assert (ROOT / 'reference-update.json').is_file(), 'Real baseline/update preservation must pass first'
-    api = Reference(); space = api.register()['namespace']; api.erase(space); token = api.connect()['access_token']
-    ids = fill(api, token)
-    assert api.request('/connect/v1/mutations', 'POST', mutation(operation({'check': '1001st document'})), token=token)[0] == 429
-    warm = resource(api); measurements = []
-    try:
-        for profile in ['local', '100ms-1percent']:
-            control({'action': 'profile', 'profile': profile})
-            grant = api.connect(); token = grant['access_token']; reads = []; writes = []
-            for id in ids[:20]:
-                start = time.monotonic(); status, row = api.request('/connect/v1/collections/notes/documents/' + id, token=token); assert status == 200; reads.append(time.monotonic() - start)
-                start = time.monotonic(); status, _ = api.request('/connect/v1/mutations', 'POST', mutation(operation({'check': 'updated reference document'}, id, row['revision'])), token=token); assert status == 200; writes.append(time.monotonic() - start)
-            rows, cursor, seconds = snapshot(api, token); assert len(rows) == 1000 and len({row['id'] for row in rows}) == 1000
-            stats = control({'action': 'status'})
-            measurements.append({'profile': profile, 'read': distribution(reads), 'write': distribution(writes), 'snapshotDownloadSeconds': round(seconds, 3), 'documents': len(rows), 'qdisc': stats['qdisc']})
-            assert api.request('/connect/owner/v1/revoke', 'POST', {'sessionId': grant['grant']['sessionId']}, owner=True)[0] == 200
-        control({'action': 'profile', 'profile': 'local'})
-        grant = api.connect(); token = grant['access_token']; bodies = []
-        for id in ids[:10]:
-            status, row = api.request('/connect/v1/collections/notes/documents/' + id, token=token); assert status == 200
-            bodies.append(json.dumps(mutation(operation({'check': 'eventual recovery after loss'}, id, row['revision'])), separators=(',', ':')).encode())
-        _, before_cursor, _ = snapshot(api, token)
-        control({'action': 'profile', 'profile': '500ms-5percent'}); received = []
-        for body in bodies:
-            try: received.append(api.request('/connect/v1/mutations', 'POST', body, token=token))
-            except RuntimeError: received.append(None)
-        severe_stats = control({'action': 'status'})
-        control({'action': 'profile', 'profile': 'local'})
-        for body, original in zip(bodies, received):
-            status, replay = api.request('/connect/v1/mutations', 'POST', body, token=token); assert status == 200
-            if original is not None and original[0] == 200: assert replay == original[1]
-        _, after_cursor, _ = snapshot(api, token)
-        assert int(after_cursor.split(':')[-1]) - int(before_cursor.split(':')[-1]) == len(bodies)
-        measurements.append({'profile': '500ms-5percent', 'heldExactRequests': len(bodies), 'effectsAfterRecovery': len(bodies), 'successfulRepliesBeforeRecovery': sum(row is not None and row[0] == 200 for row in received), 'eventualProgressAfterRecovery': True, 'qdisc': severe_stats['qdisc']})
-        # Exact 4 MiB payload boundary, separately from the small-doc latency sample.
-        api.erase(space); token = api.connect()['access_token']
-        for _ in range(32):
-            assert api.request('/connect/v1/mutations', 'POST', mutation(*[operation({'x': 'a' * (16384 - 8)}) for _ in range(8)]), token=token)[0] == 200
-        assert api.request('/connect/v1/mutations', 'POST', mutation(operation({'x': 'a'})), token=token)[0] == 429
-        payload_quota = {'liveJSONPayloadBytes': 4 * 1024 * 1024, 'documents': 256, 'nextWriteRejected': True}
-        api.erase(space)
-        after = resource(api)
-        report = {'passed': True, 'realShip': True, 'normalSystemTLS': True, 'kernelRuntime': 'Vere 4.6 / Zuse 408', 'hardware': Path('/proc/device-tree/model').read_text().rstrip('\0'), 'os': platform.platform(), 'memoryBytes': int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines() if line.startswith('MemTotal:'))) * 1024, 'networkScope': 'tc netem on relay-to-private-Eyre TCP egress inside an unprivileged namespace; host interfaces unchanged', 'measurements': measurements, 'payloadQuota': payload_quota, 'warm': warm, 'afterCleanup': after, 'snapshotMeasurement': 'Actual HTTPS download only; native SDK SQLite installation is separate', 'soakComplete': False}
-        private_json('reference-load.json', report)
-        threshold_ok = all(row['read']['p95Ms'] < (1000 if row['profile'] == 'local' else 2000) and row['write']['p95Ms'] < (1000 if row['profile'] == 'local' else 2000) and row['snapshotDownloadSeconds'] < 30 for row in measurements if 'read' in row)
-        report['passed'] = threshold_ok; private_json('reference-load.json', report)
-        print(json.dumps({'realHostLoadPassed': threshold_ok, 'profileMeasurements': [{key: row[key] for key in ['profile', 'read', 'write', 'snapshotDownloadSeconds'] if key in row} for row in measurements], 'quota4MiB': True, 'effectsAfterLoss': len(bodies)}))
-        assert threshold_ok, 'Reference latency threshold failed; aggregate retained'
-    finally: control({'action': 'profile', 'profile': 'local'})
+    raise SystemExit('This quota qualification workload is retired. Historical sources and results are preserved; no workload was started.')
 
 
 if __name__ == '__main__': run()

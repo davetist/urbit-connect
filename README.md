@@ -2,35 +2,28 @@
 
 A personal app backend on your Urbit ship, with a native Swift SDK and an iOS todo example. Each approved app gets its own document namespace. The ship owner can inspect, edit, export, import, erase, and revoke access from `/apps/connect/`.
 
-**Reliability alpha candidate:** desk/Swift/Todo version `0.2.0-alpha.1`, protocol 1, SQLite schema 2. The alpha adds restart recovery, bounded offline queues, retained-draft recovery, safer manager actions and installation tooling. See the [alpha evidence](artifacts/alpha/report.md) and [qualification matrix](tests/acceptance/alpha-matrix.md). The historical [210-case prototype report](artifacts/acceptance/report.md) is separate from final alpha qualification. Real-host soak, independent operator/developer trials and release ownership/notices remain gates. This is a local source/Simulator deliverable; public native distribution is deferred.
+**Local source release:** desk/Swift/Todo version `0.2.0-alpha.1`, protocol 1, SQLite schema 2. Connect provides restart recovery, durable offline queues, retained-draft recovery, owner management and installation tooling. Artificial document/storage, app/session and SDK draft/account quotas are removed; [specific parser, concurrency and replay controls](docs/capacity.md) remain. Daily use does not require a soak, tester quota or independent signoff. Historical reports remain [observations](tests/acceptance/alpha-matrix.md), not a qualification verdict. Public native distribution is separate.
 
-The [2026-10-16 readiness assessment](docs/current-readiness.md) records the current automated acceptance and fresh official-client integration results with the separate Bitwarden desk, including the remaining qualifications.
+The [2026-10-16 readiness assessment](docs/current-readiness.md) distinguishes earlier acceptance and official-client integration observations from the current quota/gate changes, whose behavior has not been rerun through test suites. Those earlier runtime observations do not cover the quota, pagination or snapshot-lease changes.
 
 The ship can read documents. The SDK sends data directly to the paired HTTPS ship endpoint, without a developer data service. An app that can display your data can also copy it; an SDK cannot prevent a malicious app publisher from doing that. HTTPS protects transport, and `%connect` enforces app permissions on the ship.
 
-## Run the isolated alpha
+## Install and update on your ship
 
-The reproducible development setup targets Apple Silicon macOS with Xcode 26.6, its command-line tools, Python 3.10+, Node 22.12+ and npm, and Homebrew. It downloads the pinned Vere 4.6 runtime, kernel-408 pill, Caddy, and iOS 26.5 Simulator runtime when missing. Allow roughly 15–20 GB for the runtime, Simulator, fake piers, and build products.
+Follow [installation](docs/install.md) for an authorized ship with the compatible runtime/kernel and a reachable HTTPS endpoint. Open `/apps/connect/` as its owner, configure the exact HTTPS origin, and register the intended client or resource integration. Follow [updates](docs/update.md) to preserve grants, documents and local drafts; [operations](docs/operations.md) covers backup and restore generation handling.
 
-```sh
-python3 scripts/setup.py --install-tools
-```
+For Bitwarden, use the separate [Urbit Bitwarden repository](https://github.com/davetist/urbit-bitwarden) and its official-client instructions. Connect owns generic authorization; the Bitwarden desk owns the vault API and encrypted vault data.
 
-Setup creates an owned `.work/alpha` fixture and dedicated **Connect Alpha** Simulators. Its local certificate is trusted only in those Simulators and the project’s Firefox profile. An existing demo is preserved. No production ship, global certificate store, Apple account, or paid service is needed.
-
-To use it yourself, open `examples/ios-todo/ConnectTodo.xcodeproj`, select the `ConnectTodo` scheme and dedicated Simulator, and run. Enter the HTTPS address printed by setup, tap **Connect with Urbit**, log in to the fake ship in the system browser, and approve. Ports are bound to the checkout by `.work/alpha/targets.json`. The disposable owner login code is in the private `.work/alpha/dev/auth.json` file; do not put it in app configuration or source control. Run `python3 scripts/open_owner_ui.py` to open the manager in the dedicated Firefox profile. Normal host browsers deliberately do not trust the test certificate.
-
-Create **Personal**, add **Buy milk**, and wait for **Saved on your ship**. That status means the ship acknowledged the write; queued offline edits have a different status. A conflicting edit keeps both versions for an explicit decision.
-
-The acceptance commands below reset the disposable sample namespace and exercise revocation. After running them, use **Reconnect with Urbit** to approve a new session. Cleanup stops the test environment; run setup again before opening the app.
+Build and verify the local source packages without booting a ship or running a test suite:
 
 ```sh
-python3 scripts/check.py --all
-python3 scripts/package_desk.py --verify-install
-python3 scripts/cleanup.py
+python3 scripts/release_check.py --build
+python3 scripts/release_check.py --verify release/manifest.json
 ```
 
-The local desk archive is `dist/connect-0.2.0-alpha.1.tgz`, with a SHA-256 sidecar and file manifest. `scripts/release_check.py --build` also creates SDK, Todo source and complete-source archives twice and compares their hashes. See [development](docs/development.md) for check prerequisites, [install](docs/install.md) and [update](docs/update.md) for real ships, [operations](docs/operations.md) for restore, and [security](docs/security.md) for the trust model. Owner registration is local to the ship; registering Todo is an explicit sample option.
+The desk archive is `dist/connect-0.2.0-alpha.1.tgz`, with a SHA-256 sidecar and file manifest. The build also creates SDK, Todo source and complete-source archives twice and compares their hashes. These are local source artifacts, not a deployment or signed native distribution. The [release notes](release/README.md) describe artifact integrity and informational observations.
+
+The continuing direction is no synthetic or soak tests unless the owner explicitly changes it. Default verification uses source review, typechecking/builds and deterministic packaging; actual official-client workflows require an authorized target. The former fake-ship setup and Todo walkthrough are retained as a [historical reference](docs/historical/isolated-alpha.md).
 
 ## Use the Swift SDK
 
@@ -62,7 +55,7 @@ for await state in await client.observe(collection: "lists") {
 }
 ```
 
-`put` and `delete` return after durable local queueing. Use the observation stream to distinguish pending writes from server acknowledgement. Updates require the displayed document’s `Revision`; creates use `nil`. Call `resume()` at startup and `setForeground(_:)` as scene activity changes. `disconnect()` durably removes local credentials before attempting ship revocation; a failed remote cleanup requires owner revocation. Preserve recoverable drafts and offer explicit `resolveConflict` choices, as the example does. Each account accepts at most 1,000 pending mutations or 16 MiB of encoded requests; rejection preserves existing drafts and editable input.
+`put` and `delete` return after durable local queueing. Use the observation stream to distinguish pending writes from server acknowledgement. Updates require the displayed document’s `Revision`; creates use `nil`. Call `resume()` at startup and `setForeground(_:)` as scene activity changes. `disconnect()` durably removes local credentials before attempting ship revocation; a failed remote cleanup requires owner revocation. Preserve recoverable drafts and offer explicit `resolveConflict` choices, as the example does. There is no fixed outbox or retained-account quota. Real storage failures preserve queued drafts and editable input.
 
 Documents use `JSONObject` / `JSONValue`, with lossless numeric spellings and strict validation. The SDK has no todo-specific schema. The example owns `TodoList` and `TodoTask`; unknown documents remain visible as unsupported data and are never silently rewritten.
 

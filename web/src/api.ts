@@ -17,7 +17,7 @@ export async function api<T>(path: string, body?: unknown): Promise<T> {
     headers: body === undefined ? {} : { 'Content-Type': 'application/json', 'X-Connect-CSRF': csrf },
     body: body === undefined ? undefined : stringifyJSON(body, false, 24)
   });
-  const value = parseJSON(await response.text(), 2_097_152, 24) as unknown as T & { error?: APIError };
+  const value = parseJSON(await response.text(), undefined, 24) as unknown as T & { error?: APIError };
   if (!response.ok) throw new RequestError(response.status, value.error ?? { code: 'request_failed', message: `Request failed (${response.status})` });
   return value;
 }
@@ -30,7 +30,7 @@ export async function documents(namespace: string): Promise<Document[]> {
   do {
     const response: { documents: Document[]; nextPage: string | null } = await api(`namespaces/${encodeURIComponent(namespace)}/documents${page ? '?page=' + encodeURIComponent(page) : ''}`);
     rows.push(...response.documents); page = response.nextPage;
-  } while (page && rows.length <= 1000);
+  } while (page);
   return rows;
 }
 export async function snapshot(namespace: string): Promise<{ documents: Document[]; cursor: string }> {

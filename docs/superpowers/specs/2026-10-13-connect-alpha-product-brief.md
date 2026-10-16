@@ -1,3 +1,5 @@
+> Historical plan/specification. Its product quotas and mandatory qualification gates were superseded on 2026-10-16; see [current policy](../../current-readiness.md) and [retained controls](../../capacity.md). It is not a current acceptance contract.
+
 # %connect Reliability Alpha Product Brief
 
 **Status:** revised 2026-10-13 to match the user's simpler scope: approval stays on the ship; no companion app; TestFlight comes later. This replaces the earlier public iOS launch and metadata-service scope. This document authorizes planning, not implementation, purchases or publication.

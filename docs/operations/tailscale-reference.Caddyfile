@@ -16,9 +16,6 @@
 }
 http://:36580 {
     bind 127.0.0.1
-    request_body {
-        max_size 256KiB
-    }
     reverse_proxy 127.0.0.1:8080 {
         header_up X-Forwarded-Proto https
         transport http {

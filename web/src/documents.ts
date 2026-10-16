@@ -3,10 +3,8 @@ import { parseJSON, stringifyJSON, isObject } from './codec.ts';
 import { button, dialog, el, notify, confirm } from './dom.ts';
 export function title(row: Document): string { return typeof row.data.title === 'string' ? row.data.title : row.id; }
 export function parseEditorDocument(text: string) {
-  // Formatting can be much larger than the stored compact document.
-  const data = parseJSON(text, 1048576);
+  const data = parseJSON(text);
   if (!isObject(data)) throw new Error('A document must be a JSON object');
-  if (new TextEncoder().encode(stringifyJSON(data)).length > 16384) throw new Error('Document exceeds 16 KiB of encoded JSON');
   return data;
 }
 export function editDocument(app: App, row: Document, changed: () => Promise<void>): void {

@@ -169,7 +169,7 @@ import XCTest
         try require(app.staticTexts["Access revoked"].waitForExistence(timeout: 10)); capture("revoked-native", app: app)
         let rows3 = try await harness.documents(); XCTAssertEqual(rows3.count, 2)
     }
-    func testPreservedInstallUpgradeAndRejectedCapacityInput() async throws {
+    func testPreservedInstallUpgrade() async throws {
         let harness = try NativeHarness(); _ = try await harness.call("reset")
         let baseline = try await harness.call("fresh-baseline-app")
         XCTAssertEqual(baseline["baselineLaunched"] as? Bool, true)
@@ -191,13 +191,6 @@ import XCTest
         try require(app.navigationBars["My lists"].waitForExistence(timeout: 10)); app.terminate()
         let after = try await harness.call("local-storage")
         XCTAssertEqual(after["schema"] as? Int, 2); XCTAssertEqual(after["requestHashes"] as? [String], before["requestHashes"] as? [String])
-        let full = try await harness.call("fill-outbox-capacity"); XCTAssertEqual(full["pendingCount"] as? Int, 1000)
-        app.launch(); try require(app.navigationBars["My lists"].waitForExistence(timeout: 10))
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Preserved install")).firstMatch.tap()
-        let field = app.textFields["task-title"]; try require(field.waitForExistence(timeout: 5)); field.tap(); field.typeText("Keep this rejected input"); app.buttons["add-task"].tap()
-        try require(app.staticTexts["This iPhone has 1,000 pending changes. Your new input is kept. Synchronize or review existing drafts before adding another."].waitForExistence(timeout: 5))
-        app.alerts.buttons["OK"].tap(); XCTAssertEqual(field.value as? String, "Keep this rejected input"); capture("capacity-input-retained", app: app); app.terminate()
-        let restored = try await harness.call("restore-outbox-capacity"); XCTAssertEqual(restored["pendingCount"] as? Int, 1)
         _ = try await harness.call("proxy-on"); app.launch(); try saved(app)
         let document = try await harness.document(titled: "Preserved install")
         let tasks = try XCTUnwrap((document["data"] as? [String: Any])?["tasks"] as? [[String: Any]])

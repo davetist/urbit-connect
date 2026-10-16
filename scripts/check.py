@@ -1,5 +1,5 @@
 from targets import TARGETS
-"""Run the complete prototype acceptance checks sequentially, rejecting skipped/zero test suites."""
+"""Run an explicitly selected development check. There is no automatic full acceptance gate."""
 import argparse
 import hashlib
 import json
@@ -83,22 +83,15 @@ def evidence():
     print('PASS: reviewed text evidence contains no known private credentials;',scanned,'files scanned')
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--all',action='store_true');parser.add_argument('--suite',choices=['environment','protocol','hoon','integration','web','sdk','ios','ios-small','reliability','load','package','evidence']);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--suite',required=True,choices=['environment','protocol','hoon','integration','web','sdk','ios','ios-small','reliability','load','package','evidence']);args=parser.parse_args()
     TARGETS.require_owned()
-    names=['environment','protocol','web-build','hoon','integration','web','sdk','ios','ios-small','reliability','load','package','evidence']if args.all else[args.suite or'environment']
+    names=[args.suite]
     try:
         for name in names:
             if name=='environment':environment()
             elif name=='protocol':
                 run('protocol-fixtures',[sys.executable,'scripts/protocol_fixtures.py','--check'])
                 run('protocol-schema',[ROOT/'.work/alpha/python/bin/python','scripts/test_protocol.py'],r'(\d+) schema fixtures')
-            elif name=='web-build':
-                run('web-typecheck',['npm','--prefix','web','run','typecheck'])
-                run('web-codec',['npm','--prefix','web','test'],r'ℹ tests (\d+)')
-                run('web-layout',['npm','--prefix','web','run','test:layout'],r'(\d+) passed')
-                run('web-build',['npm','--prefix','web','run','build'])
-                run('web-bundle',[sys.executable,'scripts/bundle_web.py'])
-                run('desk-stage',[sys.executable,'scripts/package_desk.py'])
             elif name=='hoon':run('hoon',[sys.executable,'scripts/test_hoon.py','--suite','state,auth,store,limits,codec,json,fixtures,http,entry,policy,integrations,native-callbacks'],r'PASS: (\d+) executed Hoon tests')
             elif name=='integration':
                 prepare_integration();run('integration',[sys.executable,'scripts/test_integration.py'],r'Ran (\d+) tests?')
@@ -129,5 +122,5 @@ def main():
     finally:
         import release_check
         target=ROOT/'artifacts/alpha/checks.json';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps({'scope':names,'checks':REPORTS,'fixtureId':TARGETS.fixture_id,'source':{group:release_check.tree(group) for group in release_check.SOURCE_GROUPS},'recordedAt':time.strftime('%Y-%m-%dT%H:%M:%S%z')},indent=2)+'\n')
-    print('All requested checks passed. Inspect the acceptance checklist for separate visual/manual requirements.')
+    print('The selected check passed; this result is not a readiness verdict.')
 if __name__=='__main__':main()

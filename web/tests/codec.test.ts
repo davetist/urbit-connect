@@ -25,16 +25,7 @@ test('sixteen-level documents survive deeper transport and export envelopes', ()
   assert.throws(() => parseJSON(raw));
 });
 
-test('editor whitespace does not consume the stored document quota', () => {
-  const value = { values: Array.from({ length: 4000 }, () => ({})) };
-  const compact = JSON.stringify(value), formatted = stringifyJSON(value, true);
-  assert.ok(Buffer.byteLength(compact) < 16384 && Buffer.byteLength(formatted) > 16384);
-  assert.deepEqual(parseEditorDocument(formatted), parseJSON(compact));
-  assert.throws(() => parseEditorDocument(JSON.stringify({ text: 'x'.repeat(16384) })));
-  assert.throws(() => parseEditorDocument('{}' + ' '.repeat(1048576)));
-});
-
-test('owner exports remain importable at the structured-data payload boundary', async (context) => {
+test('owner exports preserve structured data across pages', async (context) => {
   const { exportData } = await import('../src/transfers.ts');
   const account = { issuer: 'https://ship.example/connect', instanceId: 'fixture', ship: '~zod', syncEpoch: '1' };
   const app = { id: 'structured-test', name: 'Structured data', namespace: 'app-1', redirectURI: 'test:/callback', enabled: true, development: true };
@@ -52,8 +43,8 @@ test('owner exports remain importable at the structured-data payload boundary', 
   Object.defineProperty(globalThis, 'document', { configurable: true, value: { createElement: () => ({ append() {}, click() {} }), querySelector: () => null, querySelectorAll: () => [], getElementById: () => null } });
   try {
     await exportData(app, account);
-    assert.ok(blob && blob.size <= 8 * 1024 * 1024, 'A valid owner export must fit its own importer');
-    const decoded: any = parseJSON(await blob.text(), 8 * 1024 * 1024, 24);
+    assert.ok(blob);
+    const decoded: any = parseJSON(await blob.text(), undefined, 24);
     assert.equal(decoded.collections.lists.length, 300);
     assert.deepEqual(decoded.collections.lists[299].data, parseJSON(JSON.stringify(data)));
   } finally { if (prior) Object.defineProperty(globalThis, 'document', prior); else Reflect.deleteProperty(globalThis, 'document'); }

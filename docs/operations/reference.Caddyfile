@@ -1,4 +1,4 @@
-# Candidate reference ingress. Qualification on a confirmed real test ship is required.
+# Reference ingress template. Confirm target ownership and routing before deployment.
 # Set CONNECT_HOST and CONNECT_HTTP_UPSTREAM before starting Caddy.
 # The Urbit upstream must bind loopback or a private interface/firewall accessible only to this proxy.
 {
@@ -13,9 +13,6 @@
     }
 }
 {$CONNECT_HOST} {
-    request_body {
-        max_size 256KiB
-    }
     reverse_proxy {$CONNECT_HTTP_UPSTREAM} {
         header_up Forwarded "proto=https"
         transport http {

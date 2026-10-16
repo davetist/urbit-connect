@@ -54,7 +54,7 @@
   ?>  &(?=([%a *] scope-json) ?=([%a *] redirects-json))
   =/  allowed  (turn p.scope-json text:cc)
   =/  redirects  (turn p.redirects-json text:cc)
-  ?>  &((gth (lent allowed) 0) (lte (lent allowed) 8) (gth (lent redirects) 0) (lte (lent redirects) 8))
+  ?>  &((gth (lent allowed) 0) (gth (lent redirects) 0))
   ?>  (levy allowed scope-name)
   ?>  (levy redirects |=(r=@t &((lte (met 3 r) 256) |((valid-redirect:ca r) (loopback r) (private-callback r)))))
   [`@tas`agent (silt allowed) (silt redirects)]
