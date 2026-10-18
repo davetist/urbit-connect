@@ -2,7 +2,7 @@ import { api, type App, type Session } from './api.ts';
 import { button, confirm, dialog, el, field, notify } from './dom.ts';
 export function registerApp(changed: () => Promise<void>): void {
   const modal = dialog('Register an app');
-  const name = field('Display name', '', 'My todo app'), id = field('Client ID', '', 'my-todo-app'), redirect = field('Exact callback URI', '', 'org.example.myapp:/oauth/callback');
+  const name = field('Display name', '', 'App name'), id = field('Client ID', '', 'app-client-id'), redirect = field('Exact callback URI', '', 'org.example.myapp:/oauth/callback');
   modal.content.append(el('p', 'muted', 'Use the client ID and callback URI supplied by a known app’s developer. Names and IDs are unverified labels; registration does not prove who published the native app. Connect assigns a separate document space.'), name.root, id.root, redirect.root,
     el('div', 'actions', button('Register app', async () => {
       await api('clients', { name: name.input.value, id: id.input.value, redirectURI: redirect.input.value });

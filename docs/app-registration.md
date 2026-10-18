@@ -11,8 +11,6 @@ The developer supplies:
 | Exact callback URI | The app’s registered HTTPS or dotted custom-scheme callback, at most 256 bytes, with no query, fragment, user information or whitespace |
 | Permissions | Each session explicitly requests read, write and/or delete on its server-assigned app space |
 
-For the included Todo source use `connect-todo-prototype`, `Connect Todo`, and `org.example.urbitconnect.todo:/oauth/callback`. Register the sample explicitly; a fresh desk does not contain a pre-approved app.
-
 The labels and public client ID are **unverified**. They do not authenticate the native publisher. Custom schemes can collide; PKCE binds an intercepted code to its initiating flow, but cannot prove which binary initiated a separate flow. Register known apps using instructions you trust. Connect does not fetch a publisher-supplied URL or use a client secret to claim native publisher authentication.
 
 Only the authenticated ship owner can register, rename, disable, remove or revoke. Revoking keeps documents; disabling also prevents new sessions. Removal erases live documents and frees a slot after confirmation. Re-registering an ID creates a fresh namespace. Logical deletion leaves historical pier events and backups intact.

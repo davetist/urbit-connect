@@ -34,7 +34,7 @@ export function editDocument(app: App, row: Document, changed: () => Promise<voi
   editor.focus();
 }
 export function documentRows(app: App, rows: Document[], changed: () => Promise<void>): HTMLElement {
-  if (!rows.length) return el('div', 'empty-state', el('span', 'empty-icon', '□'), el('h3', '', 'A space for your data'), el('p', 'muted', 'Connect the iOS todo app and create a list. Its documents will appear here.'));
+  if (!rows.length) return el('div', 'empty-state', el('span', 'empty-icon', '□'), el('h3', '', 'A space for your data'), el('p', 'muted', 'Documents saved by this app will appear here.'));
   return el('div', 'document-list', ...rows.map(row => {
     const open = button('Open', () => editDocument(app, row, changed), 'button secondary compact'); open.setAttribute('aria-label', `Open ${title(row)}`);
     return el('article', 'document-row', el('span', 'document-icon', '≡'), el('div', 'document-summary', el('h3', '', title(row)), el('p', 'muted mono', `${row.collection} · ${row.id}`)), el('span', 'badge', `rev ${row.revision}`), open);

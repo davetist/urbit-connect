@@ -23,5 +23,6 @@ export async function login(page: import('@playwright/test').Page): Promise<void
     const input = page.locator('input[type=password]');
     await input.fill(credentials().code); await input.press('Enter');
   }
+  await page.getByRole('button').filter({ has: page.locator('.app-id', { hasText: 'connect-todo-prototype' }) }).click();
   await expect(page.getByRole('heading', { name: 'Documents', exact: true })).toBeVisible();
 }

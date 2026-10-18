@@ -30,18 +30,13 @@ async function setup(): Promise<void> {
   await api('configure', { issuer: window.location.origin + '/connect' });
   await start();
 }
-async function registerTodo(): Promise<void> {
-  try { await api('clients', { id: 'connect-todo-prototype', name: 'Connect Todo', redirectURI: 'org.example.urbitconnect.todo:/oauth/callback' }); }
-  catch (error) { if (!(error instanceof RequestError && error.status === 409)) throw error; }
-  await refresh(); notify('Todo sample registered. Pairing still requires ship consent.');
-}
 async function refresh(): Promise<void> {
   if (refreshing) return; refreshing = true;
   const generation = ++viewGeneration, selectedId = selected?.id;
   try {
     const [registered, active] = await Promise.all([api<{ clients: App[] }>('clients'), api<{ sessions: Session[] }>('sessions')]);
     if (generation !== viewGeneration) return;
-    const app = registered.clients.find(app => app.id === selectedId) ?? registered.clients.find(app => app.id === 'connect-todo-prototype') ?? registered.clients[0];
+    const app = registered.clients.find(app => app.id === selectedId) ?? registered.clients[0];
     const rows = app && !app.integration ? await documents(app.namespace) : [];
     if (generation !== viewGeneration) return;
     apps = registered.clients; sessions = active.sessions; selected = app; records = rows;
@@ -64,11 +59,10 @@ function render(): void {
     choose.dataset.appId = app.id;
   }
   sidebar.append(button('+ Register an app', () => registerApp(refresh), 'button quiet register-button'), el('div', 'sidebar-note', el('span', 'small', 'Stored here. Controlled by you.'), el('p', 'muted small', 'Approve app access on your ship. Document apps also get their own storage space.')));
-  if (!apps.some(app => app.id === 'connect-todo-prototype')) sidebar.append(button('Register Todo sample', registerTodo, 'button secondary compact'));
   sidebar.append(el('p', 'small', 'Ship address'), el('p', 'mono', window.location.origin), button('Copy ship address', async () => { await navigator.clipboard.writeText(window.location.origin); notify('Ship address copied.'); }, 'button quiet compact'));
   const content = el('section', 'workspace');
   if (!selected) {
-    content.append(el('span', 'eyebrow', 'YOUR DATA, AT HOME'), el('h1', '', 'A window to your ship'), el('p', 'lead', 'Register a known app using its developer’s client ID and callback URI, then approve each connection on your ship.'), button('Register an app', () => registerApp(refresh)), button('Register Todo sample', registerTodo, 'button secondary'));
+    content.append(el('span', 'eyebrow', 'YOUR DATA, AT HOME'), el('h1', '', 'A window to your ship'), el('p', 'lead', 'Register a known app using its developer’s client ID and callback URI, then approve each connection on your ship.'), button('Register an app', () => registerApp(refresh)));
   } else {
     const app = selected, connected = sessions.filter(session => session.grant.clientId === app.id).length;
     const tools = el('div', 'actions', button('Refresh', refresh, 'button secondary compact'), button('Manage access', () => manageAccess(app, sessions, refresh), 'button secondary compact'));
@@ -95,7 +89,7 @@ async function start(): Promise<void> {
     recovery.hidden = !!id || !context.configured;
     if (id) { stage.className = 'center-stage consent-stage'; await consent(stage, id); return; }
     if (!context.configured) {
-      stage.className = 'center-stage'; stage.replaceChildren(el('section', 'consent-card', el('span', 'eyebrow', 'WELCOME TO CONNECT'), el('h1', '', 'Your apps. Your ship.'), el('p', 'lead', 'Give everyday apps a place to store data that you control.'), el('p', 'muted', 'Set this HTTPS address as your Connect endpoint. You can then register known apps or choose the Todo sample. Each connection asks for your approval.'), el('p', 'endpoint mono', window.location.origin), button('Set up Connect', setup))); return;
+      stage.className = 'center-stage'; stage.replaceChildren(el('section', 'consent-card', el('span', 'eyebrow', 'WELCOME TO CONNECT'), el('h1', '', 'Your apps. Your ship.'), el('p', 'lead', 'Give everyday apps a place to store data that you control.'), el('p', 'muted', 'Set this HTTPS address as your Connect endpoint, then register the apps you want to use. Each connection asks for your approval.'), el('p', 'endpoint mono', window.location.origin), button('Set up Connect', setup))); return;
     }
     await refresh();
   } catch (error) {
