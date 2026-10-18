@@ -22,7 +22,7 @@ test('a real foreign EAuth login cannot manage Connect as the owner', async ({ p
   expect(new URL(page.url()).origin).toBe(peerOrigin);
   await page.getByRole('button', { name: 'approve', exact: true }).click();
   await page.screenshot({ path: test.info().outputPath('eauth-after-approve.png'), timeout: 5000 });
-  await expect(page.getByRole('button', { name: 'Log in to ship', exact: true })).toBeVisible({ timeout: 20_000 });
+  await page.waitForURL(url => url.origin === primaryOrigin && url.pathname === '/~/login', { timeout: 20_000 });
   expect(new URL(page.url()).origin).toBe(primaryOrigin);
   const result = await page.evaluate(async () => {
     const identity = await (await fetch('/~/name', { credentials: 'same-origin' })).text();

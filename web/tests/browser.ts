@@ -15,11 +15,7 @@ export function credentials(): { code: string; cookie: string } { return JSON.pa
 export function screenshotPath(name: string): string { mkdirSync(resolve(root, 'artifacts/alpha/browser'), { recursive: true }); return resolve(root, 'artifacts/alpha/browser', name + '.png'); }
 export async function login(page: import('@playwright/test').Page): Promise<void> {
   await page.goto(origin + '/apps/connect/');
-  const button = page.getByRole('button', { name: 'Log in to ship' });
-  await expect(page.locator('h1')).toBeVisible();
-  if (await button.isVisible()) {
-    await button.click();
-    await page.waitForURL(url => url.pathname === '/~/login');
+  if (new URL(page.url()).pathname === '/~/login') {
     const input = page.locator('input[type=password]');
     await input.fill(credentials().code); await input.press('Enter');
   }

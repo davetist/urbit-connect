@@ -121,6 +121,10 @@
         =/  prefix  (spat (turn path |=(part=@t `@ta`part)))
         ?~  ext.line  prefix
         (cat 3 prefix (cat 3 '.' u.ext.line))
+      ?.  owner
+        ?:  =(file '/apps/connect/index.html')
+          [world `[[302 [['location' (cat 3 '/~/login?redirect=' (escape url.request.request.ctx))] headers]] ~]]
+        (fail 401 'owner_required' 'Log in as the local ship owner')
       =/  found  (~(get by assets:assets) file)
       ?~  found  (fail 404 'not_found' 'Asset does not exist')
       =/  head  (skim headers |=([key=@t value=@t] !=(key 'content-type')))

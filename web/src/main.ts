@@ -95,7 +95,7 @@ async function start(): Promise<void> {
   } catch (error) {
     stage.className = 'center-stage';
     if (error instanceof RequestError && error.status === 401) {
-      stage.replaceChildren(el('section', 'consent-card', el('span', 'eyebrow', 'YOUR SHIP IS WAITING'), el('h1', '', 'Open your Connect'), el('p', 'lead', 'Log in to your ship to approve apps and manage your data.'), button('Log in to ship', () => { window.location.assign('/~/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)); })));
+      window.location.replace('/~/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
     } else stage.replaceChildren(el('section', 'consent-card', el('h1', '', 'Unable to open Connect'), el('p', '', error instanceof Error ? error.message : 'Connection failed'), button('Try again', start)));
   }
 }

@@ -4,8 +4,6 @@ test('owner login reaches the real bundled dashboard', async ({ page, shipContex
   await shipContext.clearCookies();
   const response = await page.goto(origin + '/apps/connect/');
   expect(response?.status()).toBe(200);
-  await expect(page.getByRole('heading', { name: 'Open your Connect' })).toBeVisible();
-  await page.getByRole('button', { name: 'Log in to ship' }).click();
   await page.waitForURL(url => url.pathname === '/~/login');
   const input = page.locator('input[type=password]');
   await expect(input).toBeVisible();
@@ -16,6 +14,7 @@ test('owner login reaches the real bundled dashboard', async ({ page, shipContex
   await page.screenshot({ path: screenshotPath('owner-desktop'), fullPage: true });
 });
 test('owner assets carry restrictive browser headers', async ({ page }) => {
+  const { login } = await import('./browser.ts'); await login(page);
   const response = await page.goto(origin + '/apps/connect/');
   expect(response?.headers()['cache-control']).toBe('no-store');
   expect(response?.headers()['content-security-policy']).toContain("frame-ancestors 'none'");
