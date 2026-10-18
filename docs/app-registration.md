@@ -11,7 +11,7 @@ The developer supplies:
 | Exact callback URI | The app’s registered HTTPS or dotted custom-scheme callback, at most 256 bytes, with no query, fragment, user information or whitespace |
 | Permissions | Each session explicitly requests read, write and/or delete on its server-assigned app space |
 
-Connect displays **Registered on your ship** to confirm that the registration exists locally. **About this registration** in consent and access details explains: “This app is registered in Connect on your ship. You control its permissions and can revoke its access at any time.” A registered client does not need an Urbit desk of its own.
+**About this registration** in consent and access details explains: “This app is registered in Connect on your ship. You control its permissions and can revoke its access at any time.” A registered client does not need an Urbit desk of its own. Access details show **Disabled** only when the app is disabled.
 
 Client names and IDs are labels used by the authorization protocol. Custom callback schemes can collide; PKCE binds an intercepted code to its initiating flow. Register apps using the client ID and callback URI supplied by the developer.
 
