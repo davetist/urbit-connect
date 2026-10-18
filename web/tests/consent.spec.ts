@@ -31,7 +31,7 @@ test('real approval binds the callback state and client', async ({ page }) => {
   const query = new URLSearchParams({ response_type: 'code', client_id: 'connect-todo-prototype', redirect_uri: 'org.example.urbitconnect.todo:/oauth/callback', scope: 'documents:read documents:write documents:delete', state, code_challenge_method: 'S256', code_challenge: crypto.createHash('sha256').update(verifier).digest('base64url') });
   await page.goto(origin + '/connect/oauth/authorize?' + query);
   await expect(page.getByRole('button', { name: 'Approve connection', exact: true })).toBeVisible();
-  await expect(page.getByText('Owner-registered app · publisher unverified', { exact: true })).toBeVisible();
+  await expect(page.getByText('Registered on your ship', { exact: true })).toBeVisible();
   await page.screenshot({ path: screenshotPath('owner-consent'), fullPage: true });
   const response = page.waitForResponse(response => response.url().includes('/connect/owner/v1/consents/') && response.request().method() === 'POST');
   await page.getByRole('button', { name: 'Approve connection', exact: true }).click();

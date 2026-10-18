@@ -11,7 +11,9 @@ The developer supplies:
 | Exact callback URI | The app’s registered HTTPS or dotted custom-scheme callback, at most 256 bytes, with no query, fragment, user information or whitespace |
 | Permissions | Each session explicitly requests read, write and/or delete on its server-assigned app space |
 
-The labels and public client ID are **unverified**. They do not authenticate the native publisher. Custom schemes can collide; PKCE binds an intercepted code to its initiating flow, but cannot prove which binary initiated a separate flow. Register known apps using instructions you trust. Connect does not fetch a publisher-supplied URL or use a client secret to claim native publisher authentication.
+Connect displays **Registered on your ship** to confirm that the registration exists locally. **About this registration** in consent and access details explains that the entry records app access on your ship. For Urbit apps, consult the desk’s installation source for its publishing ship. Connect client registrations do not contain that desk provenance, and a desk copied locally may have no publishing ship recorded.
+
+Client names and IDs are labels used by the authorization protocol. Custom callback schemes can collide; PKCE binds an intercepted code to its initiating flow. Register apps using the client ID and callback URI supplied by the developer.
 
 Only the authenticated ship owner can register, rename, disable, remove or revoke. Revoking keeps documents; disabling also prevents new sessions. Removal erases live documents and frees a slot after confirmation. Re-registering an ID creates a fresh namespace. Logical deletion leaves historical pier events and backups intact.
 

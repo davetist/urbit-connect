@@ -3,7 +3,7 @@ import { button, confirm, dialog, el, field, notify } from './dom.ts';
 export function registerApp(changed: () => Promise<void>): void {
   const modal = dialog('Register an app');
   const name = field('Display name', '', 'App name'), id = field('Client ID', '', 'app-client-id'), redirect = field('Exact callback URI', '', 'org.example.myapp:/oauth/callback');
-  modal.content.append(el('p', 'muted', 'Use the client ID and callback URI supplied by a known app’s developer. Names and IDs are unverified labels; registration does not prove who published the native app. Connect assigns a separate document space.'), name.root, id.root, redirect.root,
+  modal.content.append(el('p', 'muted', 'Use the client ID and callback URI supplied by the app’s developer. Connect assigns a separate document space. The app must ask for your approval before it can access that space.'), name.root, id.root, redirect.root,
     el('div', 'actions', button('Register app', async () => {
       await api('clients', { name: name.input.value, id: id.input.value, redirectURI: redirect.input.value });
       modal.close(); await changed(); notify('App registered. Its next connection will ask for your approval.');
@@ -13,7 +13,8 @@ export function manageAccess(app: App, sessions: Session[], changed: () => Promi
   const modal = dialog('Access to ' + app.name);
   const entries = sessions.filter(session => session.grant.clientId === app.id);
   const name = field('App display name', app.name);
-  modal.content.append(el('p', 'mono', 'Client ID: ' + app.id), el('p', 'small', 'Publisher unverified · ' + (app.enabled ? 'Enabled' : 'Disabled')), name.root,
+  modal.content.append(el('p', 'mono', 'Client ID: ' + app.id), el('p', 'small', 'Registered on your ship · ' + (app.enabled ? 'Enabled' : 'Disabled')),
+    el('details', '', el('summary', 'small', 'About this registration'), el('p', 'small muted', 'This registration records the app’s access on your ship. For Urbit apps, check the desk’s installation source for its publishing ship.')), name.root,
     el('div', 'actions', button('Update app name', async () => {
       await api('clients/' + app.id, { name: name.input.value }); modal.close(); await changed(); notify('App name updated.');
     }, 'button secondary'), button(app.enabled ? 'Disable app' : 'Enable app', async () => {
