@@ -14,7 +14,7 @@ export function manageAccess(app: App, sessions: Session[], changed: () => Promi
   const entries = sessions.filter(session => session.grant.clientId === app.id);
   const name = field('App display name', app.name);
   modal.content.append(el('p', 'mono', 'Client ID: ' + app.id), el('p', 'small', 'Registered on your ship · ' + (app.enabled ? 'Enabled' : 'Disabled')),
-    el('details', '', el('summary', 'small', 'About this registration'), el('p', 'small muted', 'This registration records the app’s access on your ship. For Urbit apps, check the desk’s installation source for its publishing ship.')), name.root,
+    el('details', '', el('summary', 'small', 'About this registration'), el('p', 'small muted', 'This app is registered in Connect on your ship. You control its permissions and can revoke its access at any time.')), name.root,
     el('div', 'actions', button('Update app name', async () => {
       await api('clients/' + app.id, { name: name.input.value }); modal.close(); await changed(); notify('App name updated.');
     }, 'button secondary'), button(app.enabled ? 'Disable app' : 'Enable app', async () => {
