@@ -3471,7 +3471,7 @@
             }
           },
           "409": {
-            "description": "Conflict or idempotency_mismatch; current body only with read scope",
+            "description": "With onlyUnused: client has an active session/authorization or stored document history",
             "headers": {
               "Cache-Control": {
                 "schema": {
@@ -3537,6 +3537,157 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ClientRemove"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/owner/v1/clients/{id}/rename": {
+      "post": {
+        "summary": "Rename a client ID while preserving its namespace, policy, sessions, pending consent and codes. Clients must use the new ID for future exchanges.",
+        "security": [
+          {
+            "ownerCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. All responses carry Cache-Control: no-store.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, expired or revoked authority",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scope or invalid owner/CSRF context",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "404": {
+            "description": "Source client registration not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "409": {
+            "description": "The destination client ID already exists",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "410": {
+            "description": "Expired snapshot/cursor or changed epoch; resnapshot",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          },
+          "429": {
+            "description": "Capacity or rate limit; Retry-After supplied",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                },
+                "description": "No token or document response may be cached by intermediaries"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Connect-CSRF",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_connect_owner_v1_clients_id_rename",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientRename"
               }
             }
           }
@@ -4355,6 +4506,10 @@
           "confirmNamespace": {
             "type": "string",
             "minLength": 1
+          },
+          "onlyUnused": {
+            "type": "boolean",
+            "description": "When true, atomically refuse removal if the client has a live session, pending consent/code, or nonempty document history."
           }
         },
         "required": [
@@ -4398,6 +4553,27 @@
             }
           }
         }
+      },
+      "ClientRename": {
+        "type": "object",
+        "properties": {
+          "confirmClientId": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "confirmNamespace": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "$ref": "#/components/schemas/Collection"
+          }
+        },
+        "required": [
+          "id",
+          "confirmClientId",
+          "confirmNamespace"
+        ],
+        "additionalProperties": false
       }
     }
   }

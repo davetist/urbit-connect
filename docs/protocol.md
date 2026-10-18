@@ -47,3 +47,11 @@ Refresh families retain at most 4,096 consumed token hashes. Reaching this retai
 ## Opt-in local resources
 
 See [local resource integrations](resource-integrations.md) for immutable owner policies, exact loopback callbacks, authenticated Gall exchange/revoke and live grant checks. Resource scopes do not authorize document routes. Client-specific tokens and compatibility behavior live in separate resource desks. Existing document-client behavior and refresh-reuse policy remain unchanged.
+
+## Client ID migration
+
+`POST /connect/owner/v1/clients/{id}/rename` takes `{id: "new-id", confirmClientId: "old-id", confirmNamespace: "app-N"}` under the existing owner cookie, exact Origin and CSRF checks. The source ID and namespace must match, the destination must be a valid unused client ID, and a collision returns 409. A same-ID request is an authenticated no-op.
+
+Renaming preserves the namespace, documents, enabled state, immutable resource policy, session IDs, token digests, expirations and pending authorization state. It changes client references atomically across registrations, sessions, pending consents, authorization codes and authorization-start counters. Callers must use the new ID for subsequent authorization/code exchanges and generic token refreshes; an application adapter can translate its external client IDs. Rename does not grant additional permissions or re-enable a disabled client.
+
+For cleanup of unused registrations, the existing remove endpoint accepts optional `onlyUnused: true`. It atomically refuses deletion when a live session, unexpired consent/code or any document history exists. The existing confirmation fields remain required; omitting the option preserves explicit removal and revocation behavior.

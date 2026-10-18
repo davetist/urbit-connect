@@ -124,6 +124,22 @@
   =.  codes.db
     (malt (skim ~(tap by codes.db) |=([p=@ux q=code:c] !=(id client.authorization.q))))
   db
+++  rename-client
+  |=  [db=auth-state:c old=@t new=@t]
+  ^-  auth-state:c
+  =/  app  (~(got by clients.db) old)
+  ?>  !(~(has by clients.db) new)
+  =.  clients.db  (~(put by (~(del by clients.db) old)) new app(id new))
+  =.  pending.db
+    (malt (turn ~(tap by pending.db) |=([p=@t q=authorization:c] [p ?:(=(old client.q) q(client new) q)])))
+  =.  codes.db
+    (malt (turn ~(tap by codes.db) |=([p=@ux q=code:c] [p ?:(=(old client.authorization.q) q(client.authorization new) q)])))
+  =.  sessions.db
+    (malt (turn ~(tap by sessions.db) |=([p=@t q=session:c] [p ?:(=(old client.q) q(client new) q)])))
+  =/  rate  (~(get by starts.db) old)
+  =.  starts.db  (~(del by starts.db) old)
+  =?  starts.db  ?=(^ rate)  (~(put by starts.db) new u.rate)
+  db
 ++  valid-redirect
   |=  value=@t
   ^-  ?
