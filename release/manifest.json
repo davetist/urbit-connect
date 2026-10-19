@@ -5,12 +5,12 @@
   "sourceCommit": null,
   "source": {
     "desk": {
-      "sha256": "ea30ed108b8ff98f026ba971202af920ede1e1f036fb395c47c6b2f58546d8a8",
+      "sha256": "caf2065db608de200678de504c7ad8624499f7a563af2b2ba4f02973aeba9572",
       "files": {
         "desk/app/connect.hoon": "3c7fbb9e302ae1169f802965af083c35a8b8cf901d6bc59d0f00d25502997e84",
         "desk/desk.bill": "d6cf88b4f21e82bc8bd6b7c0f6c50038d1d79adeafb09fe926df8bdcfcf4af21",
         "desk/desk.docket-0": "f7b939080cf29f8e8a227e0821b1a5bc6cd4fc804a8dcf9ec9c1fcfcb75f0d4f",
-        "desk/lib/connect-assets.hoon": "9213150484bba2346559f3e1e1ad77ce009012a7e94b0db926b6753834fa76fb",
+        "desk/lib/connect-assets.hoon": "cad80850f8ba5f3d96d1e653ba5e0ea5323cace488bd3aa82d588c1ec0eaf549",
         "desk/lib/connect-auth.hoon": "d963819b154e9349adc1c8063d5395596442a45ae6dc569d970e08d2c058c6c8",
         "desk/lib/connect-codec.hoon": "70245f40be3ab1766e17815535c0d77dcae83e3650c3345db530bf953906932e",
         "desk/lib/connect-entry.hoon": "5b8b640431030691c9e1d4c1a604f5d22fcd04066a480749dd3b60dfede3e7f4",
@@ -54,7 +54,7 @@
       }
     },
     "web": {
-      "sha256": "1690956968c870ae1382174e084bc6d03008fb2364021a0c4fa3754c0280caba",
+      "sha256": "cf4d5ab43adf05971ff66a7c0ddf59e1744f32cf92211bc7805b63fd276fcc95",
       "files": {
         "web/index.html": "f4bac6eafcbc012e862a1dd471c954e0c4a0f3a8a34d2c12bf79372da0d99d15",
         "web/package-lock.json": "e6694d9f9cc0398c17c3d5f3e31db8767c29a74b4e5495bca5df83afa903992e",
@@ -64,7 +64,7 @@
         "web/src/api.ts": "f467016036ac886666eb9dcdb33d5c476a6b015375189b4b90ea7c9bf3655203",
         "web/src/apps.ts": "1631ea88cede87ebb06c449e5662fcdf025a2f2dfbf46ae0c2c35cf7199e268f",
         "web/src/codec.ts": "836a4c0951ed3f759960817f8a4bf0b7177ef547f0c38d0cb85e98e6d1ce2f5a",
-        "web/src/consent.ts": "656bbe2924557a8e6994be426cfe935c278d2d9e8e6b871df924be8bf8461b71",
+        "web/src/consent.ts": "d879dbe32818e34fcb2761b690c9e46b366e6ce7c58ba697975fe0ce84f920ca",
         "web/src/documents.ts": "3ac7f8c791c8c374f9a04ccc7fd81f16342de303a9220126e99e0485a11bda47",
         "web/src/dom.ts": "3ee62c712408a0807ec72977a634830c93edbf3e65c213552ead8db08ec6139b",
         "web/src/main.ts": "031b09bbb746cb74485003d31f5f1cb36d0946699e2b984344aee9d2a80c0bfa",
@@ -266,7 +266,7 @@
       }
     },
     "docs": {
-      "sha256": "be277eb2bea6c80ecf9d6d17a19072734828aa9e82e27165d412c52c81d340ff",
+      "sha256": "2fa7df5a79078cd016f0de84451cc1cb9504b6425b70ed21996717775bfc73f4",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
@@ -300,7 +300,7 @@
         "docs/support.md": "d027d251be87c07dd1395b910bbf6e4b349f75acd22c660319396c0516143b85",
         "docs/supported-platforms.md": "726e69b09443a01676b64fd94e79dc9ae83fecd07312d795a52cfce3056c2155",
         "docs/update.md": "520df7dc5d519ba5ce0686305cf3194013f8de2c3552c6ed19ef287aad0f3b78",
-        "docs/web-assets.json": "c026f95f9dcb9645a63035928cbf97362a6c18aca6f8eebc6a8ccf4e03fe1fa3"
+        "docs/web-assets.json": "d3fae7ff91fbab883d4913e35b62f03f2169f28f93a65cb2c0516949559935a9"
       }
     },
     "toolchain.json": {
@@ -408,7 +408,7 @@
   "artifacts": {
     "desk": {
       "path": "dist/connect-0.2.0-alpha.1.tgz",
-      "sha256": "77ae495b0cd60e3270d33550363133dbc58634a941ec3fb3cdc0fad93dc6000f",
+      "sha256": "340586882a8b86229c215fb7465edd8da069df39c51d930c4f719e76bb9e19b2",
       "kind": "file"
     },
     "sdk": {
@@ -423,12 +423,12 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "e8ab064839aa641935430615671ac69c8e9fee7e79c5f24ffc45c309d88162c0",
+      "sha256": "9b85e4e0ee03f8080060e688835402a2c2b4808fead21a39560a0b9bfd38e950",
       "kind": "file"
     },
     "web": {
       "path": "web/dist",
-      "sha256": "1b1be3d62c55bf1cc872ad3c0b3f102b1d95844a2eeb75f821f49111d856cb44",
+      "sha256": "8d25079a07ffce4294b0437c05c0a82985adea3ce5e11f6a35554bf3cae7b221",
       "kind": "tree"
     }
   },
