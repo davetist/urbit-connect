@@ -12,7 +12,7 @@ The ship can read documents. The SDK sends data directly to the paired HTTPS shi
 
 Follow [installation](docs/install.md) for an authorized ship with the compatible runtime/kernel and a reachable HTTPS endpoint. Open `/apps/connect/` as its owner, configure the exact HTTPS origin, and register the intended client or resource integration. Follow [updates](docs/update.md) to preserve grants, documents and local drafts; [operations](docs/operations.md) covers backup and restore generation handling.
 
-For Bitwarden, use the separate [Urbit Bitwarden repository](https://github.com/davetist/urbit-bitwarden) and its official-client instructions. Connect owns generic authorization; the Bitwarden desk owns the vault API and encrypted vault data.
+For Urbitwarden, use the separate [Urbitwarden repository](https://github.com/davetist/urbit-bitwarden) and its official-client instructions. Connect owns generic authorization; the Urbitwarden desk owns the vault API and encrypted vault data.
 
 Build and verify the local source packages without booting a ship or running a test suite:
 

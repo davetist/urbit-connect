@@ -1,14 +1,14 @@
 {
-  "assets/index-Cr4Wn_lN.js": {
-    "sha256": "34963f22ac64072cf0b63933bfdbe448f7dcd210c7197d7227e0422732581449",
-    "bytes": 24263
+  "assets/index-DLxlFZ5q.js": {
+    "sha256": "29b6a6e0b66d759f8309c9dadb0334e1570380b653613c057b837b1553fdac04",
+    "bytes": 24721
   },
   "assets/index-l2qa91mJ.css": {
     "sha256": "be1e865f0d0e684adbf8b6974f4af6223316cca93c01a2a30820495732e7466f",
     "bytes": 11281
   },
   "index.html": {
-    "sha256": "d46325e0fdc4d16a3f288c8eded73832228d3e5df35ad39522521c732b9bc526",
+    "sha256": "492391000f679a7e9ee9aef1bdd22fe65ad2f6d42897921dc276f1ad8ebb1a87",
     "bytes": 447
   }
 }

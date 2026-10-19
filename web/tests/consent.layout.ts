@@ -9,15 +9,15 @@ async function openConsent(page: Page, long = false): Promise<void> {
   } }));
   await page.route('**/connect/owner/v1/consents/layout', route => route.fulfill({ json: {
     client: {
-      id: 'bitwarden-layout', name: long ? 'Bitwarden' + 'LongAppName'.repeat(12) : 'Bitwarden',
-      redirectURI: 'https://layout.invalid/callback', namespace: 'bitwarden-layout', enabled: true, development: false,
-      integration: { agent: 'bitwarden', scopes: ['vault:read'], redirectURIs: ['https://layout.invalid/callback'] }
+      id: 'urbitwarden-layout', name: long ? 'Urbitwarden' + 'LongAppName'.repeat(12) : 'Urbitwarden',
+      redirectURI: 'https://layout.invalid/callback', namespace: 'urbitwarden-layout', enabled: true, development: false,
+      integration: { agent: 'urbitwarden', scopes: ['vault:read'], redirectURIs: ['https://layout.invalid/callback'] }
     },
     scopes: long ? Array.from({ length: 20 }, (_, i) => `vault:${i}:${'long-scope'.repeat(12)}`) : ['vault:read'],
     label: long ? 'DeviceLabel'.repeat(30) : 'Bitwarden iOS', ship: '~zod'
   } }));
   await page.goto('/apps/connect/?consent=layout');
-  await expect(page.getByRole('heading', { name: /^Connect Bitwarden/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /^Connect Urbitwarden/ })).toBeVisible();
 }
 
 async function expectDecisionsInViewport(page: Page) {

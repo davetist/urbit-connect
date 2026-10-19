@@ -1,2 +1,2 @@
 import { defineConfig } from 'vite';
-export default defineConfig({ base: '/apps/connect/', build: { sourcemap: false, target: 'es2022' } });
+export default defineConfig({ base: '/apps/connect/', publicDir: false, build: { sourcemap: false, target: 'es2022' } });

@@ -95,7 +95,7 @@ class Reference:
         verifier = secrets.token_urlsafe(32); state = secrets.token_urlsafe(32)
         challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b'=').decode()
         args = {'response_type': 'code', 'client_id': client, 'redirect_uri': redirect, 'scope': 'documents:read documents:write documents:delete', 'state': state, 'code_challenge': challenge, 'code_challenge_method': 'S256'}
-        status, _ = self.request('/connect/oauth/authorize?' + urllib.parse.urlencode(args)); assert status == 302
+        status, _ = self.request('/connect/oauth/authorize?' + urllib.parse.urlencode(args), owner=True); assert status == 302
         query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.headers.get('Location', self.headers.get('location', ''))).query)
         status, callback = self.request('/connect/owner/v1/consents/' + query['consent'][0], 'POST', {'decision': 'approve'}, owner=True); assert status == 200
         values = urllib.parse.parse_qs(urllib.parse.urlsplit(callback['redirect']).query); assert values['state'] == [state]

@@ -163,7 +163,7 @@ def running(simulator, api_override=None,run_id=None):
                     status,result=200,{'count':count}
                 elif action=='authorize-load':
                     path=load_authorization_path(value['url'],api.owner_origin if real_target else TARGETS.origin())
-                    response=api.request(path);callback=api.approve(response)
+                    response=api.request(path,owner=True);callback=api.approve(response)
                     status,result=200,{'callback':'org.example.connect.load:/callback?'+urllib.parse.urlencode({k:v[0]for k,v in callback.items()})}
                 elif action=='mutate-load' and real_target:
                     from test_documents import mutation,put

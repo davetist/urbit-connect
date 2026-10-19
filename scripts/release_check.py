@@ -5,27 +5,52 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import stat
 import subprocess
 import tarfile
+from source_safety import read_regular, source_manifest as checked_source_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = json.loads((ROOT / 'release/version.json').read_text())['version']
-EXCLUDED = {'.work', '.git', '.build', 'node_modules', 'dist', 'DerivedData', 'xcuserdata', '__pycache__', '.DS_Store', 'test-results', 'playwright-report'}
-SOURCE_GROUPS = ['desk', 'web', 'sdk/swift', 'Package.swift', 'examples/ios-todo', 'protocol', 'tests', 'scripts', 'docs', 'toolchain.json', 'release/version.json', 'release/ownership.json', 'release/manifest.schema.json', 'release/README.md', 'README.md', 'LICENSE', '.gitignore', 'third_party', 'integrations/grant-probe']
+SOURCE_GROUPS = ['desk', 'web', 'sdk/swift', 'Package.swift', 'examples/ios-todo', 'protocol', 'tests', 'scripts', 'docs', 'toolchain.json', 'release/version.json', 'release/ownership.json', 'release/manifest.schema.json', 'release/README.md', 'release/source-files.json', 'README.md', 'LICENSE', '.gitignore', 'third_party', 'integrations/grant-probe']
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def source_manifest(root=None):
+    return checked_source_manifest(ROOT if root is None else root)
+
+
+def regular_source(path):
+    relative = path.relative_to(ROOT)
+    current = ROOT
+    if stat.S_ISLNK(current.lstat().st_mode):
+        raise ValueError('symlink in release sources: ' + str(path))
+    for part in relative.parts:
+        current = current / part
+        mode = current.lstat().st_mode
+        if stat.S_ISLNK(mode):
+            raise ValueError('symlink in release sources: ' + str(path))
+        if current != path and not stat.S_ISDIR(mode):
+            raise ValueError('non-directory in release source path: ' + str(path))
+    if not stat.S_ISREG(path.lstat().st_mode):
+        raise ValueError('non-file in release sources: ' + str(path))
+    return path
+
+
 def source_files(group):
-    path = ROOT / group
-    candidates = [path] if path.is_file() else path.rglob('*')
-    return sorted(p for p in candidates if p.is_file() and not EXCLUDED.intersection(p.relative_to(path).parts) and not any(part.endswith('.xcresult') for part in p.parts) and p.suffix not in {'.pyc', '.xcuserstate'})
+    if group == 'web/dist':
+        path = ROOT / group
+        candidates = sorted(path.rglob('*'))
+        return [regular_source(p) for p in candidates if not p.is_dir() or p.is_symlink()]
+    prefix = group.rstrip('/') + '/'
+    return [regular_source(ROOT / name) for name in source_manifest() if name == group or name.startswith(prefix)]
 
 
 def tree(group):
-    entries = {p.relative_to(ROOT).as_posix(): digest(p) for p in source_files(group)}
+    entries = {p.relative_to(ROOT).as_posix(): hashlib.sha256(read_regular(ROOT, p.relative_to(ROOT))).hexdigest() for p in source_files(group)}
     if not entries:
         raise ValueError('empty release input: ' + group)
     return {'sha256': hashlib.sha256(json.dumps(entries, sort_keys=True, separators=(',', ':')).encode()).hexdigest(), 'files': entries}
@@ -33,12 +58,10 @@ def tree(group):
 
 def archive(path, groups):
     entries = {p.relative_to(ROOT).as_posix(): p for group in groups for p in source_files(group)}
-    entries['LICENSE'] = ROOT / 'LICENSE'
+    entries['LICENSE'] = source_files('LICENSE')[0]
     with path.open('wb') as raw, gzip.GzipFile(filename='', mode='wb', fileobj=raw, mtime=0) as zipped, tarfile.open(fileobj=zipped, mode='w') as bundle:
         for name, source in sorted(entries.items()):
-            if source.is_symlink():
-                raise ValueError('symlink in release sources: ' + name)
-            data = source.read_bytes()
+            data = read_regular(ROOT, source.relative_to(ROOT))
             info = tarfile.TarInfo(name); info.size = len(data); info.mode = 0o644; info.mtime = 0
             bundle.addfile(info, io.BytesIO(data))
     path.with_suffix(path.suffix + '.sha256').write_text(digest(path) + '  ' + path.name + '\n')

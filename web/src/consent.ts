@@ -5,8 +5,21 @@ export async function consent(root: HTMLElement, id: string): Promise<void> {
   const descriptions: Record<string, string> = { 'documents:read': 'Read documents it stores here', 'documents:write': 'Create and change its documents', 'documents:delete': 'Delete its documents' };
   const list = el('ul', 'permissions', ...request.scopes.map(scope => el('li', '', descriptions[scope] ?? scope)));
   const resource = request.client.integration?.agent;
-  const approve = async (decision: string) => {
+  const approve = async (decision: 'approve' | 'deny') => {
     const response = await api<{ redirect: string }>('consents/' + encodeURIComponent(id), { decision });
+    const approved = decision === 'approve';
+    const heading = el('h1', '', approved ? 'Connection approved' : 'Connection declined');
+    heading.tabIndex = -1;
+    const returnLink = el('a', 'button', `Return to ${request.client.name}`);
+    returnLink.href = response.redirect;
+    root.replaceChildren(el('section', 'consent-card',
+      el('div', 'consent-details', el('span', 'eyebrow', request.client.name), heading,
+        el('p', 'lead', `You can safely close this window and return to ${request.client.name}.`),
+        el('p', 'small muted', 'If the app did not open automatically, use the link below.')
+      ),
+      el('div', 'actions', returnLink)
+    ));
+    heading.focus();
     window.location.assign(response.redirect);
   };
   const details = el('div', 'consent-details', el('span', 'eyebrow', 'CONNECTION REQUEST'),

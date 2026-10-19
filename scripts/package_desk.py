@@ -6,15 +6,20 @@ import hashlib
 import io
 import json
 from pathlib import Path
-import shutil
+import stat
 import subprocess
 import sys
 import tarfile
 import time
 import urllib.request
 from dev_ship import ROOT,prepare_state,rpc
+from source_safety import read_regular, source_manifest
 
 ERRORS=('event failed','nest-fail','-find.','syntax error','find-fork','FAILED','ford: build failed')
+def verify_web_bundle():
+    result=subprocess.run([sys.executable,str(ROOT/'scripts/bundle_web.py'),'--check'],cwd=ROOT,capture_output=True,text=True)
+    if result.returncode:raise ValueError('Bundled owner assets are stale; rebuild web and run scripts/bundle_web.py')
+
 def checked_command(state,command):
     reply=rpc(state,'command',command=command,timeout=180)['output']
     diagnostic=state/'desk-command.log';diagnostic.write_text(reply);diagnostic.chmod(0o600)
@@ -22,10 +27,18 @@ def checked_command(state,command):
     return reply
 
 def stage(state,source=None):
+    if source is None:verify_web_bundle()
     state=prepare_state(state);source=source or ROOT/'desk';target=state/'zod/connect'
     if not target.is_dir()or target.is_symlink():raise ValueError('Create and mount %connect in the owned test ship first')
+    expected={name.removeprefix('desk/')for name in source_manifest(ROOT)if name.startswith('desk/')}
     previous=state/'staged-files.json'
-    files={str(p.relative_to(source))for p in source.rglob('*')if p.is_file()}
+    files=set()
+    for path in source.rglob('*'):
+        mode=path.lstat().st_mode
+        if stat.S_ISLNK(mode):raise ValueError('Desk symlinks are not supported')
+        if stat.S_ISREG(mode):files.add(str(path.relative_to(source)))
+        elif not stat.S_ISDIR(mode):raise ValueError('Desk sources must be regular files or directories')
+    if files!=expected:raise ValueError('Desk contains missing or unreviewed source files')
     if previous.exists():
         for name in set(json.loads(previous.read_text()))-files:
             path=target/name
@@ -33,19 +46,33 @@ def stage(state,source=None):
     for name in sorted(files):
         origin=source/name;dest=target/name
         if origin.is_symlink()or dest.is_symlink():raise ValueError('Desk symlinks are not supported')
-        dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(origin,dest)
+        data=read_regular(source,name)
+        dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
     checked_command(state,'|commit %connect');previous.write_text(json.dumps(sorted(files)))
     print('Staged and committed',len(files),'desk files in owned test ship')
 
 def package():
     version=json.loads((ROOT/'release/version.json').read_text())['version']
+    source=ROOT/'desk'
+    if not stat.S_ISDIR(source.lstat().st_mode):raise ValueError('Desk source is not a regular directory')
+    expected={Path(name.removeprefix('desk/'))for name in source_manifest(ROOT)if name.startswith('desk/')}
+    files=[]
+    for path in source.rglob('*'):
+        mode=path.lstat().st_mode
+        if stat.S_ISLNK(mode):raise ValueError('Desk symlinks are not supported')
+        if stat.S_ISREG(mode):files.append(path.relative_to(source))
+        elif not stat.S_ISDIR(mode):raise ValueError('Desk sources must be regular files or directories')
+    if set(files)!=expected:raise ValueError('Desk contains missing or unreviewed source files')
+    entries={str(path):read_regular(source,path)for path in files}
+    verify_web_bundle()
+    support=[('MANIFEST.sha256',None),('LICENSE',read_regular(ROOT,'LICENSE')),('THIRD_PARTY/urbit-LICENSE.txt',read_regular(ROOT,'third_party/urbit/LICENSE.txt')),('THIRD_PARTY/landscape-NOTICE.md',read_regular(ROOT,'third_party/landscape/NOTICE.md'))]
     output=ROOT/('dist/connect-'+version+'.tgz');output.parent.mkdir(exist_ok=True)
-    entries={str(p.relative_to(ROOT/'desk')):p.read_bytes()for p in(ROOT/'desk').rglob('*')if p.is_file()}
     manifest=''.join(hashlib.sha256(data).hexdigest()+'  '+name+'\n'for name,data in sorted(entries.items()))
+    support[0]=('MANIFEST.sha256',manifest.encode())
     with output.open('wb')as raw,gzip.GzipFile(filename='',mode='wb',fileobj=raw,mtime=0)as zipped,tarfile.open(fileobj=zipped,mode='w')as archive:
         for name,data in sorted({'connect/'+name:data for name,data in entries.items()}.items()):
             info=tarfile.TarInfo(name);info.size=len(data);info.mode=0o644;info.mtime=0;archive.addfile(info,io.BytesIO(data))
-        for name,data in [('MANIFEST.sha256',manifest.encode()),('LICENSE',(ROOT/'LICENSE').read_bytes()),('THIRD_PARTY/urbit-LICENSE.txt',(ROOT/'third_party/urbit/LICENSE.txt').read_bytes()),('THIRD_PARTY/landscape-NOTICE.md',(ROOT/'third_party/landscape/NOTICE.md').read_bytes())]:
+        for name,data in support:
             info=tarfile.TarInfo(name);info.size=len(data);info.mode=0o644;archive.addfile(info,io.BytesIO(data))
     digest=hashlib.sha256(output.read_bytes()).hexdigest();output.with_suffix('.tgz.sha256').write_text(digest+'  '+output.name+'\n');print('Packaged:',output.name,digest);return output
 

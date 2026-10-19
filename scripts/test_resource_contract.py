@@ -64,7 +64,7 @@ class API:
         query = {'response_type': 'code', 'client_id': client, 'redirect_uri': redirect,
                  'scope': scope, 'state': secrets.token_urlsafe(32), 'code_challenge_method': 'S256',
                  'code_challenge': base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b'=').decode()}
-        return self.call('/connect/oauth/authorize?' + urllib.parse.urlencode(query)), query, verifier
+        return self.call('/connect/oauth/authorize?' + urllib.parse.urlencode(query), owner=True), query, verifier
 
     def code(self, client, redirect, scope):
         (status, _, headers), query, verifier = self.begin(client, redirect, scope)
