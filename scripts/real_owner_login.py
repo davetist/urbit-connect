@@ -1,6 +1,6 @@
 """Prepare private owner-browser acceptance credentials on authorized connect-dev.
 
-Run on reference-host after the verified baseline install. Never print or pass the code
+Run on the explicitly selected host after the verified baseline install. Never print or pass the code
 or cookie in argv. This owner context is test infrastructure, never an SDK input.
 """
 import http.cookiejar
@@ -12,8 +12,7 @@ import urllib.parse
 import urllib.request
 sys.path.insert(0, str(Path.home() / '.local/share/urbit-connect-alpha'))
 from real_install import ROOT, command, private_write, request
-
-APPROVED_ORIGIN = 'https://ship.example:8443'
+from real_target import require_target
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -22,10 +21,9 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 origin = sys.argv[1]
-if origin != APPROVED_ORIGIN:
+target = require_target(json.loads((ROOT / 'target.json').read_text()))
+if origin != target['origin']:
     raise ValueError('The approved HTTPS origin is required before requesting an owner code')
-target = json.loads((ROOT / 'target.json').read_text())
-assert target['project'] == '/absolute/project' and target['pier'] == '/mnt/harbor/piers/connect-dev'
 ship = request('/api/v1/ships/' + target['harborShipId'])
 assert ship['pierPath'] == target['pier'] and ship['identity'] == target['ship'] and ship['state'] == 'running'
 jar = http.cookiejar.CookieJar()

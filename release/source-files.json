@@ -160,6 +160,7 @@
   "scripts/real_owner_login.py",
   "scripts/real_reference.py",
   "scripts/real_soak.py",
+  "scripts/real_target.py",
   "scripts/real_test_support.py",
   "scripts/release_check.py",
   "scripts/reload_rehearsal.py",

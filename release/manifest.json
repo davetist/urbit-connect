@@ -170,7 +170,7 @@
       }
     },
     "tests": {
-      "sha256": "94036267258e68125b1b1bd1a4a430d6b1e93053cbe5234acaba30aff22376fc",
+      "sha256": "d3b344b4d38caaa32fe71897f392181fa7f93797ad7efe727883db50c47fd5ba",
       "files": {
         "tests/acceptance/alpha-matrix.md": "7f71901561e5ac53b01bba3d558cb4de180a598eec369cafa1c81908ab4966ac",
         "tests/acceptance/prototype-checklist.md": "b875abe6d9edf835d552c32e6348413642dc4b4d1466668cb7a64c35eb17d374",
@@ -180,18 +180,18 @@
         "tests/historical/retired-policy/README.md": "967858353450270367259d55d2c3a6c3af6351203258e8b7b961362bc99b3649",
         "tests/historical/retired-policy/desk__tests__connect__auth.hoon.txt": "bec3d1acc515e45c959cc1ff1a89150d2b286963ac1f0e3577aa7466a0b22d7f",
         "tests/historical/retired-policy/desk__tests__connect__limits.hoon.txt": "231c3d6e1048b7bf2962026bb8882f21f1a0d5c6c6b7017e619ad65c4b56fe57",
-        "tests/historical/retired-policy/docs__operations__connect-dev-alpha-soak.service.txt": "d83f21025e0bbd6aa886639f779a879719e46fad8f9a081394d657cef93c2b2d",
+        "tests/historical/retired-policy/docs__operations__connect-dev-alpha-soak.service.txt": "c5801ff7cfbee2f974553cc76927b9b661da6d0798dc33d915219cf89056f831",
         "tests/historical/retired-policy/examples__ios-todo__ConnectTodoUITests__ConnectTodoUITests.swift.txt": "9dee3183d6257432c39c56b66ff7eb106387174c43d0af8bd678f0f5202dadcf",
         "tests/historical/retired-policy/scripts__native_harness.py.txt": "2b114a5536a96674822e8249a57e39234ed43feed95bc05bdffef44e7784298e",
         "tests/historical/retired-policy/scripts__real_bounds.py.txt": "7cf81b50b2d29a3168035abdd448fc5f8a54c6249805be2a841e1bef69533f88",
-        "tests/historical/retired-policy/scripts__real_load.py.txt": "4004a1cdec77648c7bc671d4480f105b38909edbef4a2f3753696613f9382052",
-        "tests/historical/retired-policy/scripts__real_soak.py.txt": "36f69bde93e13d9dccc40dc8b49080dc826a3621ede013d1743b1524fc53b61c",
+        "tests/historical/retired-policy/scripts__real_load.py.txt": "aea5e06bcb2bce970fbfc3b899698e9a9cef88f0353a15ca209211aed9f175aa",
+        "tests/historical/retired-policy/scripts__real_soak.py.txt": "673d5cd1f1259f7222b239fd1b2ce25781c5eb348f9f44c6602be3b92db9189b",
         "tests/historical/retired-policy/sdk__swift__Tests__UrbitConnectTests__CapacityTests.swift.txt": "ccf18bef7e2850cbd423f6ac21637704f2ebb97ac1feae60ee0a2c86d218a27d",
         "tests/historical/retired-policy/sdk__swift__Tests__UrbitConnectTests__DraftArchiveTests.swift.txt": "d9b2c67cca1555c02adc5845454458b1949f8e923c4612a2800e384ad532e0e4",
         "tests/historical/retired-policy/sdk__swift__Tests__UrbitConnectTests__StorageRecoveryTests.swift.txt": "63aa0fc3206256f90d24772eb3f98579a66fbfb9245036ff9c8eadbfad1107cf",
         "tests/historical/retired-policy/tests__integration__test_limits.py.txt": "c407e58fe443abd5710e762e619c7546f230104cbd9d27ca78b9b3c5a75aaea3",
         "tests/historical/retired-policy/tests__tooling__test_qualification.py.txt": "211259f6b4d76efea4e6bf2c2e16c27556a48ea11d2e360c865a0203d66bce52",
-        "tests/historical/retired-policy/tests__tooling__test_real_soak.py.txt": "2d9a389786b52b542f83eb34c898984de0a3e1e96d1c70fc9cfe0e6c2df1ac6e",
+        "tests/historical/retired-policy/tests__tooling__test_real_soak.py.txt": "6145592327254064fcf7b86f3881d69a56a2d3760b8049a9741434fef942be9e",
         "tests/historical/retired-policy/web__tests__codec.test.ts.txt": "d6a770aa188f4c308bac86980b70cdd45d96e43ac63bf9881e7cb4f38f2152b0",
         "tests/integration/support.py": "b0c0715e43214aa3108f685d77f53c550e66fc74faca8efdcfe5dba2942da00a",
         "tests/integration/test_alpha_reliability.py": "378ebfae6bb80f231ab3c2be90402d645b661beb1782fa6fcfd1a59096675a10",
@@ -208,14 +208,14 @@
         "tests/tooling/test_dev_ship.py": "3b0a318a8c87494985e5983ab23328364f02aee247741f85a9b6dcb3b1be337b",
         "tests/tooling/test_doctor.py": "12825e4c68fcd7110d029561d282a1a6aab7a0f0d492695cd06cab0aa3ae41b2",
         "tests/tooling/test_expired_tls.py": "764989ad4b9b08a0d9f5f2bb10b92f87b51bedb4b0f5516cb21975464245c089",
-        "tests/tooling/test_fixture_cleanup.py": "e133bf370a7599a04e59299af3039f2850c8bf812ca72a95b6d75e74c954b0d1",
+        "tests/tooling/test_fixture_cleanup.py": "05b9a05770f9a6bee8a5e48dbe6a7a4d89662bbf230c72656cb27e2c0a463e7f",
         "tests/tooling/test_native_authorization.py": "571209275b23dc9112c6a468c51b7ce0c27857e154922bfd83a63bbe69679243",
         "tests/tooling/test_native_evidence.py": "2a13ae104cb7b882f0411bbb335f30a7d68b0d1680e400febf2d04bc166e778e",
         "tests/tooling/test_netem_startup.py": "8a52be20e9a8c32220ebd08b32367e73457255408d8bbd0065c82b7b0f96463a",
         "tests/tooling/test_real_install.py": "1f8b309420782b16f7ad8e8b5f28fa9e73b36b21cf7c14828fa2ec74ce826e7b",
         "tests/tooling/test_real_load.py": "6f7071f64a097d063580b0b8b71af5f9e402741e861319da9e56a1f3d9098fd6",
-        "tests/tooling/test_real_owner_login.py": "d68a43ca0eb8c359776b47ed348761e4494917fc3dbe7ebbbfef7ff0853aacbf",
-        "tests/tooling/test_real_reference.py": "df19f3721cf6476fd693d539b1dde3db8699ff7cb311d38777640976bf94ecd3",
+        "tests/tooling/test_real_owner_login.py": "88f72787e66eaf7e5ff2345097a287af3066443262936374899784df5c26d692",
+        "tests/tooling/test_real_reference.py": "612281c1a18bdcb8789383de797118fd74a8f943634f27e20be7261added0777",
         "tests/tooling/test_release_check.py": "8fa8240d82c4d96ae793441eed5e9320acfec9e88ef7e87a4bb270c9f8cbb9f7",
         "tests/tooling/test_resource_fixture.py": "ab2b61d31c675ac2de756d4d315a8da65af0dad1be4c127c18d9a059c8020266",
         "tests/tooling/test_resource_sources.py": "5e37e61ab296c3538b5311bae66ef468514d5483ae6ff80bff69a7fbaad40bb2",
@@ -223,7 +223,7 @@
       }
     },
     "scripts": {
-      "sha256": "3fd1ffce30bce777508b38a41db5f13e666ebee589c8ffe507f39a625b49c80e",
+      "sha256": "10eba662226c5847476e8c8fca229dd3f97bf63010143cb5462ce2bd45b09806",
       "files": {
         "scripts/benchmark.py": "f650758a7ece6613aa88c3e5310ec61430b4b2c769cb55cb5efb19a80379e261",
         "scripts/browser_test.py": "c6917b067085678077cddb631cf12891045521ce930466710373127b83b3077c",
@@ -239,18 +239,19 @@
         "scripts/foreign_peer.py": "11988b364c75a4798ae5e8db95e2a2d80493defc48ff16edb275ebdf9262c5f5",
         "scripts/ios_test.py": "9594b9d6d9b049fc539cd2eb8acb618444c164d62465be023fff68305125dce4",
         "scripts/native_harness.py": "112a39bc96104d897f83972eeb3b1d6518660dcc607445bc0b3ea8f9c9704b39",
-        "scripts/netem_host.py": "42489ba4aa08a12ee8780fe0cfd497ad7c276e4316674ece93a70f815de55d91",
+        "scripts/netem_host.py": "2c24bf6779f53342a8dc7169413062b3e600b29637054173b4228a7b6e20153f",
         "scripts/open_owner_ui.py": "400848f6f4448417ae19db62c8610c4912c30c8fdbf794e341a5855c43c6c697",
         "scripts/package_desk.py": "6981df9155bfaa1d8a5ad847128af55f220357108bd7819eac9c38f2e827d530",
         "scripts/protocol_fixtures.py": "260eb7c47bc01938281779b4956d53d79a34dc49b24df892780a1b4a68a9104a",
         "scripts/qualify_alpha.py": "d37b56ec4abc9147697a651a0ee4d16faaf71d88ff88df54364061e17148581f",
         "scripts/real_bounds.py": "b6ac445cd6ba5d1ef64da521fa30248f381562208576fb81124ab698e8635ef7",
-        "scripts/real_install.py": "3a70d9d5556ee374d84a6fc491d845359054fcac0a19b8262f8845903cf395c5",
-        "scripts/real_load.py": "77bc26ef63079855a792b378673dec4b627084093435b6746498e7d6c2d86d24",
-        "scripts/real_owner_login.py": "690755ebeeb57beecf2e3244dbcfb337058065ca5b94589d9fd52ef877f05d8a",
-        "scripts/real_reference.py": "79194d4f9e88a12b79e2c98f94b1a6cda89ea096ff5bbdd0856032dae04cdb9a",
+        "scripts/real_install.py": "7f2d48a3e70b4aaba3282c8a91a43d472dbe038af40e2be395ebe64a0469d65c",
+        "scripts/real_load.py": "c6a9320aa273637d563fdeaa7553d66d606260acd80901e65abde766ec9cb473",
+        "scripts/real_owner_login.py": "f2d6c27a3bc5468821d09eae3f38d172d80265b8250cec0b2a6dfefe51d9165a",
+        "scripts/real_reference.py": "7ce96e2e0764ecb45b33a1ab97efefce4910fda0325aa185c84fff760572be6f",
         "scripts/real_soak.py": "291343c1c931e9c8792e5f29c16bdb189a4b416aef7c3d20b9167a8ce93775e6",
-        "scripts/real_test_support.py": "802b27fc2917b9365ce4ed40bd5a4fd470b8f78b296b93472427d83c26a09570",
+        "scripts/real_target.py": "bc8a9c3971846a5810345a2d511f9a572181105a568932a7756502857faf666a",
+        "scripts/real_test_support.py": "87cb0abca683ee50767f9b54b625d821fb4bcad4c8f4a741651230c67f22aaf9",
         "scripts/release_check.py": "d27b53c2f2553d62238957b6a78681a6710fedafc06782c2fc51cc3d96b1aeb3",
         "scripts/reload_rehearsal.py": "bf177281bf98b016597cdd9e579c8c01dd3e0aa459fc75d35229d76d706a7938",
         "scripts/requirements.lock": "6504ccdff32db63ece3c7b12e7ebc4845947a22165f37bd4dbf4f915b8f36c90",
@@ -266,7 +267,7 @@
       }
     },
     "docs": {
-      "sha256": "2fa7df5a79078cd016f0de84451cc1cb9504b6425b70ed21996717775bfc73f4",
+      "sha256": "86777036864d4268f8f0d7e5460236613b1f3978a7dc075682d1834c066cc5f9",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
@@ -277,14 +278,14 @@
         "docs/consent-layout.md": "c968650e9b14f1bd45bdec1bdbe6c0e141f94fb15d051ce9c7fa38a500418edd",
         "docs/contributing.md": "49c918e498c87be11d327a77f81cc7a371f0fd3e94f54617fc8abbf5da4a013d",
         "docs/current-readiness.md": "9a485160a8a72ffdb10be8bab1cfc20406ed49ff54094e04d7cdfcdfac3f22d8",
-        "docs/development.md": "197729b88e393a431847303f8b03b3b25d53a44303de911c834e14d3ffebac14",
+        "docs/development.md": "773e6ad0ab47efb0221e4199b806679b6484d94cb379b1c9bf1cb72b4f169f1a",
         "docs/final-review.md": "b03a5a5d20bf50de2c6a0be1fae10a9b7fff632624471e729cf7cfbfb5409c47",
         "docs/historical/isolated-alpha.md": "e41c4d7c1fd644c5ed4b5dc7daed0966191a4b4627e14c992145380a84e1c4a7",
         "docs/implementation-progress.md": "f79666569ab3cba95603b5caf171bce1e89a1b28e893dd3eb42ee03a9a97f07c",
-        "docs/install.md": "d041fa01ef09352f125ee9f16762bb0938047e36fa8fab0a6a987f5b188db956",
-        "docs/known-limitations.md": "ed664099966431d79a66743821c6f3656c1fcc2e90b918d4c342ce4a5e61fc3f",
+        "docs/install.md": "3114ef7f8b797cb85ee098b7a29ce7f5a8779c5c7864cb294bac52e91079d4a3",
+        "docs/known-limitations.md": "d1b2dfca2e2d7f9ac573fe1a00df0525002f72d88fe16f8a05a8b7129e880700",
         "docs/landscape-source-provenance.json": "01a713d83940da1d383f4279d5f2728bdcde2e19987055c662402f5ee8b278b4",
-        "docs/operations.md": "37161dcf02688ccd2889a96a55fd958dc7c63e68c08dc66056aa4709b731c8b9",
+        "docs/operations.md": "2433eb3e0795b353b41c1a564fbe173ab5bc10e857cf020ef78a5a365e7d8cd0",
         "docs/operations/reference.Caddyfile": "006c846bbce1a0a96e6c2714728fb82c7da1ad62ac3a75429eff20342dbc590c",
         "docs/operations/tailscale-reference.Caddyfile": "d785c1b51650cd669d5f641b1af3f05b5118e8693701313d27457127b2afb280",
         "docs/protocol.md": "4304af0c689cc0d187910ad48d77392312ef6cec9b55d2ab63efa2036d259ebe",
@@ -293,12 +294,12 @@
         "docs/resource-integrations.md": "44d98c773c54ec1fc39809b5d66524498809a7bc06c700cbc06b0fd603f74f7f",
         "docs/sdk-integration.md": "237739e4e454b57e2136e9e1adcfc015e6e4dca11569e2c04499b7fd8d24c7f6",
         "docs/security.md": "442007457cf338348610cad40b108edc201e41754b1231b61ed922469afcf581",
-        "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "e3c98e2efece58d2eaa40e3d5cc44f576e0c2884809f6c8deda0ecb67a721544",
+        "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "a50ef9e2e341be8066f1b93e84551df6c1a7307b3275d4f122faf54878ddadd1",
         "docs/superpowers/plans/2026-10-13-connect-alpha-product.md": "5407d68f3206a868b3fd92bd2ad65469d53c6ac157f1fd349c6e82940ba12282",
-        "docs/superpowers/specs/2026-10-12-connect-design.md": "a8b1c02efd2d53c850086fa13c249ec3c39ba9b8b912e7fdb6a306a7297561b9",
+        "docs/superpowers/specs/2026-10-12-connect-design.md": "730ed6db07444c70f9023dfd12c5f41eaa08084b2e7e8e579f579ae84bc56814",
         "docs/superpowers/specs/2026-10-13-connect-alpha-product-brief.md": "c096d118e7621154c4bec6285c0b219662d0ca5eb0c7deb2952bf2f1d0a8767b",
         "docs/support.md": "d027d251be87c07dd1395b910bbf6e4b349f75acd22c660319396c0516143b85",
-        "docs/supported-platforms.md": "726e69b09443a01676b64fd94e79dc9ae83fecd07312d795a52cfce3056c2155",
+        "docs/supported-platforms.md": "1c85456ca244365ac007c2188b3003d903045f08a05ab1867e7955d05b181f3b",
         "docs/update.md": "520df7dc5d519ba5ce0686305cf3194013f8de2c3552c6ed19ef287aad0f3b78",
         "docs/web-assets.json": "d3fae7ff91fbab883d4913e35b62f03f2169f28f93a65cb2c0516949559935a9"
       }
@@ -334,9 +335,9 @@
       }
     },
     "release/source-files.json": {
-      "sha256": "3e99fd81b818b6236b40e15bd90375fac01dd1b2dfaea0a23322b391e7c7c5c7",
+      "sha256": "cfdc83a9f6848fdcc201289ea7b94b9197b289bd8c995aea7597538d12b38fc9",
       "files": {
-        "release/source-files.json": "f7c4b648b81d1fa75203426ba0b43adf60347f26f62a573f1e204fdc67933379"
+        "release/source-files.json": "92e6ec18101e556906dff0ace42a97f1bc4b3e11a04da5f174e702b7878b7970"
       }
     },
     "README.md": {
@@ -418,12 +419,12 @@
     },
     "todo": {
       "path": "dist/connect-todo-source-0.2.0-alpha.1.tgz",
-      "sha256": "4d057a87a85cc6ef944822c7dd4383e48e2245cef81154ef291e7a321bce92ed",
+      "sha256": "eba9876003b105b6de13e8b5daddad45471658e737a0e25e1ba667d00708286b",
       "kind": "file"
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "9b85e4e0ee03f8080060e688835402a2c2b4808fead21a39560a0b9bfd38e950",
+      "sha256": "31815fd0e5c384a0e5d1a6b854972ad1ca5843b0793a0ca6b6d443261468d154",
       "kind": "file"
     },
     "web": {

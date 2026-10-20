@@ -16,9 +16,9 @@ import time
 import urllib.parse
 import urllib.request
 import uuid
+from real_target import require_target
 
 ROOT = Path.home() / '.local/share/urbit-connect-alpha'
-ORIGIN = 'https://ship.example:8443'
 CLIENT = 'connect-reference-test'
 REDIRECT = 'org.example.connect.reference:/callback'
 DIAGNOSTIC_ERRORS = {'owner_required', 'invalid_token', 'invalid_grant', 'invalid_request',
@@ -45,14 +45,14 @@ def private_json(name, value):
 
 class Reference:
     def __init__(self):
-        self.target = json.loads((ROOT / 'target.json').read_text())
-        assert self.target['project'] == '/absolute/project' and self.target['pier'] == '/mnt/harbor/piers/connect-dev'
+        self.target = require_target(json.loads((ROOT / 'target.json').read_text()))
+        self.origin = self.target['origin']
         assert urllib.request.urlopen('http://127.0.0.1:8080/~/host', timeout=10).read().decode().strip() == self.target['ship']
         self.cookie = json.loads((ROOT / 'auth.json').read_text())['cookie']; self.csrf = None
-        endpoint = urllib.parse.urlsplit(ORIGIN)
+        endpoint = urllib.parse.urlsplit(self.origin)
         self.connection = http.client.HTTPSConnection(endpoint.hostname, endpoint.port, context=ssl.create_default_context(), timeout=40)
         status, info = self.request('/connect/v1/info'); assert status == 200
-        assert info['ship'] == self.target['ship'] and info['development'] is False and info['protocolVersion'] == 1 and info['issuer'] == ORIGIN + '/connect'
+        assert info['ship'] == self.target['ship'] and info['development'] is False and info['protocolVersion'] == 1 and info['issuer'] == self.origin + '/connect'
         status, body = self.request('/connect/owner/v1/bootstrap', owner=True); assert status == 200; self.csrf = body['csrf']
         self.info = info
 
@@ -63,7 +63,7 @@ class Reference:
         self.last_request = {'category': category, 'method': method, 'status': None, 'errorCode': None}
         headers = {}
         if owner:
-            headers = {'Cookie': self.cookie, 'Origin': ORIGIN}
+            headers = {'Cookie': self.cookie, 'Origin': self.origin}
             if self.csrf: headers['X-Connect-CSRF'] = self.csrf
         if token: headers['Authorization'] = 'Bearer ' + token
         if data is None: raw = None

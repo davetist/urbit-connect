@@ -10,7 +10,7 @@
 
 **Tech Stack:** Hoon/Gall/Eyre; TypeScript/Vite; Swift 6, SwiftUI, AuthenticationServices, Foundation/URLSession, CryptoKit, Security/Keychain, SQLite; Python integration harness and Playwright browser tests. iOS 18+ and SDK macOS 15+.
 
-**Spec:** [Design and acceptance contract](../specs/2026-10-12-connect-design.md). Read it before implementation. Paths below are relative to `/absolute/project`.
+**Spec:** [Design and acceptance contract](../specs/2026-10-12-connect-design.md). Read it before implementation. Paths below are relative to the project root.
 
 ## Global constraints
 

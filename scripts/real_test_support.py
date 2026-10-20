@@ -1,12 +1,12 @@
 """Private test controls for the specifically authorized real connect-dev target.
 
 Uses system TLS for the app endpoint and an owned SSH tunnel for owner controls.
-Never falls back to the personal ship or relaxes TLS. Credentials stay in the
+Never falls back to another ship or relaxes TLS. Credentials stay in the
 test presenter/control process; the SDK receives only its own consent grant.
 """
 from contextlib import contextmanager
 import json
-from pathlib import Path
+import shlex
 import socket
 import ssl
 import subprocess
@@ -16,16 +16,17 @@ import uuid
 import urllib.error
 import urllib.request
 from targets import ROOT, TARGETS
+from real_target import require_target, remote_tool, ssh_arguments
 sys.path.insert(0, str(ROOT / 'tests/integration'))
 from support import API, NoRedirect
 
 PRIVATE = TARGETS.work / 'real-host'
-PI = Path('/private/operator/raspberry-pi')
 
 
 class RealAPI(API):
     def __init__(self, local_origin, target):
         TARGETS.require_owned()
+        require_target(target, str(ROOT))
         self.origin = local_origin; self.owner_origin = target['origin']; self.target = target
         self.opener = urllib.request.build_opener(NoRedirect(), urllib.request.HTTPSHandler(context=ssl.create_default_context()))
         self.cookie = json.loads((PRIVATE / 'auth.json').read_text())['cookie']; self.csrf = None; self.packet_fixture=False; self.packet_run=uuid.uuid4().hex
@@ -36,7 +37,8 @@ class RealAPI(API):
             raise ValueError('Real target identity/protocol did not match')
 
     def remote(self, arguments):
-        result = subprocess.run([sys.executable, str(PI / 'scripts/pi.py'), 'exec', '--', *arguments], capture_output=True)
+        command = shlex.join(['env', 'CONNECT_TEST_PROJECT=' + self.target['project'], *arguments])
+        result = subprocess.run([*ssh_arguments(self.target), self.target['sshUser'] + '@' + self.target['sshHost'], command], capture_output=True)
         if result.returncode:
             path = PRIVATE / 'remote-failure.log'; path.write_bytes(result.stdout + result.stderr); path.chmod(0o600)
             raise RuntimeError('Real test control failed; private diagnostic retained')
@@ -57,15 +59,14 @@ class RealAPI(API):
 
     def update_desk(self):
         if not self.target.get('updateSHA256'): raise ValueError('No verified update archive is selected')
-        result = self.remote(['python3', str(Path('/home/operator/.local/share/urbit-connect-alpha/real_install.py')), 'update', '--sha256', self.target['updateSHA256'], '--origin', self.owner_origin])
-        # pi.py adds a connection status line before the JSON aggregate.
+        result = self.remote(['python3', remote_tool(self.target, 'real_install.py'), 'update', '--sha256', self.target['updateSHA256'], '--origin', self.owner_origin])
         report = json.loads(result.decode().splitlines()[-1])
         if report.get('passed') is not True: raise ValueError('Desk update did not pass')
         return report
 
     def packet_profile(self,profile):
         if profile not in ['local','100ms-1percent','500ms-5percent']:raise ValueError('Unknown network profile')
-        script='/home/operator/.local/share/urbit-connect-alpha/netem_host.py'
+        script=remote_tool(self.target, 'netem_host.py')
         if not self.packet_fixture:
             # Bind ownership before dispatch: a lost SSH reply cannot orphan a
             # successfully started controller. Teardown reconciles this run ID.
@@ -75,11 +76,11 @@ class RealAPI(API):
 
     def stop_packet_fixture(self):
         if self.packet_fixture:
-            self.remote(['python3','/home/operator/.local/share/urbit-connect-alpha/netem_host.py','stop',self.packet_run]);self.packet_fixture=False;self.packet_run=uuid.uuid4().hex
+            self.remote(['python3',remote_tool(self.target, 'netem_host.py'),'stop',self.packet_run]);self.packet_fixture=False;self.packet_run=uuid.uuid4().hex
 
     def packet_status(self):
         if not self.packet_fixture:raise ValueError('No owned packet fixture is active')
-        return json.loads(self.remote(['python3','/home/operator/.local/share/urbit-connect-alpha/netem_host.py','status']).decode().splitlines()[-1])
+        return json.loads(self.remote(['python3',remote_tool(self.target, 'netem_host.py'),'status']).decode().splitlines()[-1])
 
 
 @contextmanager
@@ -88,12 +89,13 @@ def connected():
     path = PRIVATE / 'target.json'
     if path.is_symlink(): raise ValueError('Invalid real target marker')
     target = json.loads(path.read_text())
+    require_target(target, str(ROOT))
     if target.get('project') != str(ROOT) or target.get('fixtureId') != TARGETS.fixture_id or target.get('pier') != '/mnt/harbor/piers/connect-dev' or target.get('approved') is not True:
         raise ValueError('No explicitly authorized real target is bound to this fixture')
     with socket.socket() as reservation:
         reservation.bind(('127.0.0.1', 0)); port = reservation.getsockname()[1]
     log = PRIVATE / 'tunnel.log'
-    arguments = ['ssh', '-F', '/dev/null', '-i', '/private/ssh/identity', '-o', 'IdentitiesOnly=yes', '-o', 'UseKeychain=yes', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'HostKeyAlias=reference-host', '-o', 'UserKnownHostsFile=' + str(PI / 'assets/known_hosts'), '-o', 'GlobalKnownHostsFile=/dev/null', '-o', 'UpdateHostKeys=no', '-o', 'ExitOnForwardFailure=yes', '-N', '-L', '127.0.0.1:' + str(port) + ':127.0.0.1:8080', 'operator@' + target['sshHost']]
+    arguments = [*ssh_arguments(target), '-o', 'ExitOnForwardFailure=yes', '-N', '-L', '127.0.0.1:' + str(port) + ':127.0.0.1:8080', target['sshUser'] + '@' + target['sshHost']]
     with log.open('wb') as output:
         log.chmod(0o600); process = subprocess.Popen(arguments, stdin=subprocess.DEVNULL, stdout=output, stderr=output)
     try:

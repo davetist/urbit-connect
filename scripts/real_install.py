@@ -1,6 +1,6 @@
 """Install a verified archive only in the already authorized connect-dev experiment.
 
-Run on reference-host via the pinned SSH helper with stdin, after creating target.json,
+Run on the explicitly selected host over verified SSH, after creating target.json,
 a verified Harbor backup, private Eyre binding and the empty mounted desk.
 This script contains no owner credentials and refuses an unowned experiment.
 """
@@ -15,6 +15,7 @@ import tarfile
 import tempfile
 import time
 import urllib.request
+from real_target import require_target
 
 ROOT = Path.home() / '.local/share/urbit-connect-alpha'
 HARBOR = 'http://127.0.0.1:18789'
@@ -112,8 +113,9 @@ def main():
     assert re.fullmatch('[a-f0-9]{64}', args.sha256)
     assert ROOT.is_dir() and not ROOT.is_symlink()
     target = json.loads((ROOT / 'target.json').read_text())
-    assert target['project'] == '/absolute/project'
-    assert target['pier'] == '/mnt/harbor/piers/connect-dev'
+    require_target(target)
+    if args.origin != target['origin']:
+        raise ValueError('The explicitly approved HTTPS origin is required')
     ship = request('/api/v1/ships/' + target['harborShipId'])
     assert ship['pierPath'] == target['pier'] and ship['identity'] == target['ship'] and ship['state'] == 'running'
     assert ship['httpBindAddress'] == '127.0.0.1' and ship['webPort'] == 8080 and not ship['recoveryBlocked']

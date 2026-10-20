@@ -1,4 +1,5 @@
 import io
+import os
 import json
 from pathlib import Path
 import runpy
@@ -32,7 +33,7 @@ class OwnerLoginDestinationTests(unittest.TestCase):
     def test_approved_origin_retains_owner_login_flow(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            target = {'project': '/absolute/project',
+            target = {'project': '/absolute/project', 'approved': True, 'origin': APPROVED,
                       'pier': '/mnt/harbor/piers/connect-dev', 'ship': '~zod',
                       'harborShipId': 'synthetic-test-ship'}
             (root / 'target.json').write_text(json.dumps(target))
@@ -67,6 +68,7 @@ class OwnerLoginDestinationTests(unittest.TestCase):
             self_test = self
             jar = [SimpleNamespace(name='urbauth', value='synthetic-cookie')]
             with patch.dict(sys.modules, {'real_install': remote}), \
+                 patch.dict(os.environ, {'CONNECT_TEST_PROJECT': target['project']}), \
                  patch.object(sys, 'argv', [str(SCRIPT), APPROVED]), \
                  patch('http.cookiejar.CookieJar', return_value=jar), \
                  patch('urllib.request.build_opener', return_value=Opener()):
@@ -81,7 +83,7 @@ class OwnerLoginDestinationTests(unittest.TestCase):
     def test_unapproved_origin_cannot_trigger_ship_code_request(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            target = {'project': '/absolute/project',
+            target = {'project': '/absolute/project', 'approved': True, 'origin': APPROVED,
                       'pier': '/mnt/harbor/piers/connect-dev', 'ship': '~zod',
                       'harborShipId': 'synthetic-test-ship'}
             (root / 'target.json').write_text(json.dumps(target))
@@ -103,6 +105,7 @@ class OwnerLoginDestinationTests(unittest.TestCase):
             for origin in ['https://attacker.example', 'http://ship.example:8443',
                            'https://ship.example:8444', APPROVED + '.attacker.example']:
                 with self.subTest(origin=origin), patch.dict(sys.modules, {'real_install': remote}), \
+                     patch.dict(os.environ, {'CONNECT_TEST_PROJECT': target['project']}), \
                      patch.object(sys, 'argv', [str(SCRIPT), origin]), \
                      patch('urllib.request.urlopen', return_value=io.BytesIO(json.dumps(spoofed).encode())), \
                      patch('urllib.request.build_opener', return_value=RejectPost()):

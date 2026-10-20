@@ -1,7 +1,7 @@
 """Owned unprivileged packet-loss fixture for connect-dev's private upstream.
 
 Run on the reference ARM64 host. All tc rules live in a new user/network
-namespace; the shared host interfaces and personal ship routes are untouched.
+namespace; the shared host interfaces and unrelated ship routes are untouched.
 The real app endpoint retains the existing system-trusted TLS termination.
 """
 import json
@@ -18,6 +18,7 @@ import sys
 import threading
 import time
 import urllib.request
+from real_target import require_target as approved_target
 
 ROOT = Path.home() / '.local/share/urbit-connect-alpha'
 SOCKET = ROOT / 'netem-control.sock'
@@ -36,9 +37,10 @@ def outcome_path(run_id):
 
 def require_target():
     target=json.loads((ROOT/'target.json').read_text())
-    if target.get('project')!='/absolute/project' or target.get('pier')!='/mnt/harbor/piers/connect-dev':raise ValueError('Unowned network target')
+    approved_target(target)
     with urllib.request.urlopen('http://127.0.0.1:8080/~/host',timeout=5)as response:
         if response.read().decode().strip()!=target.get('ship'):raise ValueError('Private upstream resolved another ship')
+    return target
 
 
 def relay():
@@ -88,7 +90,8 @@ def wait_for_relay_ready(namespace, deadline):
 
 def control(value):
     metadata = json.loads(METADATA.read_text())
-    assert metadata['project'] == '/absolute/project'
+    target = approved_target(json.loads((ROOT / 'target.json').read_text()))
+    assert metadata['project'] == target['project']
     with socket.socket(socket.AF_UNIX) as connection:
         connection.settimeout(30); connection.connect(str(SOCKET))
         connection.sendall((json.dumps(value | {'secret': metadata['secret']}) + '\n').encode())
@@ -148,7 +151,7 @@ def stop(run_id=None):
 
 def serve(run_id=None):
     run_id=run_identity(run_id)
-    require_target()
+    target = require_target()
     assert not SOCKET.exists() and not METADATA.exists(), 'Refusing existing fixture; inspect ownership before retrying'
     tools = ROOT / 'network-tools/sysroot'
     env = dict(os.environ, LD_LIBRARY_PATH=str(tools / 'usr/lib/aarch64-linux-gnu'))
@@ -209,7 +212,7 @@ def serve(run_id=None):
         config.write_text(applied)
         reload = subprocess.run([str(ROOT / 'caddy'), 'reload', '--address', '127.0.0.1:36581', '--config', str(config), '--adapter', 'caddyfile'], stdout=log, stderr=log,timeout=10)
         assert reload.returncode == 0
-        METADATA.write_text(json.dumps({'project': '/absolute/project', 'secret': secret,'runID':run_id})); METADATA.chmod(0o600)
+        METADATA.write_text(json.dumps({'project': target['project'], 'secret': secret,'runID':run_id})); METADATA.chmod(0o600)
         class Handler(socketserver.StreamRequestHandler):
             def handle(self):
                 try:

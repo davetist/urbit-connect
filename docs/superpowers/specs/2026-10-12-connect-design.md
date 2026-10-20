@@ -34,7 +34,7 @@ The first working prototype must demonstrate this in an actual iOS Simulator aga
 
 ## Project boundaries and selected architecture
 
-Proposed project root: `/absolute/project`. At planning time only these documents are created there. The containing workspace is not a Git repository. Do not initialize a repository, create branches, commit, publish a desk, or change the user's existing ship as part of planning.
+Use the selected project root. At planning time only these documents are created there. The containing workspace is not a Git repository. Do not initialize a repository, create branches, commit, publish a desk, or change the user's existing ship as part of planning.
 
 One desk contains one `%connect` Gall agent with versioned persistent state and focused pure libraries for authentication, authorization, storage, and HTTP encoding. Keeping grants, mutations, revisions, and idempotency receipts in one agent makes their state transitions atomic. Split agents only if measured behavior warrants it.
 

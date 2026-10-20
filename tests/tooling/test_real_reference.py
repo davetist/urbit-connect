@@ -35,6 +35,7 @@ class ReferenceDiagnostics(unittest.TestCase):
                                              (OversizedResponse(200, {}), AssertionError, 200)]:
             with self.subTest(status=status):
                 api = Reference.__new__(Reference)
+                api.origin = 'https://ship.example'
                 api.cookie = 'private-cookie-canary'; api.csrf = None
                 api.connection = Connection(response)
                 with self.assertRaises(exception):
@@ -47,6 +48,7 @@ class ReferenceDiagnostics(unittest.TestCase):
                                ('private_response_canary', None)]:
             with self.subTest(code=code):
                 api = Reference.__new__(Reference)
+                api.origin = 'https://ship.example'
                 api.cookie = 'private-cookie-canary'; api.csrf = 'private-csrf-canary'
                 body = {'error': {'code': code}, 'token': 'private-response-token'}
                 api.connection = Connection(Response(401, body))

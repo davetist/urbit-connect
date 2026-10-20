@@ -26,6 +26,7 @@ class FixtureCleanup(unittest.TestCase):
 
     def test_lost_start_reply_retains_run_ownership_for_teardown(self):
         api=RealAPI.__new__(RealAPI);api.packet_fixture=False;api.packet_run='a'*32
+        api.target={'project':'/absolute/project','remoteToolsDirectory':'/opt/connect-test-tools'}
         api.remote=Mock(side_effect=[RuntimeError('reply lost'),b'{"stopped":true}'])
         with self.assertRaises(RuntimeError):api.packet_profile('100ms-1percent')
         self.assertTrue(api.packet_fixture)

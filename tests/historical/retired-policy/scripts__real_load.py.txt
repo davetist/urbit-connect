@@ -1,6 +1,6 @@
 """Measure real connect-dev HTTPS/packet profiles and bounded server resources.
 
-Owner/scoped credentials remain on reference-host. Counts and timing/resource aggregates
+Owner/scoped credentials remain on the selected test host. Counts and timing/resource aggregates
 are saved locally on that host; SDK cache-install timing is separate evidence.
 """
 import hashlib

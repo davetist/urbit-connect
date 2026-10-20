@@ -7,5 +7,5 @@
 - Product data/account/outbox quotas are removed. Parser, transient-concurrency, credential-lifetime and replay-history controls remain explicit in `capacity.md`. Available host/device resources still bound practical scale.
 - Restore detection is an operator procedure, not automatic proof of rollback. Rotate a fresh generation before reopening restored ingress and deliberately reconcile drafts. Backups omit later acknowledged writes and edits never sent by the device.
 - Logical removal/erase does not erase historical pier events, snapshots outside Connect or backups. Uninstall/device loss can lose local-only drafts.
-- The real HTTPS profile uses Tailscale Serve and requires tailnet access. General public-domain ingress and other host profiles are unqualified. reference-host’s personal ship is excluded. Providers that disallow custom desks are unsupported.
+- The real HTTPS profile uses Tailscale Serve and requires tailnet access. General public-domain ingress and other host profiles are unqualified. Dedicated test ships must remain separate from production ships. Providers that disallow custom desks are unsupported.
 - The source owner/contact and public publishing authorization remain pending. The authorized root license is MIT; authentic upstream notices and the licensed Landscape-source comparison are included.
