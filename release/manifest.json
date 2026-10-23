@@ -267,7 +267,7 @@
       }
     },
     "docs": {
-      "sha256": "86777036864d4268f8f0d7e5460236613b1f3978a7dc075682d1834c066cc5f9",
+      "sha256": "432ef9fca52b91a77d6b9f27ba0fac48cf1d02cd7bdb49ef610b19e016723a8f",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
@@ -282,10 +282,10 @@
         "docs/final-review.md": "b03a5a5d20bf50de2c6a0be1fae10a9b7fff632624471e729cf7cfbfb5409c47",
         "docs/historical/isolated-alpha.md": "e41c4d7c1fd644c5ed4b5dc7daed0966191a4b4627e14c992145380a84e1c4a7",
         "docs/implementation-progress.md": "f79666569ab3cba95603b5caf171bce1e89a1b28e893dd3eb42ee03a9a97f07c",
-        "docs/install.md": "3114ef7f8b797cb85ee098b7a29ce7f5a8779c5c7864cb294bac52e91079d4a3",
+        "docs/install.md": "4c293f4ed3e3cfbac45effc57abc32775d429328aba5ecb91e39314e35d1c344",
         "docs/known-limitations.md": "d1b2dfca2e2d7f9ac573fe1a00df0525002f72d88fe16f8a05a8b7129e880700",
         "docs/landscape-source-provenance.json": "01a713d83940da1d383f4279d5f2728bdcde2e19987055c662402f5ee8b278b4",
-        "docs/operations.md": "2433eb3e0795b353b41c1a564fbe173ab5bc10e857cf020ef78a5a365e7d8cd0",
+        "docs/operations.md": "73b47b3d7710dfd8b4cf1993bdf68db242be8b11c829941dae342e40be5450e7",
         "docs/operations/reference.Caddyfile": "006c846bbce1a0a96e6c2714728fb82c7da1ad62ac3a75429eff20342dbc590c",
         "docs/operations/tailscale-reference.Caddyfile": "d785c1b51650cd669d5f641b1af3f05b5118e8693701313d27457127b2afb280",
         "docs/protocol.md": "4304af0c689cc0d187910ad48d77392312ef6cec9b55d2ab63efa2036d259ebe",
@@ -300,7 +300,7 @@
         "docs/superpowers/specs/2026-10-13-connect-alpha-product-brief.md": "c096d118e7621154c4bec6285c0b219662d0ca5eb0c7deb2952bf2f1d0a8767b",
         "docs/support.md": "d027d251be87c07dd1395b910bbf6e4b349f75acd22c660319396c0516143b85",
         "docs/supported-platforms.md": "1c85456ca244365ac007c2188b3003d903045f08a05ab1867e7955d05b181f3b",
-        "docs/update.md": "520df7dc5d519ba5ce0686305cf3194013f8de2c3552c6ed19ef287aad0f3b78",
+        "docs/update.md": "ddc5e569a2c3edb1ef99f0ae1b91b8f498ef4d5d174ef2873a4d7150ef98f8aa",
         "docs/web-assets.json": "d3fae7ff91fbab883d4913e35b62f03f2169f28f93a65cb2c0516949559935a9"
       }
     },
@@ -424,7 +424,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "2899f8d083d48510def1ddd267cd7b520e9a534c99ce1ef2f8a5b334ce34d6b5",
+      "sha256": "153ad3cf42cab81a5455ea438edd982a5be9fde796cbdf18e5862666e40a0614",
       "kind": "file"
     },
     "web": {
