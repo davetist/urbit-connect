@@ -5,7 +5,7 @@
   "sourceCommit": null,
   "source": {
     "desk": {
-      "sha256": "caf2065db608de200678de504c7ad8624499f7a563af2b2ba4f02973aeba9572",
+      "sha256": "2d61c72decc19e47771fd0062dcfa7e4c5e6da4c4042c1de72b2e8c8caa03dfb",
       "files": {
         "desk/app/connect.hoon": "3c7fbb9e302ae1169f802965af083c35a8b8cf901d6bc59d0f00d25502997e84",
         "desk/desk.bill": "d6cf88b4f21e82bc8bd6b7c0f6c50038d1d79adeafb09fe926df8bdcfcf4af21",
@@ -14,7 +14,7 @@
         "desk/lib/connect-auth.hoon": "d963819b154e9349adc1c8063d5395596442a45ae6dc569d970e08d2c058c6c8",
         "desk/lib/connect-codec.hoon": "70245f40be3ab1766e17815535c0d77dcae83e3650c3345db530bf953906932e",
         "desk/lib/connect-entry.hoon": "5b8b640431030691c9e1d4c1a604f5d22fcd04066a480749dd3b60dfede3e7f4",
-        "desk/lib/connect-http.hoon": "d3e490b06f75a1ff0b02049e9e7298c40aab9551f736e76bfb11b2ec824bcdcd",
+        "desk/lib/connect-http.hoon": "f374e3be5ca001a2050b7768b2369bb3fffb50eef1462ed24ec958e26e8a0ab1",
         "desk/lib/connect-integrations.hoon": "73151941e62b148f7e0e69bcb8fbecb6d9778d75be3cdde7e07d96c8ec4e7002",
         "desk/lib/connect-json.hoon": "b0ea9ed81d7ea5dd8637c08abc298732d4eab9625693b9aad6ba3bdd00cba7cb",
         "desk/lib/connect-policy.hoon": "4afbfcf30b1a5a782f0594f005caa57b6f5b5a90ace73a72817418598a4d1f9c",
@@ -409,7 +409,7 @@
   "artifacts": {
     "desk": {
       "path": "dist/connect-0.2.0-alpha.1.tgz",
-      "sha256": "340586882a8b86229c215fb7465edd8da069df39c51d930c4f719e76bb9e19b2",
+      "sha256": "bf820b902d6fa868f9fb953d667652a93b5e1f880a2c0b3083b8150d38b9c750",
       "kind": "file"
     },
     "sdk": {
@@ -424,7 +424,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "31815fd0e5c384a0e5d1a6b854972ad1ca5843b0793a0ca6b6d443261468d154",
+      "sha256": "bc6467e9315b2cae8201d5fb342c6b68d088b572149cc8713ee7e4847c4703bf",
       "kind": "file"
     },
     "web": {

@@ -31,6 +31,11 @@
   |=  [name=@t fields=header-list:http]
   ^-  @t
   =/  found  (skim fields |=([key=@t value=@t] =((lower key) name)))
+  ::  HTTP/2 may split Cookie fields; Eyre joins them with a semicolon.
+  ?:  =(name 'cookie')
+    %+  roll  found
+    |=  [[key=@t value=@t] combined=@t]
+    (cat 3 (cat 3 combined ?~(combined 0 '; ')) value)
   ?.  =(1 (lent found))  ''
   ?>  ?=(^ found)
   +.i.found
