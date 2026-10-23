@@ -442,6 +442,7 @@
     "artifacts/alpha/baseline-before-soak-duration-change.json": "811b1c1cef387a5eb77b02b71738f8d9476849c72a2cf47ee902f35dea0aa5bc",
     "artifacts/alpha/baseline.json": "7f333deccd60de98a57aea915fcaa2a1203d021720c68f0ff2400586f255ced9",
     "artifacts/alpha/checks.json": "47678317f2ae585f7853cda8e8354580f88cf282a79e9b37fc7355e38d42e9b4",
+    "artifacts/alpha/connect-cookie-hotfix-2026-10-24.json": "5a4e54345056d1c300b9a21c0e5e5c3245e1c8642cfa409bcff9be405772a08f",
     "artifacts/alpha/consent-fix-2026-10-16.json": "88c503e3aa35320c999a61ff93ae22eae9a03abe4f197c87b07fb3bca7fb9f0a",
     "artifacts/alpha/current-acceptance-2026-10-16.json": "c4eb68f1735541779ab85389faace0417a2dafbcfab2557538292294bc88f324",
     "artifacts/alpha/current-auth-storage-review.json": "657f5783489949995f3877f1a702f21c4fbd48de83ddcda88c17ee06bc159521",
