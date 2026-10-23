@@ -335,9 +335,9 @@
       }
     },
     "release/source-files.json": {
-      "sha256": "cfdc83a9f6848fdcc201289ea7b94b9197b289bd8c995aea7597538d12b38fc9",
+      "sha256": "33b843ecd3535a757dc682179aa5c47961f9dbe16a1d4fd82c410f118434b9a4",
       "files": {
-        "release/source-files.json": "92e6ec18101e556906dff0ace42a97f1bc4b3e11a04da5f174e702b7878b7970"
+        "release/source-files.json": "002497f53852d464a22ebab01f6a6c762f8c6d984e3e5afcb53152c3371e1492"
       }
     },
     "README.md": {
@@ -424,7 +424,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "bc6467e9315b2cae8201d5fb342c6b68d088b572149cc8713ee7e4847c4703bf",
+      "sha256": "2899f8d083d48510def1ddd267cd7b520e9a534c99ce1ef2f8a5b334ce34d6b5",
       "kind": "file"
     },
     "web": {

@@ -3,6 +3,7 @@
   "LICENSE",
   "Package.swift",
   "README.md",
+  "artifacts/alpha/connect-cookie-hotfix-2026-10-24.json",
   "artifacts/consent-fix-2026-10-16/check-summary.json",
   "artifacts/consent-fix-2026-10-16/ios-consent-default-scale.png",
   "artifacts/consent-fix-2026-10-16/ios-consent-details-scrolled.png",
