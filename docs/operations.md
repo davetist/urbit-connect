@@ -28,7 +28,7 @@ An ordinary restart or desk reload preserves the instance, records and receipts.
 
 ## Removing an installation
 
-`|uninstall %connect` stops the desk, but it does not remove Connect's direct HTTP bindings at `/connect` and `/apps/connect`. Eyre only accepts a disconnect from the Gall duct that created a binding. If that agent is nuked first, the binding can remain after its state and desk files are gone. This was observed on a separate 408k receiver during the stable release check. Version 0.2.0 does not provide a complete uninstall procedure; do not nuke a document-bearing Connect agent as routine cleanup. Preserve its data and wait for a supported route-retirement procedure before removing it.
+`|uninstall %connect` stops the desk, but it does not remove Connect's direct HTTP bindings at `/connect` and `/apps/connect`. Eyre only accepts a disconnect from the Gall duct that created a binding. If that agent is nuked first, the binding can remain after its state and desk files are gone. This was observed on a separate 408k receiver during the stable release check. Reinstalling the same agent name with `%disconnect` on the original binding wires also left both routes bound on an [owned disposable ship](../artifacts/alpha/eyre-retirement-2026-10-24.json). Version 0.2.0 does not provide a complete uninstall procedure; do not nuke a document-bearing Connect agent as routine cleanup. Preserve its data and wait for a supported route-retirement procedure before removing it.
 
 ## Test environment cleanup
 

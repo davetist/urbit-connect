@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-24",
+  "sourceCommit": "7dd2c651316a159ea09cbbe7aaf511da32ff03f1",
+  "runtime": "stock Vere 4.6 / Zuse 408",
+  "environment": "owned disposable fake ship",
+  "routes": ["/connect", "/apps/connect"],
+  "steps": [
+    "Installed the unchanged Connect desk and observed both direct Eyre bindings",
+    "Uninstalled and nuked only the disposable Connect agent; both bindings remained",
+    "On the same desk and agent name, changed only startup cards to send Eyre disconnects on the original /bind/connect and /bind/ui wires",
+    "Committed and installed that temporary cleanup agent; both old bindings remained"
+  ],
+  "result": "Same-name reinstallation did not regain ownership of the old Eyre bindings",
+  "cleanup": "Stopped and removed the marker-owned disposable pier",
+  "liveShipChanged": false
+}
