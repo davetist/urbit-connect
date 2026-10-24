@@ -10,7 +10,7 @@ The [focused security review](security-review-2026-10-24.md) found no confirmed 
 
 **Consent follow-up:** the default-scale iOS consent issue is now fixed and verified in the official app’s system browser. See the [layout correction and current rerun](consent-layout.md).
 
-Connect remains a reliability alpha candidate. The pre-cleanup standalone `%connect` and `%bitwarden` versions were exercised together with official Bitwarden clients after the repository split and token-identifier repairs. Those observations do not cover the later quota, pagination or snapshot-lease changes. The [Bitwarden acceptance record](https://github.com/davetist/urbit-bitwarden/blob/main/evidence/current-2026-10-16/assessment.md) contains the exact source hashes, client versions, results and qualifications. This is evidence for the generic local-resource contract; Bitwarden protocol and vault behavior remain in the separate repository.
+Version 0.2.0 has the current checks above; the pre-cleanup standalone `%connect` and `%bitwarden` versions were exercised together with official Bitwarden clients after the repository split and token-identifier repairs. Those older observations do not cover the later quota, pagination or snapshot-lease changes. The [Bitwarden acceptance record](https://github.com/davetist/urbit-bitwarden/blob/main/evidence/current-2026-10-16/assessment.md) contains the exact source hashes, client versions, results and qualifications. This is evidence for the generic local-resource contract; Bitwarden protocol and vault behavior remain in the separate repository.
 
 ## Demonstrated integration
 

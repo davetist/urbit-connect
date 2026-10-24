@@ -1,8 +1,8 @@
 {
   "rootLicense": "MIT",
-  "sourceOwner": null,
-  "maintenanceContact": null,
-  "securityContact": null,
-  "publicationAuthorized": false,
+  "sourceOwner": "Connect contributors",
+  "maintenanceContact": "https://github.com/davetist/urbit-connect/issues",
+  "securityContact": "https://github.com/davetist/urbit-connect/security/advisories/new",
+  "publicationAuthorized": true,
   "landscapeNoticeResolved": true
 }

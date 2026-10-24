@@ -1,6 +1,6 @@
 # Support and diagnostics
 
-The maintainer and private security contact are pending owner designation in `release/ownership.json`. This is a local reliability candidate, not a publicly available native phone app. Use the supported source/Simulator workflow and report the exact desk/SDK/Xcode/runtime versions.
+Report maintenance issues through [GitHub Issues](https://github.com/davetist/urbit-connect/issues) and sensitive vulnerabilities through [private vulnerability reporting](https://github.com/davetist/urbit-connect/security/advisories/new). This is a source/desk release, not a publicly available native phone app. Use the supported source/Simulator workflow and report the exact desk/SDK/Xcode/runtime versions.
 
 For pairing, copy the HTTPS base address from the ship manager. Confirm the offered base origin for a known manager URL; other paths, redirects and invalid certificates are refused. Distinguish an unreachable host from a missing desk, unconfigured issuer, unsupported version or changed instance. Never turn off TLS verification to get past an error.
 

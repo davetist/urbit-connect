@@ -2,7 +2,7 @@
 
 A personal app backend on your Urbit ship, with a native Swift SDK and an iOS todo example. Each approved app gets its own document namespace. The ship owner can inspect, edit, export, import, erase, and revoke access from `/apps/connect/`.
 
-**Local source release:** desk/Swift/Todo version `0.2.0-alpha.1`, protocol 1, SQLite schema 2. Connect provides restart recovery, durable offline queues, retained-draft recovery, owner management and installation tooling. Artificial document/storage, app/session and SDK draft/account quotas are removed; [specific parser, concurrency and replay controls](docs/capacity.md) remain. Daily use does not require a soak, tester quota or independent signoff. Historical reports remain [observations](tests/acceptance/alpha-matrix.md), not a qualification verdict. Public native distribution is separate.
+**Source release:** desk/Swift/Todo version `0.2.0`, protocol 1, SQLite schema 2. Connect provides restart recovery, durable offline queues, retained-draft recovery, owner management and installation tooling. Artificial document/storage, app/session and SDK draft/account quotas are removed; [specific parser, concurrency and replay controls](docs/capacity.md) remain. Daily use does not require a soak, tester quota or independent signoff. Historical reports remain [observations](tests/acceptance/alpha-matrix.md), not a qualification verdict. Public native distribution is separate.
 
 The [readiness evidence](docs/current-readiness.md) separates older observations from the 2026-10-24 current-source SDK, native document and iOS Simulator Todo checks. Physical-device behavior remains a separate claim.
 
@@ -21,7 +21,7 @@ python3 scripts/release_check.py --build
 python3 scripts/release_check.py --verify release/manifest.json
 ```
 
-The desk archive is `dist/connect-0.2.0-alpha.1.tgz`, with a SHA-256 sidecar and file manifest. The build also creates SDK, Todo source and complete-source archives twice and compares their hashes. These are local source artifacts, not a deployment or signed native distribution. The [release notes](release/README.md) describe artifact integrity and informational observations.
+The desk archive is `dist/connect-0.2.0.tgz`, with a SHA-256 sidecar and file manifest. The build also creates SDK, Todo source and complete-source archives twice and compares their hashes. These are source artifacts, not a signed native phone distribution. The [release notes](release/README.md) describe artifact integrity and observed behavior.
 
 The continuing direction is no synthetic or soak tests unless the owner explicitly changes it. Default verification uses source review, typechecking/builds and deterministic packaging; actual official-client workflows require an authorized target. The former fake-ship setup and Todo walkthrough are retained as a [historical reference](docs/historical/isolated-alpha.md).
 

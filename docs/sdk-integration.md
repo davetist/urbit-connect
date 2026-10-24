@@ -1,6 +1,6 @@
 # Integrating the Swift SDK
 
-Use the project root as a local Swift package, or add `sdk/swift` as the existing nested local package. Both export `UrbitConnect`. The candidate version is `0.2.0-alpha.1`, protocol 1, with iOS 18+/macOS 15+ compile floors; actual qualification is the named Simulator runtime. A public Git tag/repository is pending authorization and provenance, so the documented workflow uses a local path.
+Use the project root as a local Swift package, or add `sdk/swift` as the existing nested local package. Both export `UrbitConnect`. The source version is `0.2.0`, protocol 1, with iOS 18+/macOS 15+ compile floors; observed native runtime coverage is the named Simulator workflow. The documented integration uses a local source path.
 
 Prerequisites: Xcode/Swift 6, an installed/configured Connect desk over trusted HTTPS, the ability to register your own known app through the ship manager, and an app callback scheme. No developer backend, app secret, owner-code injection, staff enrollment or paid Apple account is needed for the Simulator flow.
 

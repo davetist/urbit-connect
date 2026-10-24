@@ -1,6 +1,6 @@
 {
   "manifestVersion": 2,
-  "version": "0.2.0-alpha.1",
+  "version": "0.2.0",
   "protocolVersion": 1,
   "sourceCommit": null,
   "source": {
@@ -54,11 +54,11 @@
       }
     },
     "web": {
-      "sha256": "cf4d5ab43adf05971ff66a7c0ddf59e1744f32cf92211bc7805b63fd276fcc95",
+      "sha256": "678da0105b57e287c1c61674ef8ef9fb4ea2fc4c01989c837325f12d78a86705",
       "files": {
         "web/index.html": "f4bac6eafcbc012e862a1dd471c954e0c4a0f3a8a34d2c12bf79372da0d99d15",
-        "web/package-lock.json": "e6694d9f9cc0398c17c3d5f3e31db8767c29a74b4e5495bca5df83afa903992e",
-        "web/package.json": "c41de89452c1de7709197642cc07d094fca7be97fd7ebebbdf10b8e939d79508",
+        "web/package-lock.json": "8c9cd582b6328d0a36f8725a07fa44bc53649287be1229ed74b14d21d3493bf2",
+        "web/package.json": "5e95f807ea2d8c1f24746c5edf539dc7290129c5ea4a5037005d04875eeca1bd",
         "web/playwright.config.ts": "89208ad72cbc6c7093329ec07b29f40b543836ed8bcd9d13d8363e7159855806",
         "web/playwright.layout.config.ts": "5f309701db3f261afaa6355d4eac29f9e067afb2d70ecdb1620b1935bf5d27f3",
         "web/src/api.ts": "f467016036ac886666eb9dcdb33d5c476a6b015375189b4b90ea7c9bf3655203",
@@ -267,39 +267,39 @@
       }
     },
     "docs": {
-      "sha256": "003ee3e90ab8c33b4507aa99204e9ebc3b24ded4551ad0d24c0fa350f8aff672",
+      "sha256": "433173b2cfd03a43e701f4e369d0d2851fa7ceb24f137f560b5754f0bd00af52",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
         "docs/backup-policy.md": "5f828eee59fca6b969fc916a1f241af8ac91d37925ecac1af1bf3581800e8fe0",
         "docs/base-source-provenance.json": "135352e857e82eb445e20f8874a1e48e152686aacc90fd03207bd3c1ebeb162b",
         "docs/capacity.md": "403d12132baa9419a0fe663f4274452e8455edf46f1ae15f6bb46b146f315b92",
-        "docs/compatibility.md": "068911e1249dff5fb1f484e45cfe8ceaddd3379004e276cf08f64a8c6588e04a",
+        "docs/compatibility.md": "c5905659d5231203cc9ea25fd91a47b1751360130022d01892681ddb407eb7f0",
         "docs/consent-layout.md": "c968650e9b14f1bd45bdec1bdbe6c0e141f94fb15d051ce9c7fa38a500418edd",
         "docs/contributing.md": "49c918e498c87be11d327a77f81cc7a371f0fd3e94f54617fc8abbf5da4a013d",
-        "docs/current-readiness.md": "14144adaac15417dca3d5e6515a2c68ed23bf50018cc19a9ea81456a453b6d3f",
+        "docs/current-readiness.md": "6b3557208f3a223d544981781fe4b72395b616b7213abadb21cfc713fe4f895a",
         "docs/development.md": "773e6ad0ab47efb0221e4199b806679b6484d94cb379b1c9bf1cb72b4f169f1a",
         "docs/final-review.md": "b03a5a5d20bf50de2c6a0be1fae10a9b7fff632624471e729cf7cfbfb5409c47",
         "docs/historical/isolated-alpha.md": "e41c4d7c1fd644c5ed4b5dc7daed0966191a4b4627e14c992145380a84e1c4a7",
         "docs/implementation-progress.md": "f79666569ab3cba95603b5caf171bce1e89a1b28e893dd3eb42ee03a9a97f07c",
-        "docs/install.md": "4c293f4ed3e3cfbac45effc57abc32775d429328aba5ecb91e39314e35d1c344",
+        "docs/install.md": "9a0e0f598169719209074fd2073aa62f79894c1f54ace7c61006e31bd17381e3",
         "docs/known-limitations.md": "d1b2dfca2e2d7f9ac573fe1a00df0525002f72d88fe16f8a05a8b7129e880700",
         "docs/landscape-source-provenance.json": "01a713d83940da1d383f4279d5f2728bdcde2e19987055c662402f5ee8b278b4",
-        "docs/operations.md": "73b47b3d7710dfd8b4cf1993bdf68db242be8b11c829941dae342e40be5450e7",
+        "docs/operations.md": "b5c4e428bba893f93a56ff347dc987813ea96bccf610be77f390db9cec55156c",
         "docs/operations/reference.Caddyfile": "006c846bbce1a0a96e6c2714728fb82c7da1ad62ac3a75429eff20342dbc590c",
         "docs/operations/tailscale-reference.Caddyfile": "d785c1b51650cd669d5f641b1af3f05b5118e8693701313d27457127b2afb280",
         "docs/protocol.md": "4304af0c689cc0d187910ad48d77392312ef6cec9b55d2ab63efa2036d259ebe",
         "docs/quickstart-owner.md": "c233617fa9e2b84da301d84b3dd55700f246fed6472c5bfaf21adf80b0ccb088",
         "docs/release-checklist.md": "cf41d2b96a534ab8985b36ce33aa877399581168a771fe2e10111cbb508fa762",
         "docs/resource-integrations.md": "44d98c773c54ec1fc39809b5d66524498809a7bc06c700cbc06b0fd603f74f7f",
-        "docs/sdk-integration.md": "237739e4e454b57e2136e9e1adcfc015e6e4dca11569e2c04499b7fd8d24c7f6",
+        "docs/sdk-integration.md": "a9443fe6b7e0a7db54eb34902ea4a998f7ae985da33e126c84475cc0ff8c5c74",
         "docs/security-review-2026-10-24.md": "15b1b4610bdc605838c7097d0081e725a930c62bc7aa337f92b8471c2b6befc1",
-        "docs/security.md": "442007457cf338348610cad40b108edc201e41754b1231b61ed922469afcf581",
+        "docs/security.md": "9b14188116a7d7b42fff9ea739bf0a5c6926a46319f711220301537132f94727",
         "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "a50ef9e2e341be8066f1b93e84551df6c1a7307b3275d4f122faf54878ddadd1",
         "docs/superpowers/plans/2026-10-13-connect-alpha-product.md": "5407d68f3206a868b3fd92bd2ad65469d53c6ac157f1fd349c6e82940ba12282",
         "docs/superpowers/specs/2026-10-12-connect-design.md": "730ed6db07444c70f9023dfd12c5f41eaa08084b2e7e8e579f579ae84bc56814",
         "docs/superpowers/specs/2026-10-13-connect-alpha-product-brief.md": "c096d118e7621154c4bec6285c0b219662d0ca5eb0c7deb2952bf2f1d0a8767b",
-        "docs/support.md": "d027d251be87c07dd1395b910bbf6e4b349f75acd22c660319396c0516143b85",
+        "docs/support.md": "7e1e84b971f9d4cde90c703108153e2fc75ffde4eb86a853c8501a053c768711",
         "docs/supported-platforms.md": "1c85456ca244365ac007c2188b3003d903045f08a05ab1867e7955d05b181f3b",
         "docs/update.md": "ddc5e569a2c3edb1ef99f0ae1b91b8f498ef4d5d174ef2873a4d7150ef98f8aa",
         "docs/web-assets.json": "d3fae7ff91fbab883d4913e35b62f03f2169f28f93a65cb2c0516949559935a9"
@@ -312,15 +312,15 @@
       }
     },
     "release/version.json": {
-      "sha256": "df1e5c5cddcde1aebd8d58045663d730eb03170a77a09efb9c1bc55987ee8341",
+      "sha256": "aead84a544eb43eb1d204b784708099808226bcaaed0c149e17e612cf62ef7b5",
       "files": {
-        "release/version.json": "74c002622b18714758ff4ba0e9d6c03863c91f8c3c71e686aa98e644332a93d7"
+        "release/version.json": "a88dd940b4e5456afeab6d0f9ee4ea54e34a31a3a2580156f46a9f2146c8749e"
       }
     },
     "release/ownership.json": {
-      "sha256": "7d29f9f948404dd6e374791a5d2f0234e1a01150e06fe5cafbfd2e073764a103",
+      "sha256": "0076d8e476731abe65cf003f04f447a72051eb00247003895affd4fe0cb16cbb",
       "files": {
-        "release/ownership.json": "6174f8817aa2deb995d518acd3b49ef2b97235affd7e77303aa6417d20dd160e"
+        "release/ownership.json": "b8226855f51ce94c9f8e9dd4cd69d8a9a80c982d71721f39ff307dc1284d1b89"
       }
     },
     "release/manifest.schema.json": {
@@ -330,9 +330,9 @@
       }
     },
     "release/README.md": {
-      "sha256": "dbef25fd4e4524279ae11c2077c17e976da02cb861e8b53ae24e8c692fadfa83",
+      "sha256": "a1623c957f923f66c9cea3aa7dbb8fe9e6615e05da0d2285f50faa75c9fb6b67",
       "files": {
-        "release/README.md": "6c4a55180cc7d29f4ee48a53b92734a66caab186f2bbacfc121883907581f3a5"
+        "release/README.md": "7857d3757f64012c3f24046c3d82f0fcf1448351a2b7506100bffde0c4f92bf9"
       }
     },
     "release/source-files.json": {
@@ -342,15 +342,15 @@
       }
     },
     "README.md": {
-      "sha256": "bbdb847e20182d936032343ca4531f0fcf6b4e06274e29fa818949a808e9a115",
+      "sha256": "8eec7832e1a3a22a6752afa19b0aa5c1d769c10eb11aa0426dde244c89fc89e3",
       "files": {
-        "README.md": "4f4326e420c43dde97ce5392b9916becb4157e786a0570e54117b78a4944cc8c"
+        "README.md": "855636e2616ee39338406f1fb9b3dc7febea1ea003edf707d11afd3416cf507a"
       }
     },
     "LICENSE": {
-      "sha256": "9e0dabb89ad274e1e9a65f6629504d5af2473a1ee1306a330c42539f7710c761",
+      "sha256": "b52ab11a81aabe3578d02d5afeddac83d1cd22ee3f57f20d4d28a91e84d64067",
       "files": {
-        "LICENSE": "1a59435bc3c069459955c86da62221f891831646f592b3b317c061b1ce80d2ce"
+        "LICENSE": "58a467fe9f88584d10189c85f03168751030b58d0e6e3d1912b6f241f33dd8af"
       }
     },
     ".gitignore": {
@@ -409,23 +409,23 @@
   },
   "artifacts": {
     "desk": {
-      "path": "dist/connect-0.2.0-alpha.1.tgz",
-      "sha256": "3ac167ba3661ec2e56c264851f91edfc963f96eebc01cd6f561adf219383bdf2",
+      "path": "dist/connect-0.2.0.tgz",
+      "sha256": "7e7696df8f9b76312641e2f00d1675c081f3db304d706bf24628a9c39632541a",
       "kind": "file"
     },
     "sdk": {
-      "path": "dist/connect-sdk-0.2.0-alpha.1.tgz",
-      "sha256": "a9b935e2df56350c3a668b0c41f02be19771559526b88c70eb6573899d1e4c58",
+      "path": "dist/connect-sdk-0.2.0.tgz",
+      "sha256": "97e2d473578d386dad9fec4089699e6e8956775c94d82dee300390266263e337",
       "kind": "file"
     },
     "todo": {
-      "path": "dist/connect-todo-source-0.2.0-alpha.1.tgz",
-      "sha256": "eba9876003b105b6de13e8b5daddad45471658e737a0e25e1ba667d00708286b",
+      "path": "dist/connect-todo-source-0.2.0.tgz",
+      "sha256": "02ce568f89ef3f70857a69c7767def45c6e9000d9208a0886e922a429c05d976",
       "kind": "file"
     },
     "source": {
-      "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "03690f2d5e89a4dffa999b1c7fdb6e7a16f85c3b8b38bfc4229f2959323a9816",
+      "path": "dist/connect-source-0.2.0.tgz",
+      "sha256": "70d854f3fa87a957e034d5295caf914e766906b51012b945cd69d32cf7952563",
       "kind": "file"
     },
     "web": {
@@ -438,11 +438,6 @@
     "artifacts/alpha/connect-cookie-hotfix-2026-10-24.json": "5a4e54345056d1c300b9a21c0e5e5c3245e1c8642cfa409bcff9be405772a08f",
     "artifacts/alpha/current-document-sdk-2026-10-24.json": "0110cdf6097531465e16c31d2888026225f2c50ebd6d42ac753c8d09ca04dd3d"
   },
-  "publicationBlockers": [
-    "sourceOwner",
-    "maintenanceContact",
-    "securityContact",
-    "publication authorization"
-  ],
+  "publicationBlockers": [],
   "readinessPolicy": "informational"
 }

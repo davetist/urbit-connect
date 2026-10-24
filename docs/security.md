@@ -12,7 +12,7 @@ Client registrations are owner-managed and their publisher labels are unverified
 
 ## Storage and recovery
 
-Authoritative records, mutation receipts, tombstones, client registrations and grants are versioned Gall state. Snapshots and pending polls are transient. An atomic batch gets one revision; compare-and-swap conflicts keep the client draft. Receipts recognize the exact request bytes for 30 days. Older offline mutations require review. Erasing a namespace rotates its epoch and revokes its sessions. Rolling back a pier requires owner restore-epoch rotation before reconnecting clients.
+Authoritative records, mutation receipts, tombstones, client registrations and grants are versioned Gall state. Snapshots and pending polls are transient. An atomic batch gets one revision; compare-and-swap conflicts keep the client draft. Receipts recognize the exact request bytes for 30 days. Older offline mutations require review. Erasing a namespace rotates its epoch and revokes its sessions. A previously copied pier cannot safely roll back a ship that has continued running; a portable document export can seed a different installation, where clients must authorize again.
 
 Access/refresh/code secrets are represented by hashes in the agent’s active grant state. Urbit event history may retain incoming headers, authorization inputs and older data: hashing active state does not make the pier or its backups secret-free. Protect the whole host/pier and its backups. Logical deletion and revocation do not securely erase history, downloaded copies, or old backups.
 
@@ -22,7 +22,7 @@ The SDK stores credentials in non-synchronizing, device-only Keychain items. Its
 
 See [capacity.md](capacity.md) for retained parser, concurrency, credential-lifetime, replay-history and rate controls, with their reasons. Product document/storage/app/session/outbox quotas are removed. All document/auth responses use no-store. The owner bundle uses same-origin assets with restrictive response headers and text-safe DOM rendering. There are no third-party analytics or a developer data backend in this implementation.
 
-This is a local prototype, not a production security certification. The acceptance report distinguishes pure handler tests, actual HTTP/Gall behavior, and native UI evidence. App attestation, universal-link deployment, independent ship identity verification, background push, arbitrary queries, attachment storage and host-blind encryption are outside this version.
+This release has no formal security certification. The acceptance report distinguishes pure handler tests, actual HTTP/Gall behavior, and native UI evidence. App attestation, universal-link deployment, independent ship identity verification, background push, arbitrary queries, attachment storage and host-blind encryption are outside this version.
 
 ## Opt-in local resources
 

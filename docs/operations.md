@@ -2,7 +2,7 @@
 
 ## Desk artifact
 
-`python3 scripts/package_desk.py --package-only` produces `dist/connect-0.2.0-alpha.1.tgz` and its SHA-256 sidecar. It packages source without starting a ship or executing tests. The archive contains the desk and authentic upstream notices. Its hashes establish artifact integrity, not a qualification verdict. Source ownership/contact metadata and publishing authorization are deferred public-distribution prerequisites.
+`python3 scripts/package_desk.py --package-only` produces `dist/connect-0.2.0.tgz` and its SHA-256 sidecar. It packages source without starting a ship or executing tests. The archive contains the desk and authentic upstream notices. Its hashes establish artifact integrity, not a qualification verdict. Publication metadata is recorded in `release/ownership.json`.
 
 For a real test ship, first confirm identity, desk ownership and Kelvin compatibility with `desk/sys.kelvin` (408). Choose an explicitly authorized, dedicated test ship; documentation does not authorize changes to an existing deployment. The source workflow is `|new-desk %connect`, `|mount %connect`, copy the verified desk into its mount, `|commit %connect`, then `|install our %connect`. Refuse an unrelated existing desk. Wait for an actual protocol JSON response and the bundled UI after the agent boots; an empty HTTP 200 is not installation proof. See [install](install.md) and [update](update.md).
 
