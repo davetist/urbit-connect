@@ -97,9 +97,10 @@ def build_twice():
 
 def manifest(artifacts=None):
     evidence = {}
-    for p in sorted((ROOT / 'artifacts/alpha').glob('*.json')):
-        # Hash reviewed aggregate files only; logs, auth fixtures and raw recordings stay private.
-        if p.name not in {'qualification.json'}: evidence[p.relative_to(ROOT).as_posix()] = digest(p)
+    for name in source_manifest():
+        # Only committed review records are portable with a source checkout.
+        if name.startswith('artifacts/alpha/') and name.endswith('.json') and Path(name).name != 'qualification.json':
+            evidence[name] = digest(regular_source(ROOT / name))
     return {'manifestVersion': 2, 'version': VERSION, 'protocolVersion': 1, 'sourceCommit': None, 'source': {group: tree(group) for group in SOURCE_GROUPS}, 'toolchain': json.loads((ROOT / 'toolchain.json').read_text()), 'artifacts': artifacts or {}, 'evidence': evidence, 'publicationBlockers': publication_blockers(), 'readinessPolicy': 'informational'}
 
 
@@ -118,9 +119,10 @@ def verify_manifest(value):
     for group, expected in value['source'].items():
         if tree(group) != expected:
             raise ValueError('release source changed: ' + group)
+    reviewed = {name for name in source_manifest() if name.startswith('artifacts/alpha/') and name.endswith('.json') and Path(name).name != 'qualification.json'}
     for name, expected in value.get('evidence', {}).items():
         path = ROOT / name
-        if not path.resolve().is_relative_to((ROOT / 'artifacts/alpha').resolve()) or not path.is_file() or digest(path) != expected:
+        if name not in reviewed or not path.resolve().is_relative_to((ROOT / 'artifacts/alpha').resolve()) or not path.is_file() or digest(path) != expected:
             raise ValueError('release evidence changed')
 
 

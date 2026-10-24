@@ -1,4 +1,12 @@
-# Current status — 2026-10-16
+# Connect readiness evidence
+
+## Current candidate check — 2026-10-24
+
+The current Connect desk passed six native document integration checks on an owned disposable Vere 4.6 ship: owner consent, create/update/delete, atomic conflicts, exact-byte retries, namespace isolation, malformed-JSON rejection, and snapshot/change-feed consistency. The current Swift SDK suite passed 63 tests and a public notes consumer passed two; the consumer test's error assertion was repaired after Swift Testing crashed while describing an error. The current Todo app then passed its focused pairing, sync, offline-recovery and revocation UI workflow through the public SDK on the owned iOS Simulator: one XCTest passed with no skips. The separate document-test ship and private credentials were removed. [Sanitized result](../artifacts/alpha/current-document-sdk-2026-10-24.json).
+
+All 75 shipped Hoon tests also passed after correcting a stale test that expected the anonymous owner page to return 200; the existing login-required behavior returns 302, while an authenticated local owner receives 200. A direct native-Eyre check returned 200 for owner bootstrap with both a single Cookie header and separate Cookie headers, exercising the login hotfix. Protocol schema checks (14 cases), web codec tests (18), and web typechecking passed. The correction changed test source only; the native Todo run used the same runtime desk code. These checks cover the current document protocol, SDK package and one native installed-app workflow. Physical iOS devices and other app consumers remain outside this evidence.
+
+The [focused security review](security-review-2026-10-24.md) found no confirmed issue in current owner login, OAuth, token, document-scope or integration-grant paths; its narrower scope is stated there.
 
 **Consent follow-up:** the default-scale iOS consent issue is now fixed and verified in the official app’s system browser. See the [layout correction and current rerun](consent-layout.md).
 

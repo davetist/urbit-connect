@@ -3,8 +3,17 @@
 =/  world=world:c  [[%2 'instance' '' 1 0 *auth-state:c ~ ~ ~] ~ ~]
 =/  ctx=context:c  [~zod ~nec ~2026.10.12 0v1 'test' | & [| & [%ipv4 .127.0.0.1] [%'GET' '/apps/connect/' ~ ~]]]
 |%
-++  test-assets-trailing-slash
+++  test-anonymous-assets-trailing-slash-requires-login
   =/  result  (handle:ch world ctx)
+  ?>  ?=(^ payload.result)
+  =/  location  (header:ch 'location' headers.response-header.u.payload.result)
+  ;:  weld
+    (expect-eq !>(302) !>(status-code.response-header.u.payload.result))
+    (expect-eq !>('/~/login?redirect=') !>((crip (scag 18 (trip location)))))
+  ==
+++  test-owner-assets-trailing-slash
+  =/  request  request.ctx(authenticated &)
+  =/  result  (handle:ch world ctx(local &, request request))
   ?>  ?=(^ payload.result)
   (expect-eq !>(200) !>(status-code.response-header.u.payload.result))
 ++  test-foreign-authenticated-cannot-be-owner

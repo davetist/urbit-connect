@@ -5,7 +5,7 @@
   "sourceCommit": null,
   "source": {
     "desk": {
-      "sha256": "2d61c72decc19e47771fd0062dcfa7e4c5e6da4c4042c1de72b2e8c8caa03dfb",
+      "sha256": "ec91c6a1cb6f7fd6bef28810f969265dadfa56d773bdf42d12522d526e83d3d4",
       "files": {
         "desk/app/connect.hoon": "3c7fbb9e302ae1169f802965af083c35a8b8cf901d6bc59d0f00d25502997e84",
         "desk/desk.bill": "d6cf88b4f21e82bc8bd6b7c0f6c50038d1d79adeafb09fe926df8bdcfcf4af21",
@@ -43,7 +43,7 @@
         "desk/tests/connect/codec.hoon": "07e63ce158a4a9afbdddb1d8e76f2aaaa005116a6d5d7792b834a92608c09d60",
         "desk/tests/connect/entry.hoon": "3547a8f71266f4ef48b3e8e6c643b5e36b60a4bad7a69eaa75f7d24773191b44",
         "desk/tests/connect/fixtures.hoon": "09a4ebcf17afcf751bf685720654567fd5123bff8a4a8c1e695fb4fa705027e8",
-        "desk/tests/connect/http.hoon": "00f7623c4fa5049797c298d0800aa07148123f490456f24687df2ca91d5cfd60",
+        "desk/tests/connect/http.hoon": "2a2f7622fd3b5d7c0068237d003a37d8346de4ffb78ba428169c77a7df9e0512",
         "desk/tests/connect/integrations.hoon": "bf4d0e3df34bce9952a83b2519ef4cd09b2c17f58fb589f5743dbf9bbb1aaaee",
         "desk/tests/connect/json.hoon": "f0b1ba4fcf2fa9b1be8b6c6de9b60567a73d3890eeba2e659aab8de048fa3382",
         "desk/tests/connect/limits.hoon": "e865c92c7ff5f8ae6443b7fddad4eaca2beefd368233822ef842f22f0e657d21",
@@ -170,13 +170,13 @@
       }
     },
     "tests": {
-      "sha256": "d3b344b4d38caaa32fe71897f392181fa7f93797ad7efe727883db50c47fd5ba",
+      "sha256": "fcf19126b6026287eb7a85315cf4d9d214bfdb3944ea4bfa8c638ded63f647e3",
       "files": {
         "tests/acceptance/alpha-matrix.md": "7f71901561e5ac53b01bba3d558cb4de180a598eec369cafa1c81908ab4966ac",
         "tests/acceptance/prototype-checklist.md": "b875abe6d9edf835d552c32e6348413642dc4b4d1466668cb7a64c35eb17d374",
         "tests/consumers/swift/Package.swift": "9d9ba850cd661d81eafd53583d89614c35e6bcb4d792ad41351c2bf6b407ab97",
         "tests/consumers/swift/Sources/NotesConsumer/NotesConsumer.swift": "603fcf4342a58310169a52a1e74c3486aa60608151c736089acc31bb10b81c59",
-        "tests/consumers/swift/Tests/NotesConsumerTests/NotesConsumerTests.swift": "c6ff91a9031554f32dc0e3224ebc81951c65f655280ae4af7f9eb0f5fa146a72",
+        "tests/consumers/swift/Tests/NotesConsumerTests/NotesConsumerTests.swift": "64a99b61d4a0cf267bf528f6e55669de61d3205da02143a39435c24f2cb1b142",
         "tests/historical/retired-policy/README.md": "967858353450270367259d55d2c3a6c3af6351203258e8b7b961362bc99b3649",
         "tests/historical/retired-policy/desk__tests__connect__auth.hoon.txt": "bec3d1acc515e45c959cc1ff1a89150d2b286963ac1f0e3577aa7466a0b22d7f",
         "tests/historical/retired-policy/desk__tests__connect__limits.hoon.txt": "231c3d6e1048b7bf2962026bb8882f21f1a0d5c6c6b7017e619ad65c4b56fe57",
@@ -216,14 +216,14 @@
         "tests/tooling/test_real_load.py": "6f7071f64a097d063580b0b8b71af5f9e402741e861319da9e56a1f3d9098fd6",
         "tests/tooling/test_real_owner_login.py": "88f72787e66eaf7e5ff2345097a287af3066443262936374899784df5c26d692",
         "tests/tooling/test_real_reference.py": "612281c1a18bdcb8789383de797118fd74a8f943634f27e20be7261added0777",
-        "tests/tooling/test_release_check.py": "8fa8240d82c4d96ae793441eed5e9320acfec9e88ef7e87a4bb270c9f8cbb9f7",
+        "tests/tooling/test_release_check.py": "9eb5b03440c46ee39f2aeb2568afb3e806c7ab4f907eedf23e5b5fe12649e44e",
         "tests/tooling/test_resource_fixture.py": "ab2b61d31c675ac2de756d4d315a8da65af0dad1be4c127c18d9a059c8020266",
         "tests/tooling/test_resource_sources.py": "5e37e61ab296c3538b5311bae66ef468514d5483ae6ff80bff69a7fbaad40bb2",
         "tests/tooling/test_targets.py": "760bc2e757ac61e61c353a8be24dad83a342b4ea0559c713e08f95bf12a91170"
       }
     },
     "scripts": {
-      "sha256": "10eba662226c5847476e8c8fca229dd3f97bf63010143cb5462ce2bd45b09806",
+      "sha256": "9da1dcf58ed1968422c9b1033e7dc3d2e95f1ed2f990639f22bbce355f955938",
       "files": {
         "scripts/benchmark.py": "f650758a7ece6613aa88c3e5310ec61430b4b2c769cb55cb5efb19a80379e261",
         "scripts/browser_test.py": "c6917b067085678077cddb631cf12891045521ce930466710373127b83b3077c",
@@ -252,7 +252,7 @@
         "scripts/real_soak.py": "291343c1c931e9c8792e5f29c16bdb189a4b416aef7c3d20b9167a8ce93775e6",
         "scripts/real_target.py": "bc8a9c3971846a5810345a2d511f9a572181105a568932a7756502857faf666a",
         "scripts/real_test_support.py": "87cb0abca683ee50767f9b54b625d821fb4bcad4c8f4a741651230c67f22aaf9",
-        "scripts/release_check.py": "d27b53c2f2553d62238957b6a78681a6710fedafc06782c2fc51cc3d96b1aeb3",
+        "scripts/release_check.py": "571cdd6a25943162d43abcc70e7bd966d5301a3253fd00ab69300741c97fb98f",
         "scripts/reload_rehearsal.py": "bf177281bf98b016597cdd9e579c8c01dd3e0aa459fc75d35229d76d706a7938",
         "scripts/requirements.lock": "6504ccdff32db63ece3c7b12e7ebc4845947a22165f37bd4dbf4f915b8f36c90",
         "scripts/resource_fixture.py": "65761b180be3e8a096255f0aee272141664a237280edea0285dfe05fbc5742ca",
@@ -267,7 +267,7 @@
       }
     },
     "docs": {
-      "sha256": "432ef9fca52b91a77d6b9f27ba0fac48cf1d02cd7bdb49ef610b19e016723a8f",
+      "sha256": "003ee3e90ab8c33b4507aa99204e9ebc3b24ded4551ad0d24c0fa350f8aff672",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
@@ -277,7 +277,7 @@
         "docs/compatibility.md": "068911e1249dff5fb1f484e45cfe8ceaddd3379004e276cf08f64a8c6588e04a",
         "docs/consent-layout.md": "c968650e9b14f1bd45bdec1bdbe6c0e141f94fb15d051ce9c7fa38a500418edd",
         "docs/contributing.md": "49c918e498c87be11d327a77f81cc7a371f0fd3e94f54617fc8abbf5da4a013d",
-        "docs/current-readiness.md": "9a485160a8a72ffdb10be8bab1cfc20406ed49ff54094e04d7cdfcdfac3f22d8",
+        "docs/current-readiness.md": "14144adaac15417dca3d5e6515a2c68ed23bf50018cc19a9ea81456a453b6d3f",
         "docs/development.md": "773e6ad0ab47efb0221e4199b806679b6484d94cb379b1c9bf1cb72b4f169f1a",
         "docs/final-review.md": "b03a5a5d20bf50de2c6a0be1fae10a9b7fff632624471e729cf7cfbfb5409c47",
         "docs/historical/isolated-alpha.md": "e41c4d7c1fd644c5ed4b5dc7daed0966191a4b4627e14c992145380a84e1c4a7",
@@ -293,6 +293,7 @@
         "docs/release-checklist.md": "cf41d2b96a534ab8985b36ce33aa877399581168a771fe2e10111cbb508fa762",
         "docs/resource-integrations.md": "44d98c773c54ec1fc39809b5d66524498809a7bc06c700cbc06b0fd603f74f7f",
         "docs/sdk-integration.md": "237739e4e454b57e2136e9e1adcfc015e6e4dca11569e2c04499b7fd8d24c7f6",
+        "docs/security-review-2026-10-24.md": "15b1b4610bdc605838c7097d0081e725a930c62bc7aa337f92b8471c2b6befc1",
         "docs/security.md": "442007457cf338348610cad40b108edc201e41754b1231b61ed922469afcf581",
         "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "a50ef9e2e341be8066f1b93e84551df6c1a7307b3275d4f122faf54878ddadd1",
         "docs/superpowers/plans/2026-10-13-connect-alpha-product.md": "5407d68f3206a868b3fd92bd2ad65469d53c6ac157f1fd349c6e82940ba12282",
@@ -335,15 +336,15 @@
       }
     },
     "release/source-files.json": {
-      "sha256": "33b843ecd3535a757dc682179aa5c47961f9dbe16a1d4fd82c410f118434b9a4",
+      "sha256": "6ebc49aff359b65aaa2c87759abdb0967a5260f22f46d836b4eb38f50732a8be",
       "files": {
-        "release/source-files.json": "002497f53852d464a22ebab01f6a6c762f8c6d984e3e5afcb53152c3371e1492"
+        "release/source-files.json": "9924440f06e70df2f50356a0292f6a1809ac9a8cf96bdb4b61b9a98651b99f92"
       }
     },
     "README.md": {
-      "sha256": "cff8fcf9eeaff825cb1f1748daf405c2973c8ee7d24b2fc9ac10cf529901188e",
+      "sha256": "bbdb847e20182d936032343ca4531f0fcf6b4e06274e29fa818949a808e9a115",
       "files": {
-        "README.md": "d75286e8298e6ccec6ef31992b7924080008a69980fd8d52df4097b2518a00d8"
+        "README.md": "4f4326e420c43dde97ce5392b9916becb4157e786a0570e54117b78a4944cc8c"
       }
     },
     "LICENSE": {
@@ -409,7 +410,7 @@
   "artifacts": {
     "desk": {
       "path": "dist/connect-0.2.0-alpha.1.tgz",
-      "sha256": "bf820b902d6fa868f9fb953d667652a93b5e1f880a2c0b3083b8150d38b9c750",
+      "sha256": "3ac167ba3661ec2e56c264851f91edfc963f96eebc01cd6f561adf219383bdf2",
       "kind": "file"
     },
     "sdk": {
@@ -424,7 +425,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0-alpha.1.tgz",
-      "sha256": "153ad3cf42cab81a5455ea438edd982a5be9fde796cbdf18e5862666e40a0614",
+      "sha256": "03690f2d5e89a4dffa999b1c7fdb6e7a16f85c3b8b38bfc4229f2959323a9816",
       "kind": "file"
     },
     "web": {
@@ -434,82 +435,8 @@
     }
   },
   "evidence": {
-    "artifacts/alpha/app-update.json": "5ff7bb2239b95c962826ff3bd2f2500fe9d2dd5c370b8aa7044e2f773fb6b68e",
-    "artifacts/alpha/artifact-privacy.json": "e1df97ed6d251d908a36695934659981996788dac2b45127fd6e02d2fc076f37",
-    "artifacts/alpha/baseline-before-memory-sampler.json": "93bb09660b2061c637b7a3012d463cdfeb1c1814d27bf78d1b823edfdb823281",
-    "artifacts/alpha/baseline-before-private-policy.json": "5ec4fef885c567c068a87db453acd26f5e77c3cf19b1043e01a0ab3d7bf9c505",
-    "artifacts/alpha/baseline-before-soak-diagnostics.json": "9c55566cccacf55772436978b47cb15bbcd777b2b406f9ebc542d69243b2b69c",
-    "artifacts/alpha/baseline-before-soak-duration-change.json": "811b1c1cef387a5eb77b02b71738f8d9476849c72a2cf47ee902f35dea0aa5bc",
-    "artifacts/alpha/baseline.json": "7f333deccd60de98a57aea915fcaa2a1203d021720c68f0ff2400586f255ced9",
-    "artifacts/alpha/checks.json": "47678317f2ae585f7853cda8e8354580f88cf282a79e9b37fc7355e38d42e9b4",
     "artifacts/alpha/connect-cookie-hotfix-2026-10-24.json": "5a4e54345056d1c300b9a21c0e5e5c3245e1c8642cfa409bcff9be405772a08f",
-    "artifacts/alpha/consent-fix-2026-10-16.json": "88c503e3aa35320c999a61ff93ae22eae9a03abe4f197c87b07fb3bca7fb9f0a",
-    "artifacts/alpha/current-acceptance-2026-10-16.json": "c4eb68f1735541779ab85389faace0417a2dafbcfab2557538292294bc88f324",
-    "artifacts/alpha/current-auth-storage-review.json": "657f5783489949995f3877f1a702f21c4fbd48de83ddcda88c17ee06bc159521",
-    "artifacts/alpha/current-native-incomplete.json": "9f085a103d2d82ffe4ce6be6595975a119a69b5ba4547126449d1481b6edd632",
-    "artifacts/alpha/current-qualification-update.json": "f5b7fc0777ec8f43e1f8067b11fd38b1675207fd0df94aaf6f7c2ef0226f54da",
-    "artifacts/alpha/current-real-host-readiness.json": "30586bfb3479b47123cf7d52cb920acaa7e5ae3d345528e48b6c483b29b10ba4",
-    "artifacts/alpha/current-release-privacy.json": "a1dc54f58d496f55e08e27b25b851709bfc1f96d23fdc920b3c87bc817f37da8",
-    "artifacts/alpha/current-repair-continuation.json": "b57ef82ff31ed81c9032bd2733835a0e44ceaea41356d89509d913cea1175681",
-    "artifacts/alpha/current-resource-interop.json": "aa3745d788e9adc371115b117b1bbc50850a1fadbeb400ce29414615c2b48baf",
-    "artifacts/alpha/current-resource-visual-fixture.json": "fa639f37fc67b101f4179e84be37777d23ea05e3c2cb788943403f70cebe9da0",
-    "artifacts/alpha/current-simulator-fix.json": "466bd2b39b64b4a0d8c2928ecf3f3b75270a3e214590a78965474045dc5e7324",
-    "artifacts/alpha/current-source-cold-build.json": "5b638e6608b592f8515f72f8f883be5bd9e59f7252f631ca92a4b8cbb461f62d",
-    "artifacts/alpha/current-visual-review.json": "bf3fb5b5ddaf263d2f5ec9360c7e8664e77059c96607d49e51375ff142187744",
-    "artifacts/alpha/focused-review.json": "1887ad4072c59c6caf2d656d1fc42377f06137603193b927ff41f1e7ea4de35a",
-    "artifacts/alpha/load.json": "3de27eb2e658a54bbaf2d88535f198848d935b1e942fb678cc0aa16d1822ad4d",
-    "artifacts/alpha/manual-evidence.json": "4363b8a7095d2ebe6df22a2505d2d578e348accc3de25835af1aed50ef855f30",
-    "artifacts/alpha/memory-delivery-verification.json": "6b6a833bccc1a07071b8795e0c2b86f67c51c7aa787317cb9b88f6177d784587",
-    "artifacts/alpha/memory-sampler-update.json": "0bf98940332fea13d4c6212489072d7b08211efe82b64d8f888d72c4e71cbb4a",
-    "artifacts/alpha/package.json": "c8f7f3c6721a0f1ba52dfeb28e4fc4f4b3586ee0d9eb962e89672a55fd898d05",
-    "artifacts/alpha/qualification-policy-update.json": "622ca844f6e0fd551911506f485cc3e5d88744599d5a834418151d0a065b0e52",
-    "artifacts/alpha/real-baseline-install.json": "4c6bb11f589141a7cb1b701c8e3027a9b7850feea6eb0d271217238488587c2f",
-    "artifacts/alpha/real-doctor.json": "794200b186bf557a2378a529083f1ec3fb3ab4ac8a4de1acfd0543bb3c29e7bf",
-    "artifacts/alpha/real-final-artifact.json": "d37eba57c933967ee1bc47ae76c5ef5600389780cae71f333c5ecc84b2899866",
-    "artifacts/alpha/real-isolation.json": "a8b0fabda9dce391a0bbef19f2344fc899b64d34627be9be4807a33d977b4e4e",
-    "artifacts/alpha/real-memory-bounded-diagnostic-paced.json": "756c8460aefd95e47251e388f02cab080d8b124984f542580ba8e22243b3ea72",
-    "artifacts/alpha/real-memory-bounded-diagnostic-redraw.json": "23838f8f788795c501121d35d63064ce8424209dade1189d1aab8b4e8dffc266",
-    "artifacts/alpha/real-memory-bounded-diagnostic.json": "b39d16bf7948a5689b141c5dd6bdf9a80952747746599072d3b1021be511e690",
-    "artifacts/alpha/real-memory-diagnosis.json": "768d8a301bcdb6586b18ed3a8185e129c5ae9c3a43b86e34f4a0265afc697177",
-    "artifacts/alpha/real-memory-observation.json": "0b024b196812d9645e0d67e725cd524f6d50718698cbacb8c6311c546a6cc75a",
-    "artifacts/alpha/real-native-authorization.json": "45b8ae0d9348adc23ff7025f64c284aa6630bfdef6208e2d5df71681c8d2c649",
-    "artifacts/alpha/real-native.json": "339f6420e48b9792d3462b80e44ab4809736848fba2f0b0b97529c86402a001b",
-    "artifacts/alpha/real-network-cleanup.json": "02c5ec05d18668e68141b5c4d41f21610f86683fa45e6d67d0a8981f73ccb229",
-    "artifacts/alpha/real-network-final-cleanup.json": "b46bf946795029c9e2ebf4741c8437bc5805dc8cb26faca64d147bafaeef134a",
-    "artifacts/alpha/real-reference-bounds.json": "03fc6078758a0624b768c263858634d4bf64ff91b905aff636fee3f3ae3dd980",
-    "artifacts/alpha/real-reference-load.json": "7c494750f87e8d210b516483860a304a1b1f8b74ab0ada99694c1e9f72e9901e",
-    "artifacts/alpha/real-reference-preflight.json": "0909dafbdb34b01bf17f69a602c595993b31c63a7ecaad5ecc64b416c15893bc",
-    "artifacts/alpha/real-reference-tools.json": "89f3518672bb36ab1d8468835c41926db9f9a95d9eab8d1db866f0da3522e7b7",
-    "artifacts/alpha/real-reference-update.json": "d0f1913f698bdc7f922c1370a85b2ff688ab5ffce86c1477acb15d19ffdc51e5",
-    "artifacts/alpha/real-sdk-load.json": "64a5eee3fef076412ee2e037ee697cdb448f1fca32c9143a878b55e39bacae9b",
-    "artifacts/alpha/real-severe-recovery.json": "cdd7e5a40ef2eef6dbf3ba325f27ca7ed6b39e368736da3e12e1207669869e4f",
-    "artifacts/alpha/real-soak-before-duration-change.json": "df25aaa5e58424db5dab1f30d070f821579ce397eb626d57d684b06b56880f98",
-    "artifacts/alpha/real-soak-diagnostics.json": "7b87bdeddf938fd161be010747e9f969293ddeab4939dbbbb049a27f04d00a53",
-    "artifacts/alpha/real-soak-failed-20261013.json": "b0bf75cdf4166bab5d6ee7a3247e9f427c8be1fd28cf0d4c7c7aaf2f9c784145",
-    "artifacts/alpha/real-soak-failed-20261014.json": "42f1c5a6750f44fe1d496cb048e79bc85ef9a6027e37c8d8846a2694dcd89782",
-    "artifacts/alpha/real-soak-preliminary-interrupted.json": "f80b7c5a726ce5944b2bd6cfe03682fbfc4dc25967bff553aa8466c23f3533d2",
-    "artifacts/alpha/real-soak-preliminary-observation.json": "46526a686998f1dfeb0a7dd812af3cb7653b65da9bb256bef7069a28a4318dcb",
-    "artifacts/alpha/real-soak-restart-start.json": "3e2b0d43ccb35b77ee9ad90e4582bf430cfac1f43a69e6249718b5c0a5630370",
-    "artifacts/alpha/real-soak-six-hour-initial.json": "b1a8d57ab05686bd6a9bbd7381454cdeea748d9ff148d66bdc3b5abcbb09a6b3",
-    "artifacts/alpha/real-soak-six-hour-start.json": "1f8d05e50216bcc0e508e015e6ea6ee7f06a41ead883b806036851a2b4454c0f",
-    "artifacts/alpha/real-soak-six-hour.json": "7211da1fc152d4610be44486c9f2cd03e982edae0d687b5654f909586e926bc6",
-    "artifacts/alpha/real-soak-start.json": "1c0e1fe15f4bef41a9369ab2cf3537d136f5ad5cd6eae12c96ceda753b1e76be",
-    "artifacts/alpha/real-soak.json": "42f1c5a6750f44fe1d496cb048e79bc85ef9a6027e37c8d8846a2694dcd89782",
-    "artifacts/alpha/real-update-install.json": "a99a6aed8f3a7759c02192914a515d2aa139f540a01f8b33d7e5d73cb4593b9b",
-    "artifacts/alpha/reload-before.json": "d4c51edf0d75bd1058cb2bef0eac30e6570c17f55a300fef672f320a65c01375",
-    "artifacts/alpha/reload-failure.json": "fb0d4590f7b1d004fb27b5be4c26da161bd64611640392b43066faee3cf6b216",
-    "artifacts/alpha/reload-response.json": "dc5fa06e674791e1ccc1fc0131f8f480131360bcb72b2d63c347f36437fdbad7",
-    "artifacts/alpha/reload-retry.json": "d3ba00e791b784d258b1b114da4535097fbdc8bd7cc3b183b4267283d27c4baa",
-    "artifacts/alpha/report-record.json": "0c05b81db464bc75ffecfa4978537b4b3b712e409258ebc2f3fcb9a00290600a",
-    "artifacts/alpha/restore-rehearsal.json": "2d72ec43d10969ac3da7092ba81461d8cc8b6626978038d0a8de4e4bcdd3965f",
-    "artifacts/alpha/sdk-load.json": "06dbcb79883f96123326677f355afbfd03201f0cf07da74d484e8f21434fbd15",
-    "artifacts/alpha/soak-diagnostics-update.json": "544243501fb109989b925d88798090e8052a5307759242b49b99853a4305c441",
-    "artifacts/alpha/soak-duration-policy-update.json": "710351f5cff464c7c172bb9448903b2159081dd484ba2a377319828f915e5135",
-    "artifacts/alpha/soak-monitor-route-repair.json": "98d59e2c9197ab301f227ccc0401ebd9ff0fea05a1ffac0f42c2381ef4ca0709",
-    "artifacts/alpha/soak-six-hour-candidate.json": "e31084633ed13b30d2cb0438daa287f1ed07ec1cffcd1be6e40edea24170ec30",
-    "artifacts/alpha/soak-six-hour-policy-update.json": "4b1fb351146332626abaf05f1182258daba75b9d8173019b52035a7e2d1611f1",
-    "artifacts/alpha/source-cold-build.json": "5a7c17845d15866175d025c261c782b716f9f9fc869742ccd3045b272cfe0d29",
-    "artifacts/alpha/visual-review.json": "d910dc51303c716d139a145c18efea993c718fb70ed553907c1e2a87450a34b3"
+    "artifacts/alpha/current-document-sdk-2026-10-24.json": "0110cdf6097531465e16c31d2888026225f2c50ebd6d42ac753c8d09ca04dd3d"
   },
   "publicationBlockers": [
     "sourceOwner",

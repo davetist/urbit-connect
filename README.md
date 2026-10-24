@@ -4,7 +4,7 @@ A personal app backend on your Urbit ship, with a native Swift SDK and an iOS to
 
 **Local source release:** desk/Swift/Todo version `0.2.0-alpha.1`, protocol 1, SQLite schema 2. Connect provides restart recovery, durable offline queues, retained-draft recovery, owner management and installation tooling. Artificial document/storage, app/session and SDK draft/account quotas are removed; [specific parser, concurrency and replay controls](docs/capacity.md) remain. Daily use does not require a soak, tester quota or independent signoff. Historical reports remain [observations](tests/acceptance/alpha-matrix.md), not a qualification verdict. Public native distribution is separate.
 
-The [2026-10-16 readiness assessment](docs/current-readiness.md) distinguishes earlier acceptance and official-client integration observations from the current quota/gate changes, whose behavior has not been rerun through test suites. Those earlier runtime observations do not cover the quota, pagination or snapshot-lease changes.
+The [readiness evidence](docs/current-readiness.md) separates older observations from the 2026-10-24 current-source SDK, native document and iOS Simulator Todo checks. Physical-device behavior remains a separate claim.
 
 The ship can read documents. The SDK sends data directly to the paired HTTPS ship endpoint, without a developer data service. An app that can display your data can also copy it; an SDK cannot prevent a malicious app publisher from doing that. HTTPS protects transport, and `%connect` enforces app permissions on the ship.
 

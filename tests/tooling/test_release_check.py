@@ -233,6 +233,26 @@ class ReleaseTests(unittest.TestCase):
             finally:
                 release_check.ROOT = previous
 
+    def test_manifest_excludes_unreviewed_local_evidence(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'release').mkdir()
+            evidence = root / 'artifacts/alpha'
+            evidence.mkdir(parents=True)
+            (evidence / 'reviewed.json').write_text('{"passed":true}')
+            (evidence / 'private-local.json').write_text('{"syntheticSecret":"only"}')
+            (root / 'release/source-files.json').write_text(json.dumps([
+                'artifacts/alpha/reviewed.json', 'release/source-files.json',
+            ]))
+            (root / 'toolchain.json').write_text('{}')
+            with patch.object(release_check, 'ROOT', root), patch.object(release_check, 'SOURCE_GROUPS', []), patch.object(release_check, 'publication_blockers', return_value=[]):
+                listed = release_check.manifest()['evidence']
+                forged = {'manifestVersion': 2, 'version': release_check.VERSION, 'source': {}, 'artifacts': {},
+                          'evidence': {'artifacts/alpha/private-local.json': release_check.digest(evidence / 'private-local.json')}}
+                with self.assertRaisesRegex(ValueError, 'release evidence'):
+                    release_check.verify_manifest(forged)
+            self.assertEqual(set(listed), {'artifacts/alpha/reviewed.json'})
+
     def test_source_archive_never_copies_an_owned_fixture(self):
         with tempfile.TemporaryDirectory() as folder:
             output = Path(folder) / 'sources.tgz'

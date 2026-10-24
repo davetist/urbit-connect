@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-24",
+  "connectSourceCommit": "ed5dc200283d413dcef12c5d1b397da8eceb2ab1",
+  "sourceTrees": {
+    "desk": "2d61c72decc19e47771fd0062dcfa7e4c5e6da4c4042c1de72b2e8c8caa03dfb",
+    "sdk/swift": "e2ad79b23a3153560bf221a9976ce5118d6bda3f93b6483500afb9dad5fcf5eb",
+    "examples/ios-todo": "4f2b879164da32cbd34968ee8d115d8eabcfd8e82b303e995b5458775dcbeb27"
+  },
+  "finalDeskTreeAfterTestCorrection": "ec91c6a1cb6f7fd6bef28810f969265dadfa56d773bdf42d12522d526e83d3d4",
+  "environment": "Owned disposable local Vere 4.6 ship with current Connect desk and native HTTPS",
+  "checks": {
+    "swiftSdkTests": { "executed": 63, "passed": 63, "skipped": 0 },
+    "publicNotesConsumerTests": { "executed": 2, "passed": 2, "skipped": 0 },
+    "nativeDocumentIntegrationTests": { "executed": 6, "passed": 6, "skipped": 0 },
+    "nativeTodoSimulatorWorkflow": { "executed": 1, "passed": 1, "failed": 0, "skipped": 0, "expectedFailures": 0 },
+    "hoonDeskTests": { "executed": 75, "passed": 75, "skipped": 0 },
+    "protocolSchemaCases": { "executed": 14, "passed": 14, "skipped": 0 },
+    "webCodecTests": { "executed": 18, "passed": 18, "skipped": 0 },
+    "webTypecheck": true,
+    "nativeSplitCookieOwnerBootstrap": true
+  },
+  "nativeFlows": [
+    "owner registration and Connect consent",
+    "document create, update, delete and tombstone",
+    "atomic conflict and duplicate-target rejection",
+    "exact-byte mutation retry and changed-body rejection",
+    "namespace isolation and owner-route rejection",
+    "invalid JSON rejection with agent continuity",
+    "snapshot consistency and subsequent change feed",
+    "owner bootstrap through separate Cookie headers at native Eyre"
+  ],
+  "boundary": "The native Todo UI test paired the current Swift SDK with Connect on an owned fake ship in an iOS Simulator. The only desk change after that run corrected a stale Hoon test expectation for the existing owner-login redirect; runtime code was unchanged. This is a Simulator result, not physical-device acceptance. The separate disposable document-test ship and its credentials were removed after testing."
+}
