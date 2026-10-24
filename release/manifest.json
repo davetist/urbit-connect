@@ -267,7 +267,7 @@
       }
     },
     "docs": {
-      "sha256": "433173b2cfd03a43e701f4e369d0d2851fa7ceb24f137f560b5754f0bd00af52",
+      "sha256": "d553af3b9e1fe3a048a0b12bdf0827b741cd9c3c2eb335ae5e965e3c68cc0a40",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
@@ -293,7 +293,7 @@
         "docs/release-checklist.md": "cf41d2b96a534ab8985b36ce33aa877399581168a771fe2e10111cbb508fa762",
         "docs/resource-integrations.md": "44d98c773c54ec1fc39809b5d66524498809a7bc06c700cbc06b0fd603f74f7f",
         "docs/sdk-integration.md": "a9443fe6b7e0a7db54eb34902ea4a998f7ae985da33e126c84475cc0ff8c5c74",
-        "docs/security-review-2026-10-24.md": "15b1b4610bdc605838c7097d0081e725a930c62bc7aa337f92b8471c2b6befc1",
+        "docs/security-review-2026-10-24.md": "6a6440dfbb74869c61436dcf1d5e9010198c8c55307fa56312d37d1b642af34b",
         "docs/security.md": "9b14188116a7d7b42fff9ea739bf0a5c6926a46319f711220301537132f94727",
         "docs/superpowers/plans/2026-10-12-connect-ios-prototype.md": "a50ef9e2e341be8066f1b93e84551df6c1a7307b3275d4f122faf54878ddadd1",
         "docs/superpowers/plans/2026-10-13-connect-alpha-product.md": "5407d68f3206a868b3fd92bd2ad65469d53c6ac157f1fd349c6e82940ba12282",
@@ -425,7 +425,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0.tgz",
-      "sha256": "70d854f3fa87a957e034d5295caf914e766906b51012b945cd69d32cf7952563",
+      "sha256": "6a0b86819fd6cada96a1d1feab84215989ab5f41b49d077ac34e6e7126f36e6e",
       "kind": "file"
     },
     "web": {
@@ -435,8 +435,8 @@
     }
   },
   "evidence": {
-    "artifacts/alpha/connect-cookie-hotfix-2026-10-24.json": "5a4e54345056d1c300b9a21c0e5e5c3245e1c8642cfa409bcff9be405772a08f",
-    "artifacts/alpha/current-document-sdk-2026-10-24.json": "0110cdf6097531465e16c31d2888026225f2c50ebd6d42ac753c8d09ca04dd3d"
+    "artifacts/alpha/connect-cookie-hotfix-2026-10-24.json": "d54b462bbdb28fbd3c1b69d7b8b5abfd32f5315a68346f8a3da8f0a1fce63ac9",
+    "artifacts/alpha/current-document-sdk-2026-10-24.json": "db02376e5d4c09bee597d4bedd2153615b172ec614c212d8fa6b09062d0ba09a"
   },
   "publicationBlockers": [],
   "readinessPolicy": "informational"

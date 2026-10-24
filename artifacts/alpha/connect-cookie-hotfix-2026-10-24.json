@@ -2,7 +2,7 @@
   "date": "2026-10-24",
   "channel": "connect-alpha",
   "revision": 4,
-  "sourceCommit": "b2eee06e0478dc3ddeadceebb842959938ff1cb5",
+  "sourceCommit": "743dea04891e56ce00c831306b85ef51278d753a",
   "fileCount": 34,
   "changedFile": "lib/connect-http.hoon",
   "changedFileSha256": "f374e3be5ca001a2050b7768b2369bb3fffb50eef1462ed24ec958e26e8a0ab1",
