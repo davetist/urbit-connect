@@ -26,6 +26,10 @@ For a failed desk update, preserve current ship state and device drafts while di
 
 An ordinary restart or desk reload preserves the instance, records and receipts. Version-0 state migration preserves the earlier instance identity; version-1 state preserves the durable store and clears transient snapshots/polls on load. Do not overwrite live state to force a failed migration.
 
+## Removing an installation
+
+`|uninstall %connect` stops the desk, but it does not remove Connect's direct HTTP bindings at `/connect` and `/apps/connect`. Eyre only accepts a disconnect from the Gall duct that created a binding. If that agent is nuked first, the binding can remain after its state and desk files are gone. This was observed on a separate 408k receiver during the stable release check. Version 0.2.0 does not provide a complete uninstall procedure; do not nuke a document-bearing Connect agent as routine cleanup. Preserve its data and wait for a supported route-retirement procedure before removing it.
+
 ## Test environment cleanup
 
 The development harness stores owner credentials and TLS keys privately under `.work/`, which is ignored. `scripts/cleanup.py` stops only its owned subprocesses and removes the test CA from the dedicated Simulator/profile. It retains piers and diagnostic results for reproducibility. Never upload raw `.work/` or XCTest result bundles: UI typing logs can include the disposable owner code. Share only the sanitized acceptance report and reviewed screenshots.

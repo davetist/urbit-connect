@@ -267,7 +267,7 @@
       }
     },
     "docs": {
-      "sha256": "d553af3b9e1fe3a048a0b12bdf0827b741cd9c3c2eb335ae5e965e3c68cc0a40",
+      "sha256": "b1624bf9f9e012b891aaf3cf5ff9d109c8d08f9c4b2211ad85af423b974777a6",
       "files": {
         "docs/alpha-handoff.md": "7be8a23b92034fdd777bff10137aaf46e379fe69a72652992bc4e685a1b146ac",
         "docs/app-registration.md": "2dcddc465ea0cb82c217292ae8525896360b7c84ee2b9ffc52b40f2173a1b469",
@@ -285,7 +285,7 @@
         "docs/install.md": "9a0e0f598169719209074fd2073aa62f79894c1f54ace7c61006e31bd17381e3",
         "docs/known-limitations.md": "d1b2dfca2e2d7f9ac573fe1a00df0525002f72d88fe16f8a05a8b7129e880700",
         "docs/landscape-source-provenance.json": "01a713d83940da1d383f4279d5f2728bdcde2e19987055c662402f5ee8b278b4",
-        "docs/operations.md": "b5c4e428bba893f93a56ff347dc987813ea96bccf610be77f390db9cec55156c",
+        "docs/operations.md": "d11e8ac6e94fda750365995a15091bba79199c643443336b55dff813b9a1f55d",
         "docs/operations/reference.Caddyfile": "006c846bbce1a0a96e6c2714728fb82c7da1ad62ac3a75429eff20342dbc590c",
         "docs/operations/tailscale-reference.Caddyfile": "d785c1b51650cd669d5f641b1af3f05b5118e8693701313d27457127b2afb280",
         "docs/protocol.md": "4304af0c689cc0d187910ad48d77392312ef6cec9b55d2ab63efa2036d259ebe",
@@ -330,9 +330,9 @@
       }
     },
     "release/README.md": {
-      "sha256": "a1623c957f923f66c9cea3aa7dbb8fe9e6615e05da0d2285f50faa75c9fb6b67",
+      "sha256": "3515d35694406ffe50ad1d3262f93bbde398e2505117c160e77f1e6e29e6e693",
       "files": {
-        "release/README.md": "7857d3757f64012c3f24046c3d82f0fcf1448351a2b7506100bffde0c4f92bf9"
+        "release/README.md": "0dd14a1d2589441b86d0900299e86e4fc10676078bc97c54d21dfebd198ad40b"
       }
     },
     "release/source-files.json": {
@@ -425,7 +425,7 @@
     },
     "source": {
       "path": "dist/connect-source-0.2.0.tgz",
-      "sha256": "6a0b86819fd6cada96a1d1feab84215989ab5f41b49d077ac34e6e7126f36e6e",
+      "sha256": "e4e9e6ca3e096457118e346c7c6beade529fbb364b2603303db144ba696df4eb",
       "kind": "file"
     },
     "web": {
